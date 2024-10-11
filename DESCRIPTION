@@ -1,0 +1,23 @@
+Package: avial
+Title: A Mixed Bag of R Functions
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = "J.", family = "Aravind",
+           email = "j.aravind@icar.gov.in",
+           role = c("aut", "cre"),
+		       comment = c(ORCID = "0000-0002-4791-442X")))
+Description: A bunch of miscellaneous R functions primarly for personal use.
+License: GPL-2 | GPL-3
+Encoding: UTF-8
+Imports: agridat,
+    dplyr,
+    EvaluateCore,
+    ggplot2
+Suggests: colorspace,
+    patchwork
+LazyData: true
+Depends:
+    R (>= 3.5.0)
+Language: en-GB
+RoxygenNote: 7.3.2
+Config/Needs/website: rmarkdown

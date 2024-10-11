@@ -1,8 +1,11 @@
-#' Bartlett Test of Homogeneity of Error Variances
+#' Bartlett's Test of Homogeneity of Error Variances
 #'
-#' @param ems A vector of error variances or error mean sum of squares from each
+#' Perform chi-square test for homogeneity of variance (Bartlett's test) to test
+#' equality of several error variances or mean squared errors.
+#'
+#' @param mse A vector of error variances or mean squared errors from each
 #'   environment (years and/or locations).
-#' @param df A vector of degrees of freedom correspondint to \code{ems}.
+#' @param df A vector of degrees of freedom corresponding to \code{mse}.
 #'
 #' @return A list with the chi-square value test statistic, corresponding
 #'   degrees of freedom and p value.
@@ -11,23 +14,23 @@
 #' @seealso \code{\link[stats]{bartlett.test}}
 #'
 #' @examples
-#' # Example from Page 481 Gomez KA and AA Gomez (1984) Statistical Procedures
-#' # for Agricultural Research. 2nd ed. Wiley, New York, 680 p.
+#' # Examples from Page 467-471 Gomez KA and AA Gomez (1984) Statistical
+#' # Procedures for Agricultural Research. 2nd ed. Wiley, New York, 680 p.
 #'
 #' # Different degrees of freedom
-#' ems <- c(6.73920, 1.93496, 1.15500, 10.58450)
+#' mse <- c(6.73920, 1.93496, 1.15500, 10.58450)
 #' df <- c(19, 16, 17, 19)
 #'
-#' ems.bartlett.test(ems = c(6.73920, 1.93496, 1.15500, 10.58450),
+#' mse.bartlett.test(mse = c(6.73920, 1.93496, 1.15500, 10.58450),
 #'                   df = c(19, 16, 17, 19))
 #'
 #' # Same degrees of freedom
-#' ems <- c(11.459848, 17.696970, 10.106818)
+#' mse <- c(11.459848, 17.696970, 10.106818)
 #' df <- c(20, 20, 20)
 #'
-#' ems.bartlett.test(ems = c(11.459848, 17.696970, 10.106818),
+#' mse.bartlett.test(mse = c(11.459848, 17.696970, 10.106818),
 #'                   df = c(20, 20, 20))
-ems.bartlett.test <- function(ems, df) {
+mse.bartlett.test <- function(mse, df) {
 
   # Checks -  todo
 
@@ -36,7 +39,7 @@ ems.bartlett.test <- function(ems, df) {
   f <- df
 
   # Error mean sum of squares (s^2)
-  s2 <- ems
+  s2 <- mse
 
   k <- length(f)
 

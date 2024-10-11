@@ -1,12 +1,34 @@
-# test weights > 1
-
-
+#' Title
+#'
+#' @param data
+#' @param genotype
+#' @param qualitative
+#' @param quantitative
+#' @param active
+#' @param target
+#' @param center
+#' @param scale
+#' @param weights.qualitative
+#' @param weights.quantitative
+#' @param nclass.quantitative
+#' @param always.selected
+#' @param file.name
+#' @param file.path
+#'
+#' @return
+#' @export
+#'
+#' @examples
 prep_mstrat_input <- function(data, genotype,
                               qualitative, quantitative, #inactive,
                               active, target,
+                              center = TRUE, scale = TRUE,
                               weights.qualitative = NULL,
                               weights.quantitative = NULL,
-                              center = TRUE, scale = TRUE) {
+                              nclass.quantitative = NULL,
+                              always.selected = NULL,
+                              file.name = "MStrat_input",
+                              file.path = getwd()) {
 
   # an optional vector of ‘prior weights’ to be used in the fitting process. Should be NULL or a numeric vector.
 
@@ -35,7 +57,7 @@ prep_mstrat_input <- function(data, genotype,
   # check if 'quantitative' columns are present in 'data'
   if (!is.null(quantitative)) {
     if (FALSE %in% (quantitative %in% colnames(data)))  {
-      stop(paste('The following column(s) specified in "quantitative" not present in "data":\n',
+      stop(paste('The following column(s) specified in "quantitative" are not present in "data":\n',
                  paste(quantitative[!(quantitative %in% colnames(data))],
                        collapse = ", "),
                  sep = ""))
@@ -45,7 +67,7 @@ prep_mstrat_input <- function(data, genotype,
   # check if 'qualitative' columns are present in 'data'
   if (!is.null(qualitative)) {
     if (FALSE %in% (qualitative %in% colnames(data)))  {
-      stop(paste('The following column(s) specified in "qualitative" not present in "data":\n',
+      stop(paste('The following column(s) specified in "qualitative" are not present in "data":\n',
                  paste(qualitative[!(qualitative %in% colnames(data))],
                        collapse = ", "),
                  sep = ""))
@@ -76,8 +98,10 @@ prep_mstrat_input <- function(data, genotype,
 
   # check if 'quantitative' columns are of type numeric/integer
   if (!is.null(quantitative)) {
-    intquantcols <- unlist(lapply(data[, quantitative],
-                                  function(x) FALSE %in% (is.vector(x, mode = "integer") | is.vector(x, mode = "numeric"))))
+    intquantcols <-
+      unlist(lapply(data[, quantitative],
+                    function(x) FALSE %in% (is.vector(x, mode = "integer") |
+                                              is.vector(x, mode = "numeric"))))
     if (TRUE %in% intquantcols) {
       stop(paste('The following "quantitative" column(s) in "data" are not of type numeric:\n',
                  paste(names(intquantcols[intquantcols]), collapse = ", ")))
@@ -99,7 +123,7 @@ prep_mstrat_input <- function(data, genotype,
   # check if 'active' traits/markers are present in 'traits'
   if (FALSE %in% (active %in% traits))  {
     stop(paste('The following column(s) specified in "active" not present in',
-               ' "qualitative" or quantitative:\n',
+               ' "qualitative" or "quantitative":\n',
                paste(active[!(active %in% traits)],
                      collapse = ", "),
                sep = ""))
@@ -108,7 +132,7 @@ prep_mstrat_input <- function(data, genotype,
   # check if 'target' traits/markers are present in 'traits'
   if (FALSE %in% (target %in% traits))  {
     stop(paste('The following column(s) specified in "target" not present in',
-               '"qualitative" or quantitative:\n',
+               '"qualitative" or "quantitative":\n',
                paste(target[!(target %in% traits)],
                      collapse = ", "),
                sep = ""))
@@ -133,16 +157,15 @@ prep_mstrat_input <- function(data, genotype,
   }
 
   # Check for 9999 data
-
-  qual_9999_check <- apply(data[, qualitative], 2,
-                           function(x) {
-                             x <- as.numeric(x)
-                             any(x == 9999)
-                           })
-  quant_9999_check <- apply(data[, quantitative], 2,
-                            function(x) {
-                              any(x == 9999)
-                            })
+  qual_9999_check <- unlist(lapply(data[, qualitative],
+                                   function(x) {
+                                     x <- as.integer(x)
+                                     any(x == 9999)
+                                   }))
+  quant_9999_check <- unlist(lapply(data[, quantitative],
+                                    function(x) {
+                                      any(x == 9999)
+                                    }))
 
   if (any(qual_9999_check)) {
     stop(paste('The following "qualitative" column(s) in "data" have a level equal to 9999.',
@@ -154,6 +177,24 @@ prep_mstrat_input <- function(data, genotype,
     stop(paste('The following "quantitative" column(s) in "data" have a value equal to 9999.',
                '\nThis is the code for missing data in MStrat.\n',
                paste(names(quant_9999_check[quant_9999_check]), collapse = ", ")))
+  }
+
+
+  # Check always.selected
+  if (!is.null(always.selected)) {
+    if (FALSE %in% (always.selected %in% data[, genotype]))  {
+      stop(paste('The following genotype(s) specified in "always.selected" are not present in the "',
+                 genotype,
+                 '" column: \n',
+                 paste(always.selected[!(always.selected %in% data[, genotype])],
+                       collapse = ", "),
+                 sep = ""))
+    }
+  }
+
+  # Check if target file path exists
+  if(!file.exists(file.path)) {
+    stop('The path specified as "file.path" does not exist.')
   }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -231,21 +272,59 @@ prep_mstrat_input <- function(data, genotype,
 
   # fifth column : (weight)
   if (!is.null(weights.qualitative)) {
-    var_df[var_df$variable_name %in% qualitative, ]$weight <- weights.qualitative
+    var_df[var_df$variable_name %in% qualitative, ]$weight <-
+      weights.qualitative
   }
   if (!is.null(weights.quantitative)) {
-    var_df[var_df$variable_name %in% quantitative, ]$weight <- weights.quantitative
+    var_df[var_df$variable_name %in% quantitative, ]$weight <-
+      weights.quantitative
   }
   var_df$weight <- ifelse(is.na(var_df$weight), 1, var_df$weight)
 
   # sixth column : number of classes
-
+  if (!is.null(nclass.quantitative)) {
+    var_df[var_df$variable_name %in% quantitative, ]$weight <-
+      nclass.quantitative
+  }
   var_df$nclass <- ifelse(is.na(var_df$nclass), 5, var_df$nclass)
 
-  c("code")
+  var_out <-
+    paste("code 0", "individu 0",
+          readr::format_delim(x = var_df, delim = " ", col_names = FALSE),
+          sep = "\n")
+  # cat(var_out)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Prepare kernel file ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  kernel_out <- data_out[, c("code", genotype)]
+  kernel_out$presence <- 0
+
+  kernel_out[kernel_out[, genotype] %in% always.selected, ]$presence <- 1
+
+  kernel_out[, genotype] <- NULL
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Export the input files ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  file.name <- gsub(pattern = "\\s", replacement = "_", x = file.name)
+
+  # data file
+  write.table(x = data_out,
+              file = file.path(file.path, paste(file.name,
+                                                "data.dat", sep = "_")),
+              na = "9999", row.names = FALSE, col.names = FALSE)
+  # variable file
+  writeLines(text = var_out,
+             con = file.path(file.path, paste(file.name,
+                                              "variable.var", sep = "_")))
+  # kernel file
+  write.table(x = kernel_out,
+              file = file.path(file.path, paste(file.name,
+                                                "kernel.ker", sep = "_")),
+              row.names = FALSE, col.names = FALSE)
+
 
 }

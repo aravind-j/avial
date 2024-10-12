@@ -12,7 +12,8 @@ Encoding: UTF-8
 Imports: agridat,
     dplyr,
     EvaluateCore,
-    ggplot2
+    ggplot2,
+    readr
 Suggests: colorspace,
     patchwork
 LazyData: true

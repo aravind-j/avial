@@ -57,7 +57,7 @@ length as the number of quantitative traits. If \code{NULL}, the default
 weight of 1 is given.}
 
 \item{nclass.quantitative}{The number of classes into which each quantitative
-trait data have to be divided into. Should be \code{NULL} or a numeric
+trait data have to be divided into. Should be \code{NULL} or a integer
 vector of the same length as the number of quantitative traits. If
 \code{NULL}, the default of 5 is applied.}
 

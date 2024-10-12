@@ -12,7 +12,7 @@
 #' @param quantitative Name of columns with the quantitative traits as a
 #'   character vector.
 #' @param active Name of traits/variables to be declared as active.
-#' @param target Name of traits/variables to be declared as target
+#' @param target Name of traits/variables to be declared as target.
 #' @inheritParams base::scale
 #' @param weights.qualitative An vector of weight to be applied on a qualitative
 #'   traits. Should be \code{NULL} or a numeric vector of the same length as the
@@ -23,9 +23,10 @@
 #'   length as the number of quantitative traits. If \code{NULL}, the default
 #'   weight of 1 is given.
 #' @param nclass.quantitative The number of classes into which each quantitative
-#'   trait data have to be divided into. Should be \code{NULL} or a numeric
+#'   trait data have to be divided into. Should be \code{NULL} or a integer
 #'   vector of the same length as the number of quantitative traits. If
-#'   \code{NULL}, the default of 5 is applied.
+#'   \code{NULL}, the default of 5 is applied. MStat limits the maximum number
+#'   of classes to 1000.
 #' @param always.selected A character vector with names of individuals in the
 #'   \code{genotype} that should always be selected in the core collection.
 #' @param file.name A character string of name of file where the data will be
@@ -109,6 +110,10 @@ prep_mstrat_input <- function(data, genotype,
     data <- as.data.frame(data)
   }
 
+  if (nrow(data) < 30) {
+    stop('"data" should include atleast 30 accessions/genotypes.')
+  }
+
   if (missing(quantitative)) {
     quantitative <- NULL
   }
@@ -120,30 +125,33 @@ prep_mstrat_input <- function(data, genotype,
   # check if 'quantitative' columns are present in 'data'
   if (!is.null(quantitative)) {
     if (FALSE %in% (quantitative %in% colnames(data)))  {
-      stop(paste('The following column(s) specified in "quantitative" are not present in "data":\n',
-                 paste(quantitative[!(quantitative %in% colnames(data))],
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following column(s) specified in "quantitative" are not ',
+           'present in "data":\n',
+           paste(quantitative[!(quantitative %in% colnames(data))],
+                 collapse = ", "),
+           sep = "")
     }
   }
 
   # check if 'qualitative' columns are present in 'data'
   if (!is.null(qualitative)) {
     if (FALSE %in% (qualitative %in% colnames(data)))  {
-      stop(paste('The following column(s) specified in "qualitative" are not present in "data":\n',
-                 paste(qualitative[!(qualitative %in% colnames(data))],
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following column(s) specified in "qualitative" are not ',
+           'present in "data":\n',
+           paste(qualitative[!(qualitative %in% colnames(data))],
+                 collapse = ", "),
+           sep = "")
     }
   }
 
   # check if overlap exists between 'quantitative' and 'qualitative'
   if ((!is.null(quantitative)) & (!is.null(qualitative))) {
     if (length(intersect(quantitative, qualitative)) != 0) {
-      stop(paste('The following column(s) is/are specified in both "quantitative" and "qualitative":\n',
-                 paste(intersect(quantitative, qualitative),
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following column(s) is/are specified in both "quantitative" ',
+           'and "qualitative":\n',
+           paste(intersect(quantitative, qualitative),
+                 collapse = ", "),
+           sep = "")
     }
   }
 
@@ -166,8 +174,9 @@ prep_mstrat_input <- function(data, genotype,
                     function(x) FALSE %in% (is.vector(x, mode = "integer") |
                                               is.vector(x, mode = "numeric"))))
     if (TRUE %in% intquantcols) {
-      stop(paste('The following "quantitative" column(s) in "data" are not of type numeric:\n',
-                 paste(names(intquantcols[intquantcols]), collapse = ", ")))
+      stop('The following "quantitative" column(s) in "data" are not of ',
+           'type numeric:\n',
+           paste(names(intquantcols[intquantcols]), collapse = ", "))
     }
   }
 
@@ -176,9 +185,21 @@ prep_mstrat_input <- function(data, genotype,
     intqualcols <- unlist(lapply(data[, qualitative],
                                  function(x) is.factor(x)))
     if (FALSE %in% intqualcols) {
-      stop(paste('The following "qualitative" column(s) in "data" are not of type factor:\n',
-                 paste(names(intqualcols[!intqualcols]), collapse = ", ")))
+      stop('The following "qualitative" column(s) in "data" are not of ',
+           'type factor:\n',
+           paste(names(intqualcols[!intqualcols]), collapse = ", "))
     }
+
+    nclass_check <- unlist(lapply(data[, qualitative],
+                                  function(x) {
+                                    length(levels(x)) > 1000
+                                  }))
+    if (TRUE %in% nclass_check) {
+      stop('The following "qualitative" column(s) in "data" have more than ',
+           '1000 levels/classes:\n',
+           paste(names(nclass_check[!nclass_check]), collapse = ", "))
+    }
+    rm(nclass_check)
   }
 
   traits <- c(qualitative, quantitative)
@@ -219,6 +240,27 @@ prep_mstrat_input <- function(data, genotype,
     }
   }
 
+  # Check number of classes for quantitative
+  if (!is.null(nclass.quantitative)) {
+    if (!is.integer(nclass.quantitative) ||
+        length(nclass.quantitative) != length(quantitative)) {
+      stop('"nclass.quantitative" should be an integer vector with same length',
+           'as "quantitative".')
+    }
+
+    nclass_check <- unlist(lapply(nclass.quantitative,
+                                  function(x) {
+                                    x < 2 | x > 1000
+                                  }))
+    names(nclass_check) <- quantitative
+    if (TRUE %in% nclass_check) {
+      stop('The number of levels/classes specified for the following ',
+           '"quantitative" column(s) in "data" with the "nclass.quantitative" ',
+           'argument are < 2 or > 1000:\n',
+           paste(names(nclass_check[nclass_check]), collapse = ", "))
+    }
+  }
+
   # Check for 9999 data
   qual_9999_check <- unlist(lapply(data[, qualitative],
                                    function(x) {
@@ -231,27 +273,30 @@ prep_mstrat_input <- function(data, genotype,
                                     }))
 
   if (any(qual_9999_check)) {
-    stop(paste('The following "qualitative" column(s) in "data" have a level equal to 9999.',
-               '\nThis is the code for missing data in MStrat.\n',
-               paste(names(qual_9999_check[qual_9999_check]), collapse = ", ")))
+    stop('The following "qualitative" column(s) in "data" have a level ',
+         'equal to 9999.',
+         '\nThis is the code for missing data in MStrat.\n',
+         paste(names(qual_9999_check[qual_9999_check]), collapse = ", "))
   }
 
   if (any(quant_9999_check)) {
-    stop(paste('The following "quantitative" column(s) in "data" have a value equal to 9999.',
-               '\nThis is the code for missing data in MStrat.\n',
-               paste(names(quant_9999_check[quant_9999_check]), collapse = ", ")))
+    stop('The following "quantitative" column(s) in "data" have a value ',
+         'equal to 9999.',
+         '\nThis is the code for missing data in MStrat.\n',
+         paste(names(quant_9999_check[quant_9999_check]), collapse = ", "))
   }
 
 
   # Check always.selected
   if (!is.null(always.selected)) {
     if (FALSE %in% (always.selected %in% data[, genotype]))  {
-      stop(paste('The following genotype(s) specified in "always.selected" are not present in the "',
-                 genotype,
-                 '" column: \n',
-                 paste(always.selected[!(always.selected %in% data[, genotype])],
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following genotype(s) specified in "always.selected" are ',
+           'not present in the "',
+           genotype,
+           '" column: \n',
+           paste(always.selected[!(always.selected %in% data[, genotype])],
+                 collapse = ", "),
+           sep = "")
     }
   }
 

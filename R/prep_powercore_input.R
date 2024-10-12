@@ -76,30 +76,33 @@ prep_powercore_input <- function(data, genotype,
   # check if 'quantitative' columns are present in 'data'
   if (!is.null(quantitative)) {
     if (FALSE %in% (quantitative %in% colnames(data)))  {
-      stop(paste('The following column(s) specified in "quantitative" are not present in "data":\n',
-                 paste(quantitative[!(quantitative %in% colnames(data))],
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following column(s) specified in "quantitative" are not ',
+           'present in "data":\n',
+           paste(quantitative[!(quantitative %in% colnames(data))],
+                 collapse = ", "),
+           sep = "")
     }
   }
 
   # check if 'qualitative' columns are present in 'data'
   if (!is.null(qualitative)) {
     if (FALSE %in% (qualitative %in% colnames(data)))  {
-      stop(paste('The following column(s) specified in "qualitative" are not present in "data":\n',
-                 paste(qualitative[!(qualitative %in% colnames(data))],
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following column(s) specified in "qualitative" are not ',
+           'present in "data":\n',
+           paste(qualitative[!(qualitative %in% colnames(data))],
+                 collapse = ", "),
+           sep = "")
     }
   }
 
   # check if overlap exists between 'quantitative' and 'qualitative'
   if ((!is.null(quantitative)) & (!is.null(qualitative))) {
     if (length(intersect(quantitative, qualitative)) != 0) {
-      stop(paste('The following column(s) is/are specified in both "quantitative" and "qualitative":\n',
-                 paste(intersect(quantitative, qualitative),
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following column(s) is/are specified in both "quantitative" ',
+           'and "qualitative":\n',
+           paste(intersect(quantitative, qualitative),
+                 collapse = ", "),
+           sep = "")
     }
   }
 
@@ -115,6 +118,23 @@ prep_powercore_input <- function(data, genotype,
     stop('"genotype" column in "data" should be of type factor.')
   }
 
+  # Check if ~ or % is present in colnames
+  col_mrkr_check <- grepl("~|%", c(genotype, quantitative, qualitative))
+  names(col_mrkr_check) <- c(genotype, quantitative, qualitative)
+  if (any(col_mrkr_check)) {
+    stop(' The following column names specified as either "genotype" and/or ',
+         '"qualitative" and/or "quantitative" have "~" and "%" characters.\n',
+         paste(names(col_mrkr_check[col_mrkr_check]), collapse = ", "))
+  }
+
+  # Check if ~ or % is present in genotype
+  gen_mrkr_check <- grepl("~|%", data[, genotype])
+  if (any(gen_mrkr_check)) {
+    stop(' The following genotype names in ', genotype,
+         ' column have "~" and "%" characters.\n',
+         paste(data[gen_mrkr_check, genotype], collapse = ", "))
+  }
+
   # check if 'quantitative' columns are of type numeric/integer
   if (!is.null(quantitative)) {
     intquantcols <-
@@ -122,8 +142,9 @@ prep_powercore_input <- function(data, genotype,
                     function(x) FALSE %in% (is.vector(x, mode = "integer") |
                                               is.vector(x, mode = "numeric"))))
     if (TRUE %in% intquantcols) {
-      stop(paste('The following "quantitative" column(s) in "data" are not of type numeric:\n',
-                 paste(names(intquantcols[intquantcols]), collapse = ", ")))
+      stop('The following "quantitative" column(s) in "data" are not of ',
+           'type numeric:\n',
+           paste(names(intquantcols[intquantcols]), collapse = ", "))
     }
   }
 
@@ -132,8 +153,9 @@ prep_powercore_input <- function(data, genotype,
     intqualcols <- unlist(lapply(data[, qualitative],
                                  function(x) is.factor(x)))
     if (FALSE %in% intqualcols) {
-      stop(paste('The following "qualitative" column(s) in "data" are not of type factor:\n',
-                 paste(names(intqualcols[!intqualcols]), collapse = ", ")))
+      stop('The following "qualitative" column(s) in "data" are not of ',
+           'type factor:\n',
+           paste(names(intqualcols[!intqualcols]), collapse = ", "))
     }
   }
 
@@ -142,12 +164,13 @@ prep_powercore_input <- function(data, genotype,
   # Check always.selected
   if (!is.null(always.selected)) {
     if (FALSE %in% (always.selected %in% data[, genotype]))  {
-      stop(paste('The following genotype(s) specified in "always.selected" are not present in the "',
-                 genotype,
-                 '" column: \n',
-                 paste(always.selected[!(always.selected %in% data[, genotype])],
-                       collapse = ", "),
-                 sep = ""))
+      stop('The following genotype(s) specified in "always.selected" are ',
+           'not present in the "',
+           genotype,
+           '" column: \n',
+           paste(always.selected[!(always.selected %in% data[, genotype])],
+                 collapse = ", "),
+           sep = "")
     }
   }
 

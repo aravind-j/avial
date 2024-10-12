@@ -1,24 +1,89 @@
-#' Title
+#' Prepare Input Files for \code{MStrat}
 #'
-#' @param data
-#' @param genotype
-#' @param qualitative
-#' @param quantitative
-#' @param active
-#' @param target
-#' @param center
-#' @param scale
-#' @param weights.qualitative
-#' @param weights.quantitative
-#' @param nclass.quantitative
-#' @param always.selected
-#' @param file.name
-#' @param file.path
+#' Prepare input files for \code{MStrat}, a software for building germplasm core
+#' collections by maximizing allelic or phenotypic richness.
 #'
-#' @return
+#' @param data The data as a data frame object. The data frame should possess
+#'   columns with the genotype names and multiple quantitative and/or
+#'   qualitative trait/variable data.
+#' @param genotype Name of column with the genotype names as a character string.
+#' @param qualitative Name of columns with the qualitative traits as a character
+#'   vector.
+#' @param quantitative Name of columns with the quantitative traits as a
+#'   character vector.
+#' @param active Name of traits/variables to be declared as active.
+#' @param target Name of traits/variables to be declared as target
+#' @inheritParams base::scale
+#' @param weights.qualitative An vector of weight to be applied on a qualitative
+#'   traits. Should be \code{NULL} or a numeric vector of the same length as the
+#'   number of qualitative traits. If \code{NULL}, the default weight of 1 is
+#'   given.
+#' @param weights.quantitative An vector of weight to be applied on a
+#'   quantitative traits. Should be \code{NULL} or a numeric vector of the same
+#'   length as the number of quantitative traits. If \code{NULL}, the default
+#'   weight of 1 is given.
+#' @param nclass.quantitative The number of classes into which each quantitative
+#'   trait data have to be divided into. Should be \code{NULL} or a numeric
+#'   vector of the same length as the number of quantitative traits. If
+#'   \code{NULL}, the default of 5 is applied.
+#' @param always.selected A character vector with names of individuals in the
+#'   \code{genotype} that should always be selected in the core collection.
+#' @param file.name A character string of name of file where the data will be
+#'   saved.
+#' @param folder.path The path to folder where the input files are to be saved.
+#'
+#' @importFrom readr format_delim
+#' @importFrom dplyr add_count
 #' @export
 #'
 #' @examples
+#'
+#' library(EvaluateCore)
+#'
+#' data(cassava_EC)
+#' data <- cassava_EC
+#'
+#' quant <- c("NMSR", "TTRN", "TFWSR", "TTSW", "TTPW", "AVPW",
+#'            "ARSR", "SRDM")
+#' qual <- c("CUAL", "LNGS", "LFRT", "LBTEF", "CBTR", "NMLB",
+#'           "ANGB", "CUAL9M", "LVC9M", "TNPR9M", "PL9M", "STRP", "STRC",
+#'           "PSTR")
+#'
+#' # Prepare genotype column
+#' data$Accession <- rownames(data)
+#' rownames(data) <- NULL
+#' data$Accession <- as.factor(data$Accession)
+#'
+#' # Convert qualitative data as factors
+#' data[, qual] <- lapply(data[, qual],
+#'                        function(x) factor(as.factor(x)))
+#'
+#' active = c("LNGS", "LFRT", "LBTEF", "CBTR", "NMLB",
+#'            "ANGB", "CUAL9M", "LVC9M", "TNPR9M",
+#'            "TTRN", "TFWSR", "TTSW", "TTPW", "AVPW")
+#' target = c("NMSR", "TTRN", "ARSR", "SRDM",
+#'            "CUAL", "LNGS", "TNPR9M",
+#'            "PL9M", "STRP", "STRC",
+#'            "PSTR")
+#'
+#' sel <- c("TMe-2906", "TMe-3412", "TMe-1374", "TMe-768", "TMe-14",
+#'          "TMe-3284", "TMe-937", "TMe-1859", "TMe-3265", "TMe-1739",
+#'          "TMe-972", "TMe-769", "TMe-3243", "TMe-3719", "TMe-1095",
+#'          "TMe-893", "TMe-1262", "TMe-2083", "TMe-376", "TMe-3633",
+#'          "TMe-1738", "TMe-2428", "TMe-259", "TMe-3457", "TMe-1406",
+#'          "TMe-977", "TMe-3006", "TMe-925", "TMe-3671", "TMe-2779",
+#'          "TMe-1293", "TMe-268", "TMe-266", "TMe-3562", "TMe-801")
+#'
+#' prep_mstrat_input(data = data, genotype = "Accession",
+#'                   qualitative = qual, quantitative = quant,
+#'                   active = active, target = target,
+#'                   center = TRUE, scale = TRUE,
+#'                   weights.qualitative = NULL,
+#'                   weights.quantitative = NULL,
+#'                   nclass.quantitative = NULL, always.selected = sel,
+#'                   file.name = "MStrat_input",
+#'                   folder.path = tempdir())
+#'
 prep_mstrat_input <- function(data, genotype,
                               qualitative, quantitative, #inactive,
                               active, target,
@@ -28,9 +93,7 @@ prep_mstrat_input <- function(data, genotype,
                               nclass.quantitative = NULL,
                               always.selected = NULL,
                               file.name = "MStrat_input",
-                              file.path = getwd()) {
-
-  # an optional vector of ‘prior weights’ to be used in the fitting process. Should be NULL or a numeric vector.
+                              folder.path = getwd()) {
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Checks ----
@@ -193,8 +256,8 @@ prep_mstrat_input <- function(data, genotype,
   }
 
   # Check if target file path exists
-  if(!file.exists(file.path)) {
-    stop('The path specified as "file.path" does not exist.')
+  if(!file.exists(folder.path)) {
+    stop('The path specified as "folder.path" does not exist.')
   }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -301,7 +364,9 @@ prep_mstrat_input <- function(data, genotype,
   kernel_out <- data_out[, c("code", genotype)]
   kernel_out$presence <- 0
 
-  kernel_out[kernel_out[, genotype] %in% always.selected, ]$presence <- 1
+  if (!is.null(always.selected)) {
+    kernel_out[kernel_out[, genotype] %in% always.selected, ]$presence <- 1
+  }
 
   kernel_out[, genotype] <- NULL
 
@@ -311,20 +376,23 @@ prep_mstrat_input <- function(data, genotype,
 
   file.name <- gsub(pattern = "\\s", replacement = "_", x = file.name)
 
+  fname_dat <- paste(file.name, "data.dat", sep = "_")
+  fname_var <- paste(file.name, "variable.var", sep = "_")
+  fname_ker <- paste(file.name, "kernel.ker", sep = "_")
+
   # data file
   write.table(x = data_out,
-              file = file.path(file.path, paste(file.name,
-                                                "data.dat", sep = "_")),
+              file = file.path(folder.path, fname_dat),
               na = "9999", row.names = FALSE, col.names = FALSE)
   # variable file
   writeLines(text = var_out,
-             con = file.path(file.path, paste(file.name,
-                                              "variable.var", sep = "_")))
+             con = file.path(folder.path, fname_var))
   # kernel file
   write.table(x = kernel_out,
-              file = file.path(file.path, paste(file.name,
-                                                "kernel.ker", sep = "_")),
+              file = file.path(folder.path, fname_ker),
               row.names = FALSE, col.names = FALSE)
 
+  message(paste("The following MStrat input files created at", folder.path),
+          ":\n", paste(c(fname_dat, fname_var, fname_ker), collapse = "\n"))
 
 }

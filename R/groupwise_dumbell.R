@@ -19,6 +19,7 @@
 #'   list of \code{ggplot2} plot grobs.
 #'
 #' @importFrom dplyr summarise n
+#' @importFrom stats reorder
 #' @export
 #'
 #' @examples

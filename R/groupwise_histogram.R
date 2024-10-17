@@ -43,7 +43,7 @@
 #'   of \code{ggplot2} plot grobs.
 #'
 #' @import ggplot2
-#' @importFrom dplyr summarise n
+#' @importFrom dplyr arrange summarise n
 #' @importFrom scales hue_pal
 #' @export
 #'
@@ -245,7 +245,9 @@ groupwise_histogram <- function(data, group, trait,
                                 subset = c("facet", "list", "none"),
                                 ncol = NULL, nrow = NULL) {
 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Checks ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   # Check if data.frame
   if (!is.data.frame(data)) {
@@ -302,7 +304,7 @@ groupwise_histogram <- function(data, group, trait,
   # p <- sort(levels(data[, group]))
   # data[, group] <- factor(data[, group], p)
 
-
+  # Prepare aesthetics according to hist.border
   if (hist.border == TRUE) {
     hist_aes <- aes(fill = .data[[group]],
                     colour = .data[[group]])
@@ -321,6 +323,7 @@ groupwise_histogram <- function(data, group, trait,
                 se = sd(.data[[trait]], na.rm = TRUE) /
                   sqrt(length(.data[[trait]]
                               [!is.na(.data[[trait]])])))
+    data_summ <- dplyr::arrange(.data = data_summ, .by = .data[[group]])
   }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

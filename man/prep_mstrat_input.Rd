@@ -36,7 +36,7 @@ character vector.}
 
 \item{active}{Name of traits/variables to be declared as active.}
 
-\item{target}{Name of traits/variables to be declared as target}
+\item{target}{Name of traits/variables to be declared as target.}
 
 \item{center}{either a logical value or numeric-alike vector of length
     equal to the number of columns of \code{x}, where
@@ -59,7 +59,8 @@ weight of 1 is given.}
 \item{nclass.quantitative}{The number of classes into which each quantitative
 trait data have to be divided into. Should be \code{NULL} or a integer
 vector of the same length as the number of quantitative traits. If
-\code{NULL}, the default of 5 is applied.}
+\code{NULL}, the default of 5 is applied. MStat limits the maximum number
+of classes to 1000.}
 
 \item{always.selected}{A character vector with names of individuals in the
 \code{genotype} that should always be selected in the core collection.}

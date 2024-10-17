@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  articles/Highlight-Checks: Highlight-Checks.html
+last_built: 2024-10-17T19:12Z
+urls:
+  reference: https://aravind-j.github.io/avial/reference
+  article: https://aravind-j.github.io/avial/articles

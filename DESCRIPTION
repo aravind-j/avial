@@ -6,16 +6,18 @@ Authors@R: c(
            email = "j.aravind@icar.gov.in",
            role = c("aut", "cre"),
 		       comment = c(ORCID = "0000-0002-4791-442X")))
-Description: A bunch of miscellaneous R functions primarly for personal use.
+Description: A bunch of miscellaneous R functions primarly for personal use. 
+    These functions may be migrated to other packages in the future as required.
 License: GPL-2 | GPL-3
 Encoding: UTF-8
-Imports: agridat,
-    dplyr,
-    EvaluateCore,
+Imports: dplyr,
     ggplot2,
-    readr
-Suggests: colorspace,
-    patchwork
+    readr,
+    scales
+Suggests: agridat,
+    EvaluateCore,
+    colorspace,
+    patchwork,
 LazyData: true
 Depends:
     R (>= 3.5.0)
@@ -23,4 +25,5 @@ Language: en-GB
 RoxygenNote: 7.3.2
 Config/Needs/website: rmarkdown
 URL: https://github.com/aravind-j/avial
+    https://aravind-j.github.io/avial/
 BugReports: https://github.com/aravind-j/avial/issues

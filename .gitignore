@@ -4,6 +4,7 @@ docs
 Release.R
 .Rhistory
 .Rdata
+.Ruserdata
 .httr-oauth
 .DS_Store
 .quarto

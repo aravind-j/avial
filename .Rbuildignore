@@ -8,3 +8,4 @@
 ^\.github$
 ^codemeta\.json$
 ^_pkgdown\.yml$
+^pkgdown$

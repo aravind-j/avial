@@ -1,0 +1,65 @@
+template:
+  bootstrap: 5
+  math-rendering: mathjax
+  light-switch: no
+  bslib:
+    bootswatch: minty
+    pkgdown-nav-height: 100px
+
+deploy:
+  install_metadata: yes
+
+url: https://aravind-j.github.io/avial/
+
+navbar:
+  structure:
+    left:
+    - home
+    - reference
+    - articles
+    right:
+    - search
+    - github
+    - lightswitch
+  components:
+    home:
+      icon: fa-home fa-lg
+      text: Home
+      href: index.html
+    reference:
+      icon: fa-code
+      text: Reference
+      href: reference/index.html
+    tutorial:
+      icon: far fa-file
+      text: Tutorial
+      href: articles/index.html
+    github:
+      icon: fab fa-github-alt
+      text: Github
+      href: https://github.com/aravind-j/avial
+
+search:
+  exclude: news/index.html
+
+reference:
+    - title: Wrappers and helpters for `ggplot2`
+      contents:
+         - '`groupwise_bar`'
+         - '`groupwise_histogram`'
+         - '`groupwise_dumbell`'
+         - '`remove_scales`'
+         - '`dnorm_ggplot`'
+
+    - title: Plotting helpers
+      contents:
+         - '`binw`'
+
+    - title: Statistical functions
+      contents:
+         - '`mse.bartlett.test`'
+
+    - title: Prepare input files
+      contents:
+         - '`prep_mstrat_input`'
+         - '`prep_powercore_input`'

@@ -4,3 +4,7 @@
 ^Release\.R$
 ^docs$
 ^vignettes/articles$
+^CITATION\.cff$
+^\.github$
+^codemeta\.json$
+^_pkgdown\.yml$

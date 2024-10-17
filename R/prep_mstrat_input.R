@@ -35,6 +35,7 @@
 #'
 #' @importFrom readr format_delim
 #' @importFrom dplyr add_count
+#' @importFrom utils write.table
 #' @export
 #'
 #' @examples

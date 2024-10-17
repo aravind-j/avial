@@ -8,6 +8,8 @@ histogram}
 dnorm_ggplot(x, mean, sd, n, bw)
 }
 \arguments{
+\item{x}{vector of values.}
+
 \item{mean}{vector of means.}
 
 \item{sd}{vector of standard deviations.}

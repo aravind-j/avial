@@ -4,7 +4,10 @@
 #'   generated.
 #' @param method The method to compute the number of classes for the histogram.
 #'
-#' @return The bin width
+#' @return The bin width.
+#'
+#' @importFrom stats na.omit
+#' @importFrom grDevices nclass.FD nclass.Sturges nclass.scott
 #' @export
 #'
 #' @seealso \code{\link[grDevices]{nclass}}

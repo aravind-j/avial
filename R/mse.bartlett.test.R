@@ -9,6 +9,8 @@
 #'
 #' @return A list with the chi-square value test statistic, corresponding
 #'   degrees of freedom and p value.
+#'
+#' @importFrom stats pchisq
 #' @export
 #'
 #' @seealso \code{\link[stats]{bartlett.test}}

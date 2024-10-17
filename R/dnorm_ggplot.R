@@ -6,10 +6,13 @@
 #' number of records and bin width.
 #'
 #' @inheritParams stats::dnorm
+#' @param x vector of values.
 #' @param n The number of records or data points used to plot the histogram.
 #' @param bw The bin width of the histogram.
 #'
 #' @return The density for normal distribution.
+#'
+#' @importFrom stats dnorm
 #' @export
 #'
 #' @seealso \code{\link[ggplot2]{geom_histogram}},

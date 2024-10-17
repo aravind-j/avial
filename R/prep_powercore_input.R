@@ -5,6 +5,7 @@
 #'
 #' @inheritParams prep_mstrat_input
 #'
+#' @importFrom utils write.csv
 #' @export
 #'
 #' @examples

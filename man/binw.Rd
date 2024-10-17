@@ -13,7 +13,7 @@ generated.}
 \item{method}{The method to compute the number of classes for the histogram.}
 }
 \value{
-The bin width
+The bin width.
 }
 \description{
 Calculate the Bin Width for Plotting Histograms

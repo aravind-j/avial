@@ -92,7 +92,9 @@ groupwise_dumbell <- function(data, group, trait, genotype,
                               error.bar.width = 0.1,
                               ncol = NULL, nrow = NULL) {
 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Checks ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   # Check if data.frame
   if (!is.data.frame(data)) {

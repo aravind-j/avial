@@ -1,0 +1,25 @@
+citHeader("To cite the R package 'avial' in publications use:")
+
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("avial")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
+if (!length(year)) {
+ year <- format(packageDate("avial"), "%Y")
+}
+vers <- paste("R package version", meta$Version)
+
+citEntry(entry  = "Manual",
+         title  = "avial: A Mixed Bag of R Functions",
+         author = personList(person(given = "J.", family = "Aravind",
+									                  email = "j.aravind@icar.gov.in",
+							                      role = c("aut", "cre"))),
+         year = year,
+         textVersion = paste(
+           "Aravind, J. (",
+           year, ").  avial: A Mixed Bag of R Functions. ",
+           vers, ", ", "https://aravind-j.github.io/avial/",
+           ".", sep=""),
+         note = {c(paste(vers), "https://aravind-j.github.io/avial/")})
+
+citFooter("This free and open-source software implements academic
+research by the authors and co-workers. If you use it, please support
+the project by citing the package.")

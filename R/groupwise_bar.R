@@ -1,21 +1,30 @@
 #' Plot Group-wise Bar Plots
 #'
 #' @inheritParams groupwise_histogram
-#' @param bar.border
-#' @param bar.alpha
-#' @param by
-#' @param relative.freq
-#' @param na.rm
-#' @param include.overall
-#' @param background.bar
-#' @param background.bar.alpha
-#' @param position
+#' @param bar.border logical. If \code{TRUE}, bar border is also plotted.
+#'   Default is \code{TRUE}.
+#' @param bar.alpha Alpha transparency for the group-wise bar plot.
+#' @param by The factor according to which the bars have to be grouped. Either
+#'   \code{"group"} or \code{"trait"}.
+#' @param relative.freq logical. If \code{TRUE}, the relative frequency or
+#'   proportion is plotted instead of counts. Default is \code{FALSE}.
+#' @param na.rm logical. If \code{TRUE}, the \code{NA} factor levels are
+#'   excluded from the plot. Default is \code{TRUE}.
+#' @param include.overall logical. If \code{TRUE}, the overall or total data is
+#'   also plotted. Default is \code{TRUE}.
+#' @param background.bar logical. If \code{TRUE}, the overall data is plotted as
+#'   a background bar plot when \code{by = "group"}, \code{include.overall =
+#'   TRUE}, and \code{position = "dodge"}. Default is \code{TRUE}.
+#' @param background.bar.alpha Alpha transparency for the background bar plot.
+#' @param position Bar position adjustment. Either "dodge" or "stack".
 #'
-#' @return
+#' @return The group-wise bar plot as a \code{ggplot2} plot grob or as a list of
+#'   \code{ggplot2} plot grobs.
 #'
 #' @import ggplot2
 #' @importFrom dplyr arrange mutate summarise n
 #' @importFrom scales hue_pal
+#' @importFrom utils modifyList
 #' @export
 #'
 #' @examples
@@ -459,10 +468,9 @@ groupwise_bar <- function(data, group, trait,
   if (show.counts == TRUE) {
 
     total_ind <- data[, trait] != "Total"
-    data_summ <-
-      summarise(.data = data[total_ind, ],
-                .by = all_of(c(group)),
-                count = n())
+    data_summ <- summarise(.data = data[total_ind, ],
+                           .by = all_of(c(group)),
+                           count = n())
     data_summ <- dplyr::arrange(.data = data_summ, .by = .data[[group]])
 
     if (subset != "none" & by == "trait") {
@@ -678,7 +686,7 @@ groupwise_bar <- function(data, group, trait,
 
     return(outg +
              xlab(trait) +
-             # ylab("Count") +
+             ylab(ifelse(relative.freq, "Proportion", "Count")) +
              theme_bw())
 
   } else { # subset ==  list
@@ -909,18 +917,11 @@ groupwise_bar <- function(data, group, trait,
       layer_scales(x)$y$expand[3]
     }))
 
+    ### Remove y scale ----
     outg_list <- lapply(seq_along(p), function(i) {
 
-      # Remove y scale
-      gg <- outg_list[[i]]
-      gg_scaley_ind <- unlist(lapply(gg$scales$scales, function(x) {
-        "y" %in% x$aesthetics
-      }))
-      if (any(gg_scaley_ind)) {
-        gg$scales$scales[[which(gg_scaley_ind)]] <- NULL
-      }
+      remove_scales(outg_list[[i]], scales = "y")
 
-      return(gg)
     })
 
     if (is.null(yexpand)) {
@@ -948,7 +949,7 @@ groupwise_bar <- function(data, group, trait,
     outg_list <- lapply(seq_along(p), function(i) {
       outg_list[[i]] <- outg_list[[i]] +
         xlab(trait) +
-        # ylab("Count") +
+        ylab(ifelse(relative.freq, "Proportion", "Count")) +
         theme_bw()
     })
 

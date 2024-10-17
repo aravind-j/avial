@@ -32,20 +32,47 @@ columns specifying the group and trait.}
 
 \item{trait}{Name of column specifying the trait as a character string.}
 
+\item{bar.border}{logical. If \code{TRUE}, bar border is also plotted.
+Default is \code{TRUE}.}
+
+\item{bar.alpha}{Alpha transparency for the group-wise bar plot.}
+
+\item{by}{The factor according to which the bars have to be grouped. Either
+\code{"group"} or \code{"trait"}.}
+
+\item{relative.freq}{logical. If \code{TRUE}, the relative frequency or
+proportion is plotted instead of counts. Default is \code{FALSE}.}
+
 \item{subset}{The method for subsetting the plots according to the argument
 \code{"group"}. Either \code{"facet"} for getting an plot using faceting in
 \code{ggplot2} or \code{"list"} for getting a list of plots.}
+
+\item{na.rm}{logical. If \code{TRUE}, the \code{NA} factor levels are
+excluded from the plot. Default is \code{TRUE}.}
+
+\item{include.overall}{logical. If \code{TRUE}, the overall or total data is
+also plotted. Default is \code{TRUE}.}
+
+\item{background.bar}{logical. If \code{TRUE}, the overall data is plotted as
+a background bar plot when \code{by = "group"}, \code{include.overall =
+TRUE}, and \code{position = "dodge"}. Default is \code{TRUE}.}
+
+\item{background.bar.alpha}{Alpha transparency for the background bar plot.}
 
 \item{show.counts}{logical. If \code{TRUE}, group wise counts are plotted as
 a text annotation. Default is \code{TRUE}.}
 
 \item{count.text.size}{The size of the count text annotation.}
 
-\item{position}{}
+\item{position}{Bar position adjustment. Either "dodge" or "stack".}
 
 \item{ncol}{Number of columns when \code{subset = "facet"}.}
 
 \item{nrow}{Number of rows when \code{subset = "facet"}.}
+}
+\value{
+The group-wise bar plot as a \code{ggplot2} plot grob or as a list of
+  \code{ggplot2} plot grobs.
 }
 \description{
 Plot Group-wise Bar Plots

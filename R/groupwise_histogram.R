@@ -43,8 +43,10 @@
 #'   of \code{ggplot2} plot grobs.
 #'
 #' @import ggplot2
-#' @importFrom dplyr arrange summarise n
+#' @importFrom dplyr all_of arrange summarise n
 #' @importFrom scales hue_pal
+#' @importFrom stats sd
+#' @importFrom utils modifyList
 #' @export
 #'
 #' @examples
@@ -511,7 +513,7 @@ groupwise_histogram <- function(data, group, trait,
       outg_list <- lapply(seq_along(p), function(i) {
         colourval <- ifelse(hist.border == TRUE, colhex[i], NULL)
 
-        outg_list[[i]] +
+        remove_scales(outg_list[[i]], scales = c("fill", "colour")) +
           geom_density(mapping = modifyList(aes(y = after_stat(count) * bw * bw.adjust),
                                             hist_aes),
                        alpha = density.alpha) +
@@ -525,7 +527,7 @@ groupwise_histogram <- function(data, group, trait,
     if (normal.curve == TRUE) {
 
       outg_list <- lapply(seq_along(p), function(i) {
-        outg_list[[i]] <- outg_list[[i]] +
+        outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
           stat_function(aes(x = .data[[trait]],
                             colour = .data[[group]]),
                         fun = dnorm_ggplot,
@@ -545,7 +547,7 @@ groupwise_histogram <- function(data, group, trait,
     if (highlight.mean == TRUE) {
 
       outg_list <- lapply(seq_along(p), function(i) {
-        outg_list[[i]] <- outg_list[[i]] +
+        outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
           geom_vline(data = gpdata_summ_list[[i]],
                      aes(colour = .data[[group]], xintercept = mean),
                      linetype = "dashed") +
@@ -560,7 +562,7 @@ groupwise_histogram <- function(data, group, trait,
       vjust_custom <- 1.5
 
       outg_list <- lapply(seq_along(p), function(i) {
-        outg_list[[i]] <- outg_list[[i]] +
+        outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
           geom_text(data =  gpdata_summ_list[[i]],
                     aes(colour = .data[[group]], label = paste("n = ", count)),
                     x = Inf, y = Inf,

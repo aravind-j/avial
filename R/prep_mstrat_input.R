@@ -1,7 +1,8 @@
 #' Prepare Input Files for \code{MStrat}
 #'
 #' Prepare input files for \code{MStrat}, a software for building germplasm core
-#' collections by maximizing allelic or phenotypic richness.
+#' collections by maximizing allelic or phenotypic richness
+#' \insertCite{schoen_Conservation_1993a,gouesnard_MSTRAT_2001,gouesnard_MStrat_2002}{avial}.
 #'
 #' @param data The data as a data frame object. The data frame should possess
 #'   columns with the genotype names and multiple quantitative and/or
@@ -36,7 +37,12 @@
 #' @importFrom readr format_delim
 #' @importFrom dplyr add_count
 #' @importFrom utils write.table
+#' @importFrom Rdpack reprompt
 #' @export
+#'
+#' @references
+#'
+#' \insertAllCited{}
 #'
 #' @examples
 #'
@@ -338,7 +344,7 @@ prep_mstrat_input <- function(data, genotype,
 
   # Get genotype counts as count column
   data_out <- dplyr::add_count(x = data_out,
-                               .data[["Accession"]],
+                               .data[[genotype]],
                                name = "count")
 
 

@@ -43,7 +43,7 @@ search:
   exclude: news/index.html
 
 reference:
-    - title: Wrappers and helpters for `ggplot2`
+    - title: Wrappers and helpers for `ggplot2`
       contents:
          - '`groupwise_bar`'
          - '`groupwise_histogram`'

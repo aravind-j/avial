@@ -1,7 +1,8 @@
 #' Bartlett's Test of Homogeneity of Error Variances
 #'
 #' Perform chi-square test for homogeneity of variance (Bartlett's test) to test
-#' equality of several error variances or mean squared errors.
+#' equality of several error variances or mean squared errors
+#' \insertCite{gomez_Statistical_1984}{avial}.
 #'
 #' @param mse A vector of error variances or mean squared errors from each
 #'   environment (years and/or locations).
@@ -14,6 +15,10 @@
 #' @export
 #'
 #' @seealso \code{\link[stats]{bartlett.test}}
+#'
+#' @references
+#'
+#' \insertAllCited{}
 #'
 #' @examples
 #' # Examples from Page 467-471 Gomez KA and AA Gomez (1984) Statistical

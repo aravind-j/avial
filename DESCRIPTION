@@ -12,12 +12,16 @@ License: GPL-2 | GPL-3
 Encoding: UTF-8
 Imports: dplyr,
     ggplot2,
+    mathjaxr,
+    Rdpack,
     readr,
     scales
 Suggests: agridat,
     EvaluateCore,
     colorspace,
     patchwork,
+RdMacros: mathjaxr,
+    Rdpack
 LazyData: true
 Depends:
     R (>= 3.5.0)

@@ -47,7 +47,8 @@ saved.}
 }
 \description{
 Prepare input files for \code{PowerCore}, a program applying the advanced M
-strategy with a heuristic search for establishing core sets.
+strategy with a heuristic search for establishing core sets
+\insertCite{kim_PowerCore_2007,kim_PowerCore_2007a}{avial}.
 }
 \examples{
 
@@ -86,4 +87,7 @@ prep_powercore_input(data = data, genotype = "Accession",
                      file.name = "PowerCore_input",
                      folder.path = tempdir())
 
+}
+\references{
+\insertAllCited{}
 }

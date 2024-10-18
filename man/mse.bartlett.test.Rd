@@ -18,7 +18,8 @@ A list with the chi-square value test statistic, corresponding
 }
 \description{
 Perform chi-square test for homogeneity of variance (Bartlett's test) to test
-equality of several error variances or mean squared errors.
+equality of several error variances or mean squared errors
+\insertCite{gomez_Statistical_1984}{avial}.
 }
 \examples{
 # Examples from Page 467-471 Gomez KA and AA Gomez (1984) Statistical
@@ -37,6 +38,9 @@ df <- c(20, 20, 20)
 
 mse.bartlett.test(mse = c(11.459848, 17.696970, 10.106818),
                   df = c(20, 20, 20))
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 \code{\link[stats]{bartlett.test}}

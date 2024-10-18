@@ -72,7 +72,8 @@ saved.}
 }
 \description{
 Prepare input files for \code{MStrat}, a software for building germplasm core
-collections by maximizing allelic or phenotypic richness.
+collections by maximizing allelic or phenotypic richness
+\insertCite{schoen_Conservation_1993a,gouesnard_MSTRAT_2001,gouesnard_MStrat_2002}{avial}.
 }
 \examples{
 
@@ -122,4 +123,7 @@ prep_mstrat_input(data = data, genotype = "Accession",
                   file.name = "MStrat_input",
                   folder.path = tempdir())
 
+}
+\references{
+\insertAllCited{}
 }

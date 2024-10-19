@@ -23,7 +23,7 @@ jobs:
         with:
           extra-packages: |
             local::.
-            any::pkgdown
+            github::r-lib/pkgdown?reinstall
 
       - name: Deploy package
         run: |

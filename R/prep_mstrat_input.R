@@ -35,7 +35,7 @@
 #' @param folder.path The path to folder where the input files are to be saved.
 #'
 #' @importFrom readr format_delim
-#' @importFrom dplyr add_count
+#' @importFrom dplyr add_count mutate row_number
 #' @importFrom utils write.table
 #' @importFrom Rdpack reprompt
 #' @export
@@ -316,7 +316,55 @@ prep_mstrat_input <- function(data, genotype,
   # Data preprocess ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+  # Fix column names
+
+  fix_names <- function(x) {
+    x <- stringi::stri_replace_all_regex(str = make.names(x),
+                                         pattern = "\\.+",
+                                         replacement = "_")
+    x <- stringi::stri_replace_all_regex(str = x,
+                                         pattern = "^_|_$",
+                                         replacement = "")
+    return(x)
+  }
+
+  colnames(data) <- fix_names(colnames(data))
+
+  if (!is.null(qualitative)) {
+    qualitative <- fix_names(qualitative)
+  }
+
+  if (!is.null(quantitative)) {
+    quantitative <- fix_names(quantitative)
+  }
+
+  if (!is.null(active)) {
+    active <- fix_names(active)
+  }
+
+  if (!is.null(target)) {
+    target <- fix_names(target)
+  }
+
+  traits <- c(qualitative, quantitative)
+
+  if (!is.null(genotype)) {
+    genotype <- fix_names(genotype)
+  }
+
+
   inactive <- setdiff(colnames(data), c(genotype, traits))
+
+  inactive <- c(genotype, inactive)
+
+  # Fix inactive
+  data[, inactive] <-
+    lapply(data[, inactive],
+           function(x) {
+             stringi::stri_replace_all_regex(str = x,
+                                             pattern = "\\s+",
+                                             replacement = "_")
+           })
 
   # Scale and center the quantitative data (Z scaling)
   data[, quantitative] <-
@@ -327,15 +375,6 @@ prep_mstrat_input <- function(data, genotype,
   # Prepare data file ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  inactive <- c(genotype, inactive)
-
-  # Spacer between fields is blank(space). All data should not have space.
-  #   - inactive, genotype: convert all space to "" or "-".
-  #   - qualitative: Convert factor to numeric.
-  #   - quantitative: OK.
-
-  # Missing data hase the code 9999. Check for 9999 values
-
   data_out <- data[, c(qualitative, quantitative, inactive)]
   rownames(data_out) <- NULL
 
@@ -343,9 +382,13 @@ prep_mstrat_input <- function(data, genotype,
   data_out$code <- as.numeric(as.factor(data_out[, genotype]))
 
   # Get genotype counts as count column
-  data_out <- dplyr::add_count(x = data_out,
-                               .data[[genotype]],
-                               name = "count")
+  # data_out <- dplyr::add_count(x = data_out,
+  #                              .data[[genotype]],
+  #                              name = "count")
+
+  data_out <- dplyr::mutate(.data = data_out,
+                            .by = .data[[genotype]],
+                            count = dplyr::row_number(.data[[genotype]]))
 
 
   # convert qualitative to numeric
@@ -358,6 +401,9 @@ prep_mstrat_input <- function(data, genotype,
   # Rearrange columns
   data_out <- data_out[, c("code", "count",
                            qualitative, quantitative, inactive)]
+
+  # Sort/order by code
+  data_out <-  data_out[order(data_out$code), ]
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Prepare variable file ----
@@ -409,6 +455,8 @@ prep_mstrat_input <- function(data, genotype,
           sep = "\n")
   # cat(var_out)
 
+  var_out <- gsub("\\n$", "", var_out)
+
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Prepare kernel file ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -433,9 +481,16 @@ prep_mstrat_input <- function(data, genotype,
   fname_ker <- paste(file.name, "kernel.ker", sep = "_")
 
   # data file
-  write.table(x = data_out,
-              file = file.path(folder.path, fname_dat),
-              na = "9999", row.names = FALSE, col.names = FALSE)
+  write.table(x = data_out[1:(nrow(data_out)-1), ],
+              file = file.path(folder.path, fname_dat), sep = " ",
+              na = "9999", row.names = FALSE, col.names = FALSE,
+              quote = FALSE,
+              append = FALSE)
+  write.table(x = data_out[nrow(data_out), ],
+              file = file.path(folder.path, fname_dat), sep = " ",
+              na = "9999", row.names = FALSE, col.names = FALSE,
+              quote = FALSE,
+              append = TRUE, eol = "")
   # variable file
   writeLines(text = var_out,
              con = file.path(folder.path, fname_var))

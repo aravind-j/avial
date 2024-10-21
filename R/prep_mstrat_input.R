@@ -211,6 +211,11 @@ prep_mstrat_input <- function(data, genotype,
 
   traits <- c(qualitative, quantitative)
 
+  # check if number of variables is >500
+  if (ncol(data) >500) {
+    stop('The number of variables exceeds 500.')
+  }
+
   # check if 'active' traits/markers are present in 'traits'
   if (FALSE %in% (active %in% traits))  {
     stop(paste('The following column(s) specified in "active" not present in',
@@ -402,7 +407,7 @@ prep_mstrat_input <- function(data, genotype,
   data_out <- data_out[, c("code", "count",
                            qualitative, quantitative, inactive)]
 
-  # Sort/order by code
+  # Sort/order by code [Not required]
   data_out <-  data_out[order(data_out$code), ]
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

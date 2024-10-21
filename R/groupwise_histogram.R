@@ -43,7 +43,7 @@
 #'   of \code{ggplot2} plot grobs.
 #'
 #' @import ggplot2
-#' @importFrom dplyr all_of arrange summarise n
+#' @importFrom dplyr all_of arrange n summarise
 #' @importFrom scales hue_pal
 #' @importFrom stats sd
 #' @importFrom utils modifyList

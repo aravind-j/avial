@@ -22,7 +22,7 @@
 #'   \code{ggplot2} plot grobs.
 #'
 #' @import ggplot2
-#' @importFrom dplyr arrange mutate summarise n
+#' @importFrom dplyr all_of arrange mutate n summarise
 #' @importFrom scales hue_pal
 #' @importFrom utils modifyList
 #' @export

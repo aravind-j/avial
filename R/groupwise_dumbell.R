@@ -18,8 +18,9 @@
 #' @return The group-wise dumbell plot as a \code{ggplot2} plot grob or as a
 #'   list of \code{ggplot2} plot grobs.
 #'
-#' @importFrom dplyr summarise n
-#' @importFrom stats reorder
+#' @importFrom dplyr all_of n summarise
+#' @importFrom scales hue_pal
+#' @importFrom stats sd reorder
 #' @export
 #'
 #' @examples

@@ -35,9 +35,11 @@
 #' @param folder.path The path to folder where the input files are to be saved.
 #'
 #' @importFrom readr format_delim
-#' @importFrom dplyr add_count mutate row_number
+#' @importFrom dplyr mutate row_number
 #' @importFrom utils write.table
 #' @importFrom Rdpack reprompt
+#' @importFrom stringi stri_replace_all_regex
+#' @importFrom utils write.table
 #' @export
 #'
 #' @references

@@ -15,6 +15,7 @@ Imports: dplyr,
     mathjaxr,
     Rdpack,
     readr,
+    stringi,
     scales
 Suggests: agridat,
     EvaluateCore,

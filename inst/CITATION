@@ -1,25 +1,24 @@
-citHeader("To cite the R package 'avial' in publications use:")
 
-if(!exists("meta") || is.null(meta)) meta <- packageDescription("avial")
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
-if (!length(year)) {
- year <- format(packageDate("avial"), "%Y")
-}
-vers <- paste("R package version", meta$Version)
+year <- sub("-.*", "", meta$Date)
+vers <- sprintf("R package version %s", meta$Version)
 
-citEntry(entry  = "Manual",
-         title  = "avial: A Mixed Bag of R Functions",
-         author = personList(person(given = "J.", family = "Aravind",
-									                  email = "j.aravind@icar.gov.in",
-							                      role = c("aut", "cre"))),
+hd <- "To cite the R package 'augmentedRCBD' in publications use:"
+ft <- paste("This free and open-source software implements academic",
+            "research by the authors and co-workers. If you use it, please support",
+            "the project by citing the package.", collapse = "\n")
+
+bibentry(header = hd,
+         bibtype = "Manual",
+         title  = "avial: A Mixed Bag of R Functionss",
+         author = c(person(given = "J.", family = "Aravind",
+                           email = "aravindj@nbpgr.ernet.in",
+                           role = c("aut", "cre"),
+                           comment = c(ORCID = "0000-0002-4791-442X"))),
          year = year,
          textVersion = paste(
            "Aravind, J. (",
            year, ").  avial: A Mixed Bag of R Functions. ",
            vers, ", ", "https://aravind-j.github.io/avial/",
            ".", sep=""),
-         note = {c(paste(vers), "https://aravind-j.github.io/avial/")})
-
-citFooter("This free and open-source software implements academic
-research by the authors and co-workers. If you use it, please support
-the project by citing the package.")
+         note = paste(vers, "https://aravind-j.github.io/avial/"),
+         footer = ft)

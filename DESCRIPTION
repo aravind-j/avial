@@ -16,7 +16,8 @@ Imports: dplyr,
     Rdpack,
     readr,
     stringi,
-    scales
+    scales,
+    tidyr
 Suggests: agridat,
     EvaluateCore,
     colorspace,

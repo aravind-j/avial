@@ -68,3 +68,6 @@ reference:
       contents:
          - '`prep_mstrat_input`'
          - '`prep_powercore_input`'
+
+    - title: Parse/Read output files
+         - '`parse_mstrat_out`'

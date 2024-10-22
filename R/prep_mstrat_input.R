@@ -29,7 +29,8 @@
 #'   \code{NULL}, the default of 5 is applied. MStat limits the maximum number
 #'   of classes to 1000.
 #' @param always.selected A character vector with names of individuals in the
-#'   \code{genotype} that should always be selected in the core collection.
+#'   \code{genotype} that should always be selected in the core collection. The
+#'   maximum length accepted by \code{MStrat} is 500.
 #' @param file.name A character string of name of file where the data will be
 #'   saved.
 #' @param folder.path The path to folder where the input files are to be saved.
@@ -314,6 +315,14 @@ prep_mstrat_input <- function(data, genotype,
     }
   }
 
+  # Check if always.selected is > 500
+  # MStrat accepts only kernel files with 500 lines.
+  if (!is.null(always.selected)) {
+    if (length(always.selected > 500)) {
+      stop('"Length of always.selected is > 500.')
+    }
+  }
+
   # Check if target file path exists
   if(!file.exists(folder.path)) {
     stop('The path specified as "folder.path" does not exist.')
@@ -385,8 +394,22 @@ prep_mstrat_input <- function(data, genotype,
   data_out <- data[, c(qualitative, quantitative, inactive)]
   rownames(data_out) <- NULL
 
+  # Bring always.selected to top
+  # (MStrat considers only always.selected with code upto 500)
+  data_out[, genotype] <- as.factor(data_out[, genotype])
+  if (!is.null(always.selected)) {
+    genotype_levels <- levels(data_out[, genotype])
+    genotype_levels_new <- c(sort(always.selected),
+                             sort(setdiff(genotype_levels, always.selected)))
+    data_out[, genotype] <- factor(data_out[, genotype],
+                                   levels = genotype_levels_new)
+  }
+
   # Convert genotype column to code
-  data_out$code <- as.numeric(as.factor(data_out[, genotype]))
+  data_out$code <- as.numeric(data_out[, genotype])
+
+  # Sort/order by code [Not required]
+  data_out <-  data_out[order(data_out$code), ]
 
   # Get genotype counts as count column
   # data_out <- dplyr::add_count(x = data_out,
@@ -408,9 +431,6 @@ prep_mstrat_input <- function(data, genotype,
   # Rearrange columns
   data_out <- data_out[, c("code", "count",
                            qualitative, quantitative, inactive)]
-
-  # Sort/order by code [Not required]
-  data_out <-  data_out[order(data_out$code), ]
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Prepare variable file ----
@@ -476,6 +496,14 @@ prep_mstrat_input <- function(data, genotype,
   }
 
   kernel_out[, genotype] <- NULL
+
+  # Truncate to include only always.selected
+  # as MStrat accepts only first 500
+  if (any(kernel_out$presence == 1)) {
+    if (nrow(data_out) > 500) {
+      kernel_out <- kernel_out[kernel_out$presence == 1, ]
+    }
+  }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Export the input files ----

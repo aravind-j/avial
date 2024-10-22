@@ -38,7 +38,8 @@ character vector.}
     equal to the number of columns of \code{x}.}
 
 \item{always.selected}{A character vector with names of individuals in the
-\code{genotype} that should always be selected in the core collection.}
+\code{genotype} that should always be selected in the core collection. The
+maximum length accepted by \code{MStrat} is 500.}
 
 \item{file.name}{A character string of name of file where the data will be
 saved.}

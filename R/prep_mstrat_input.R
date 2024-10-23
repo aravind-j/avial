@@ -471,7 +471,7 @@ prep_mstrat_input <- function(data, genotype,
 
   # sixth column : number of classes
   if (!is.null(nclass.quantitative)) {
-    var_df[var_df$variable_name %in% quantitative, ]$weight <-
+    var_df[var_df$variable_name %in% quantitative, ]$nclass <-
       nclass.quantitative
   }
   var_df$nclass <- ifelse(is.na(var_df$nclass), 5, var_df$nclass)
@@ -497,13 +497,13 @@ prep_mstrat_input <- function(data, genotype,
 
   kernel_out[, genotype] <- NULL
 
-  # Truncate to include only always.selected
-  # as MStrat accepts only first 500
-  if (any(kernel_out$presence == 1)) {
-    if (nrow(data_out) > 500) {
-      kernel_out <- kernel_out[kernel_out$presence == 1, ]
-    }
-  }
+  # # Truncate to include only always.selected
+  # # as MStrat accepts only first 500
+  # if (any(kernel_out$presence == 1)) {
+  #   if (nrow(data_out) > 500) {
+  #     kernel_out <- kernel_out[kernel_out$presence == 1, ]
+  #   }
+  # }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Export the input files ----

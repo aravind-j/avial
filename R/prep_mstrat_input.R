@@ -318,7 +318,7 @@ prep_mstrat_input <- function(data, genotype,
   # Check if always.selected is > 500
   # MStrat accepts only kernel files with 500 lines.
   if (!is.null(always.selected)) {
-    if (length(always.selected > 500)) {
+    if (length(always.selected) > 500) {
       stop('"Length of always.selected is > 500.')
     }
   }

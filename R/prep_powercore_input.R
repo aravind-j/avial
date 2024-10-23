@@ -124,6 +124,15 @@ prep_powercore_input <- function(data, genotype,
     stop('"genotype" column in "data" should be of type factor.')
   }
 
+  # check if 'genotype' column has duplicates
+  if (any(duplicated(data[, genotype]))) {
+    dup_cond <- duplicated(data[, genotype]) |
+      duplicated(data[, genotype], fromLast = TRUE)
+    dups <- paste(unique(data[dup_cond, genotype]), collapse = ", ")
+    stop('The following genotypes in "', genotype, '" column are duplicated.\n',
+         dups)
+  }
+
   # Check if ~ or % is present in colnames
   col_mrkr_check <- grepl("~|%", c(genotype, quantitative, qualitative))
   names(col_mrkr_check) <- c(genotype, quantitative, qualitative)
@@ -184,6 +193,34 @@ prep_powercore_input <- function(data, genotype,
   if(!file.exists(folder.path)) {
     stop('The path specified as "folder.path" does not exist.')
   }
+
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Data preprocess ----
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Fix column names
+
+  fix_names <- function(x) {
+    x <- stringi::stri_replace_all_regex(str = make.names(x),
+                                         pattern = "\\.+",
+                                         replacement = "_")
+    x <- stringi::stri_replace_all_regex(str = x,
+                                         pattern = "^_|_$",
+                                         replacement = "")
+    return(x)
+  }
+
+  colnames(data) <- fix_names(colnames(data))
+
+  if (!is.null(qualitative)) {
+    qualitative <- fix_names(qualitative)
+  }
+
+  if (!is.null(quantitative)) {
+    quantitative <- fix_names(quantitative)
+  }
+
+  genotype <- fix_names(genotype)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Prepare data file ----

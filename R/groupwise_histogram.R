@@ -319,7 +319,8 @@ groupwise_histogram <- function(data, group, trait,
     data_summ <-
       summarise(.data = data,
                 .by = all_of(c(group)),
-                count = n(),
+                # count = n(),
+                count = sum(!is.na(.data[[trait]])),
                 mean = mean(.data[[trait]], na.rm = TRUE),
                 # se = plotrix::std.error(.data[[trait]], na.rm = TRUE),
                 se = sd(.data[[trait]], na.rm = TRUE) /
@@ -343,7 +344,7 @@ groupwise_histogram <- function(data, group, trait,
         geom_histogram(data = data[, setdiff(colnames(data), group)],
                        fill = "black",
                        alpha = background.hist.alpha,
-                       binwidth = bw * bw.adjust)
+                       binwidth = bw * bw.adjust, show.legend = FALSE)
 
     }
 
@@ -354,7 +355,7 @@ groupwise_histogram <- function(data, group, trait,
         geom_density(data = data[, setdiff(colnames(data), group)],
                      mapping = aes(y = after_stat(count) * bw * bw.adjust),
                      fill = "black",
-                     alpha = background.density.alpha)
+                     alpha = background.density.alpha, show.legend = FALSE)
 
     }
 
@@ -390,28 +391,27 @@ groupwise_histogram <- function(data, group, trait,
     if (normal.curve == TRUE) {
       for (i in seq_along(p))  {
         df <- data[data[, group] == p[i], ]
-        outg <- outg +
-          stat_function(data = df, aes(x = .data[[trait]],
-                                       colour = .data[[group]]),
-                        fun = dnorm_ggplot,
-                        args = list(mean = mean(df[, trait], na.rm = TRUE),
-                                    sd = sd(df[, trait], na.rm = TRUE),
-                                    n = length(df[, trait]),
-                                    bw = bw * bw.adjust),
-                        linetype = normal.curve.linetype)
+        if (!all(is.na(df[, trait]))) {
+          outg <- outg +
+            stat_function(data = df, aes(x = .data[[trait]],
+                                         colour = .data[[group]]),
+                          fun = dnorm_ggplot,
+                          args = list(mean = mean(df[, trait], na.rm = TRUE),
+                                      sd = sd(df[, trait], na.rm = TRUE),
+                                      n = length(df[, trait]),
+                                      bw = bw * bw.adjust),
+                          linetype = normal.curve.linetype)
+        }
       }
     }
 
     ## Add mean ----
     if (highlight.mean == TRUE) {
-
-      for (i in seq_along(p))  {
-        outg <- outg +
-          geom_vline(data = data_summ, aes(xintercept = mean,
-                                           colour = .data[[group]]),
-                     linetype = "dashed")
-      }
-
+          outg <- outg +
+            geom_vline(data = data_summ[data_summ$count != 0, ],
+                       aes(xintercept = mean,
+                                             colour = .data[[group]]),
+                       linetype = "dashed")
     }
 
     ## Show counts ----
@@ -425,10 +425,11 @@ groupwise_histogram <- function(data, group, trait,
 
       for (i in seq_along(p))  {
         outg <- outg +
-          geom_text(data = data_summ, aes(x = Inf, y = Inf,
-                                          vjust = vjust_custom, hjust = 1.5,
-                                          colour = .data[[group]],
-                                          label = paste("n =", count)),
+          geom_text(data = data_summ[data_summ$count != 0, ],
+                    aes(x = Inf, y = Inf,
+                        vjust = vjust_custom, hjust = 1.5,
+                        colour = .data[[group]],
+                        label = paste("n =", count)),
                     size = count.text.size)
       }
 
@@ -527,18 +528,22 @@ groupwise_histogram <- function(data, group, trait,
     if (normal.curve == TRUE) {
 
       outg_list <- lapply(seq_along(p), function(i) {
-        outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
-          stat_function(aes(x = .data[[trait]],
-                            colour = .data[[group]]),
-                        fun = dnorm_ggplot,
-                        args = list(mean = mean(gpdata_list[[i]][, trait],
-                                                na.rm = TRUE),
-                                    sd = sd(gpdata_list[[i]][, trait],
-                                            na.rm = TRUE),
-                                    n = length(gpdata_list[[i]][, trait]),
-                                    bw = bw * bw.adjust),
-                        linetype = normal.curve.linetype) +
-          scale_colour_manual(values = colhex[i])
+        if (!all(is.na(gpdata_list[[i]][, trait]))) {
+          outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
+            stat_function(aes(x = .data[[trait]],
+                              colour = .data[[group]]),
+                          fun = dnorm_ggplot,
+                          args = list(mean = mean(gpdata_list[[i]][, trait],
+                                                  na.rm = TRUE),
+                                      sd = sd(gpdata_list[[i]][, trait],
+                                              na.rm = TRUE),
+                                      n = length(gpdata_list[[i]][, trait]),
+                                      bw = bw * bw.adjust),
+                          linetype = normal.curve.linetype) +
+            scale_colour_manual(values = colhex[i])
+        } else {
+          outg_list[[i]] <- outg_list[[i]]
+        }
       })
 
     }
@@ -547,11 +552,15 @@ groupwise_histogram <- function(data, group, trait,
     if (highlight.mean == TRUE) {
 
       outg_list <- lapply(seq_along(p), function(i) {
+        if (!all(is.na(gpdata_list[[i]][, trait]))) {
         outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
           geom_vline(data = gpdata_summ_list[[i]],
                      aes(colour = .data[[group]], xintercept = mean),
                      linetype = "dashed") +
           scale_colour_manual(values = colhex[i])
+        } else {
+          outg_list[[i]] <- outg_list[[i]]
+        }
       })
 
     }
@@ -562,6 +571,7 @@ groupwise_histogram <- function(data, group, trait,
       vjust_custom <- 1.5
 
       outg_list <- lapply(seq_along(p), function(i) {
+        if (gpdata_summ_list[[i]]$count != 0) {
         outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
           geom_text(data =  gpdata_summ_list[[i]],
                     aes(colour = .data[[group]], label = paste("n = ", count)),
@@ -569,6 +579,9 @@ groupwise_histogram <- function(data, group, trait,
                     vjust = vjust_custom, hjust = 1.5,
                     show.legend = TRUE) +
           scale_colour_manual(values = colhex[i])
+        } else {
+          outg_list[[i]] <- outg_list[[i]]
+        }
       })
 
     }

@@ -103,6 +103,7 @@ library(ggplot2)
 library(patchwork)
 
 soydata <- australia.soybean
+# soydata[soydata$loc == "Nambour", ]$lodging <- NA
 
 clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00")
 clrs_dark <- colorspace::darken(clrs, amount = 0.2)
@@ -139,7 +140,7 @@ outg_hist_stack +
 # Group-wise histogram with facet ----
 outg_hist_facet <-
   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-                      background.hist = FALSE,
+                      background.hist = TRUE,
                       background.density = FALSE,
                       hist.alpha = 0.5,
                       density = FALSE,
@@ -153,7 +154,7 @@ outg_hist_facet +
 # Group-wise histogram as list ----
 outg_hist_list <-
   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-                      background.hist = FALSE,
+                      background.hist = TRUE,
                       background.density = FALSE,
                       hist.alpha = 0.5,
                       density = FALSE,
@@ -240,7 +241,7 @@ outg_density_hist +
 # Group-wise density + histogram with facet ----
 outg_density_hist_facet <-
   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-                      background.hist = FALSE,
+                      background.hist = TRUE,
                       background.density = FALSE,
                       hist = TRUE,
                       hist.alpha = 0.3,
@@ -256,7 +257,7 @@ outg_density_hist_facet +
 # Group-wise density + histogram as list ----
 outg_density_hist_list <-
   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-                      background.hist = FALSE,
+                      background.hist = TRUE,
                       background.density = FALSE,
                       hist = TRUE,
                       hist.alpha = 0.3,

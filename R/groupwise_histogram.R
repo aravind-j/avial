@@ -55,6 +55,7 @@
 #' library(patchwork)
 #'
 #' soydata <- australia.soybean
+#' # soydata[soydata$loc == "Nambour", ]$lodging <- NA
 #'
 #' clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00")
 #' clrs_dark <- colorspace::darken(clrs, amount = 0.2)
@@ -91,7 +92,7 @@
 #' # Group-wise histogram with facet ----
 #' outg_hist_facet <-
 #'   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-#'                       background.hist = FALSE,
+#'                       background.hist = TRUE,
 #'                       background.density = FALSE,
 #'                       hist.alpha = 0.5,
 #'                       density = FALSE,
@@ -105,7 +106,7 @@
 #' # Group-wise histogram as list ----
 #' outg_hist_list <-
 #'   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-#'                       background.hist = FALSE,
+#'                       background.hist = TRUE,
 #'                       background.density = FALSE,
 #'                       hist.alpha = 0.5,
 #'                       density = FALSE,
@@ -192,7 +193,7 @@
 #' # Group-wise density + histogram with facet ----
 #' outg_density_hist_facet <-
 #'   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-#'                       background.hist = FALSE,
+#'                       background.hist = TRUE,
 #'                       background.density = FALSE,
 #'                       hist = TRUE,
 #'                       hist.alpha = 0.3,
@@ -208,7 +209,7 @@
 #' # Group-wise density + histogram as list ----
 #' outg_density_hist_list <-
 #'   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
-#'                       background.hist = FALSE,
+#'                       background.hist = TRUE,
 #'                       background.density = FALSE,
 #'                       hist = TRUE,
 #'                       hist.alpha = 0.3,
@@ -365,7 +366,7 @@ groupwise_histogram <- function(data, group, trait,
       outg <- outg +
         geom_histogram(mapping = hist_aes,
                        alpha = hist.alpha, binwidth = bw * bw.adjust,
-                       position = hist.position)
+                       position = hist.position, show.legend = TRUE)
 
     }
 
@@ -375,7 +376,7 @@ groupwise_histogram <- function(data, group, trait,
       outg <- outg +
         geom_density(mapping = modifyList(aes(y = after_stat(count) * bw * bw.adjust),
                                           hist_aes),
-                     alpha = density.alpha)
+                     alpha = density.alpha, show.legend = TRUE)
 
     }
 
@@ -407,11 +408,11 @@ groupwise_histogram <- function(data, group, trait,
 
     ## Add mean ----
     if (highlight.mean == TRUE) {
-          outg <- outg +
-            geom_vline(data = data_summ[data_summ$count != 0, ],
-                       aes(xintercept = mean,
-                                             colour = .data[[group]]),
-                       linetype = "dashed")
+      outg <- outg +
+        geom_vline(data = data_summ[data_summ$count != 0, ],
+                   aes(xintercept = mean,
+                       colour = .data[[group]]),
+                   linetype = "dashed")
     }
 
     ## Show counts ----
@@ -423,19 +424,18 @@ groupwise_histogram <- function(data, group, trait,
         vjust_custom <- ((seq_along(p) - 1) * 2) + (count.text.size)
       }
 
-      for (i in seq_along(p))  {
-        outg <- outg +
-          geom_text(data = data_summ[data_summ$count != 0, ],
-                    aes(x = Inf, y = Inf,
-                        vjust = vjust_custom, hjust = 1.5,
-                        colour = .data[[group]],
-                        label = paste("n =", count)),
-                    size = count.text.size)
-      }
-
+      outg <- outg +
+        geom_text(data = data_summ,
+                  aes(x = Inf, y = Inf,
+                      vjust = vjust_custom, hjust = 1.5,
+                      colour = .data[[group]],
+                      label = paste("n =", count)),
+                  size = count.text.size)
     }
 
     return(outg +
+             scale_fill_discrete(drop = FALSE) +
+             scale_colour_discrete(drop = FALSE) +
              xlab(trait) +
              ylab("Count") +
              theme_bw())
@@ -553,11 +553,11 @@ groupwise_histogram <- function(data, group, trait,
 
       outg_list <- lapply(seq_along(p), function(i) {
         if (!all(is.na(gpdata_list[[i]][, trait]))) {
-        outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
-          geom_vline(data = gpdata_summ_list[[i]],
-                     aes(colour = .data[[group]], xintercept = mean),
-                     linetype = "dashed") +
-          scale_colour_manual(values = colhex[i])
+          outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
+            geom_vline(data = gpdata_summ_list[[i]],
+                       aes(colour = .data[[group]], xintercept = mean),
+                       linetype = "dashed") +
+            scale_colour_manual(values = colhex[i])
         } else {
           outg_list[[i]] <- outg_list[[i]]
         }
@@ -571,17 +571,17 @@ groupwise_histogram <- function(data, group, trait,
       vjust_custom <- 1.5
 
       outg_list <- lapply(seq_along(p), function(i) {
-        if (gpdata_summ_list[[i]]$count != 0) {
-        outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
-          geom_text(data =  gpdata_summ_list[[i]],
-                    aes(colour = .data[[group]], label = paste("n = ", count)),
-                    x = Inf, y = Inf,
-                    vjust = vjust_custom, hjust = 1.5,
-                    show.legend = TRUE) +
-          scale_colour_manual(values = colhex[i])
-        } else {
-          outg_list[[i]] <- outg_list[[i]]
-        }
+        # if (gpdata_summ_list[[i]]$count != 0) {
+          outg_list[[i]] <- remove_scales(outg_list[[i]], scales = "colour") +
+            geom_text(data =  gpdata_summ_list[[i]],
+                      aes(colour = .data[[group]], label = paste("n = ", count)),
+                      x = Inf, y = Inf,
+                      vjust = vjust_custom, hjust = 1.5,
+                      show.legend = TRUE) +
+            scale_colour_manual(values = colhex[i])
+        # } else {
+        #   outg_list[[i]] <- outg_list[[i]]
+        # }
       })
 
     }

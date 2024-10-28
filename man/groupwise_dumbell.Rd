@@ -75,6 +75,7 @@ library(ggplot2)
 library(patchwork)
 
 soydata <- australia.soybean
+# soydata[soydata$loc == "Nambour", ]$lodging <- NA
 
 checks <- c("G01", "G05")
 
@@ -88,6 +89,7 @@ outg_dumbell1 <-
   groupwise_dumbell(data = checkdata, group = "loc",
                     trait = "lodging", genotype = "gen",
                     subset = "none", diff.sort = "descending")
+outg_dumbell1
 
 outg_dumbell1 +
   scale_colour_manual(values = clrs)
@@ -98,6 +100,7 @@ outg_dumbell2 <-
                     trait = "lodging", genotype = "gen",
                     subset = "none", diff.sort = "descending",
                     error.bar = FALSE)
+outg_dumbell2
 
 outg_dumbell2 +
   scale_colour_manual(values = clrs)
@@ -107,6 +110,7 @@ outg_facet <-
   groupwise_dumbell(data = checkdata, group = "loc",
                     trait = "lodging", genotype = "gen",
                     subset = "facet")
+outg_facet
 
 outg_facet +
   scale_colour_manual(values = clrs)

@@ -29,6 +29,7 @@
 #' library(patchwork)
 #'
 #' soydata <- australia.soybean
+#' # soydata[soydata$loc == "Nambour", ]$lodging <- NA
 #'
 #' checks <- c("G01", "G05")
 #'
@@ -42,6 +43,7 @@
 #'   groupwise_dumbell(data = checkdata, group = "loc",
 #'                     trait = "lodging", genotype = "gen",
 #'                     subset = "none", diff.sort = "descending")
+#' outg_dumbell1
 #'
 #' outg_dumbell1 +
 #'   scale_colour_manual(values = clrs)
@@ -52,6 +54,7 @@
 #'                     trait = "lodging", genotype = "gen",
 #'                     subset = "none", diff.sort = "descending",
 #'                     error.bar = FALSE)
+#' outg_dumbell2
 #'
 #' outg_dumbell2 +
 #'   scale_colour_manual(values = clrs)
@@ -61,6 +64,7 @@
 #'   groupwise_dumbell(data = checkdata, group = "loc",
 #'                     trait = "lodging", genotype = "gen",
 #'                     subset = "facet")
+#' outg_facet
 #'
 #' outg_facet +
 #'   scale_colour_manual(values = clrs)
@@ -298,6 +302,9 @@ groupwise_dumbell <- function(data, group, trait, genotype,
     yrange <- unlist(lapply(outg_list, function(x) {
       layer_scales(x)$y$range$range
     }))
+
+    xrange <- setdiff(xrange, c(Inf, -Inf))
+    yrange <- setdiff(yrange, c(Inf, -Inf))
 
     outg_list <- lapply(seq_along(p), function(i) {
       outg_list[[i]] <- outg_list[[i]] +

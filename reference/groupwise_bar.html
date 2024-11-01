@@ -165,10 +165,17 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">clrs_dark</span> <span class="op">&lt;-</span> <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/lighten.html" class="external-link">darken</a></span><span class="op">(</span><span class="va">clrs</span>, amount <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">soydata</span><span class="op">$</span><span class="va">lodging</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">soydata</span><span class="op">$</span><span class="va">lodging</span>,</span></span>
-<span class="r-in"><span>                       breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">soydata</span><span class="op">$</span><span class="va">lodging</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                       breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">soydata</span><span class="op">$</span><span class="va">lodging</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                       include.lowest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">soydata</span><span class="op">$</span><span class="va">lodging</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># soydata[soydata$loc == "Nambour", ]$lodging &lt;- NA</span></span></span>
+<span class="r-in"><span><span class="co"># #soydata[soydata$lodging == 1, ]$lodging</span></span></span>
+<span class="r-in"><span><span class="co"># soydata[!(is.na(soydata$lodging)) &amp; soydata$lodging == 1, ]$lodging &lt;- NA</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># set.seed(123)</span></span></span>
+<span class="r-in"><span><span class="co"># ind &lt;- sample(1:nrow(soydata), size = nrow(soydata) * 0.1, replace = FALSE)</span></span></span>
+<span class="r-in"><span><span class="co"># soydata[ind, ]$lodging &lt;- NA</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise side-by-side bar plot with counts ----</span></span></span>
 <span class="r-in"><span></span></span>
@@ -397,14 +404,9 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">outg_group_stack_count_list</span>, nrow <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">outg_group_stack_rfreq_list</span>, nrow <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="groupwise_bar-24.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Trait-wise side-by-side bar plot with counts ----</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Trait-</span></span></span>
-<span class="r-in"><span><span class="co">#   _trait_</span></span></span>
-<span class="r-in"><span><span class="co">#   by = "trait"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Trait-wise side-by-side bar plot with counts ----</span></span></span>
 <span class="r-in"><span></span></span>
@@ -625,7 +627,7 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">outg_trait_stack_count_list</span>, nrow <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">outg_trait_stack_rfreq_list</span>, nrow <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="groupwise_bar-48.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

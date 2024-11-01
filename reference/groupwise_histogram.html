@@ -190,6 +190,7 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">soydata</span> <span class="op">&lt;-</span> <span class="va">australia.soybean</span></span></span>
+<span class="r-in"><span><span class="co"># soydata[soydata$loc == "Nambour", ]$lodging &lt;- NA</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">clrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B2182B"</span>, <span class="st">"#2166AC"</span>, <span class="st">"#009E53"</span>, <span class="st">"#E69F00"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">clrs_dark</span> <span class="op">&lt;-</span> <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/lighten.html" class="external-link">darken</a></span><span class="op">(</span><span class="va">clrs</span>, amount <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></span>
@@ -208,6 +209,10 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">outg_hist</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="groupwise_histogram-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise histogram - stacked ----</span></span></span>
@@ -225,12 +230,16 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">outg_hist_stack</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="groupwise_histogram-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise histogram with facet ----</span></span></span>
 <span class="r-in"><span><span class="va">outg_hist_facet</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">groupwise_histogram</span><span class="op">(</span>data <span class="op">=</span> <span class="va">soydata</span>, group <span class="op">=</span> <span class="st">"loc"</span>, trait <span class="op">=</span> <span class="st">"lodging"</span>,</span></span>
-<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                      background.density <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                      hist.alpha <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
 <span class="r-in"><span>                      density <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
@@ -241,12 +250,16 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">outg_hist_facet</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="groupwise_histogram-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise histogram as list ----</span></span></span>
 <span class="r-in"><span><span class="va">outg_hist_list</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">groupwise_histogram</span><span class="op">(</span>data <span class="op">=</span> <span class="va">soydata</span>, group <span class="op">=</span> <span class="st">"loc"</span>, trait <span class="op">=</span> <span class="st">"lodging"</span>,</span></span>
-<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                      background.density <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                      hist.alpha <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
 <span class="r-in"><span>                      density <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
@@ -296,6 +309,10 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">outg_density</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="groupwise_histogram-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise density with facet ----</span></span></span>
@@ -313,6 +330,10 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">outg_density_facet</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="groupwise_histogram-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise density as list ----</span></span></span>
@@ -370,12 +391,16 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">outg_density_hist</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="groupwise_histogram-16.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise density + histogram with facet ----</span></span></span>
 <span class="r-in"><span><span class="va">outg_density_hist_facet</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">groupwise_histogram</span><span class="op">(</span>data <span class="op">=</span> <span class="va">soydata</span>, group <span class="op">=</span> <span class="st">"loc"</span>, trait <span class="op">=</span> <span class="st">"lodging"</span>,</span></span>
-<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                      background.density <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                      hist <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                      hist.alpha <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
@@ -388,12 +413,16 @@ a text annotation. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="va">outg_density_hist_facet</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs_dark</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">colour</span> is already present.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-plt img"><img src="groupwise_histogram-18.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise density + histogram as list ----</span></span></span>
 <span class="r-in"><span><span class="va">outg_density_hist_list</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">groupwise_histogram</span><span class="op">(</span>data <span class="op">=</span> <span class="va">soydata</span>, group <span class="op">=</span> <span class="st">"loc"</span>, trait <span class="op">=</span> <span class="st">"lodging"</span>,</span></span>
-<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>                      background.hist <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                      background.density <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                      hist <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                      hist.alpha <span class="op">=</span> <span class="fl">0.3</span>,</span></span>

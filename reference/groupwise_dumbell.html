@@ -150,6 +150,7 @@ errors are plotted. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">soydata</span> <span class="op">&lt;-</span> <span class="va">australia.soybean</span></span></span>
+<span class="r-in"><span><span class="co"># soydata[soydata$loc == "Nambour", ]$lodging &lt;- NA</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">checks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"G01"</span>, <span class="st">"G05"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -163,10 +164,12 @@ errors are plotted. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>  <span class="fu">groupwise_dumbell</span><span class="op">(</span>data <span class="op">=</span> <span class="va">checkdata</span>, group <span class="op">=</span> <span class="st">"loc"</span>,</span></span>
 <span class="r-in"><span>                    trait <span class="op">=</span> <span class="st">"lodging"</span>, genotype <span class="op">=</span> <span class="st">"gen"</span>,</span></span>
 <span class="r-in"><span>                    subset <span class="op">=</span> <span class="st">"none"</span>, diff.sort <span class="op">=</span> <span class="st">"descending"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">outg_dumbell1</span></span></span>
+<span class="r-plt img"><img src="groupwise_dumbell-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">outg_dumbell1</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="groupwise_dumbell-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="groupwise_dumbell-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise dumbell plot without error bar</span></span></span>
 <span class="r-in"><span><span class="va">outg_dumbell2</span> <span class="op">&lt;-</span></span></span>
@@ -174,20 +177,24 @@ errors are plotted. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>                    trait <span class="op">=</span> <span class="st">"lodging"</span>, genotype <span class="op">=</span> <span class="st">"gen"</span>,</span></span>
 <span class="r-in"><span>                    subset <span class="op">=</span> <span class="st">"none"</span>, diff.sort <span class="op">=</span> <span class="st">"descending"</span>,</span></span>
 <span class="r-in"><span>                    error.bar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">outg_dumbell2</span></span></span>
+<span class="r-plt img"><img src="groupwise_dumbell-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">outg_dumbell2</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="groupwise_dumbell-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="groupwise_dumbell-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise points with error bar as facets</span></span></span>
 <span class="r-in"><span><span class="va">outg_facet</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">groupwise_dumbell</span><span class="op">(</span>data <span class="op">=</span> <span class="va">checkdata</span>, group <span class="op">=</span> <span class="st">"loc"</span>,</span></span>
 <span class="r-in"><span>                    trait <span class="op">=</span> <span class="st">"lodging"</span>, genotype <span class="op">=</span> <span class="st">"gen"</span>,</span></span>
 <span class="r-in"><span>                    subset <span class="op">=</span> <span class="st">"facet"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">outg_facet</span></span></span>
+<span class="r-plt img"><img src="groupwise_dumbell-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">outg_facet</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">clrs</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="groupwise_dumbell-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="groupwise_dumbell-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group-wise points with error bar as list</span></span></span>
 <span class="r-in"><span><span class="va">outg_list</span> <span class="op">&lt;-</span></span></span>
@@ -196,7 +203,7 @@ errors are plotted. Default is <code>TRUE</code>.</p></dd>
 <span class="r-in"><span>                    subset <span class="op">=</span> <span class="st">"list"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">outg_list</span>, nrow <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="groupwise_dumbell-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="groupwise_dumbell-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">outg_list</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">outg_list</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -213,7 +220,7 @@ errors are plotted. Default is <code>TRUE</code>.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">colour</span>, which will replace the existing scale.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">outg_list</span>, nrow <span class="op">=</span> <span class="fl">2</span>, guides <span class="op">=</span> <span class="st">"collect"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="groupwise_dumbell-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="groupwise_dumbell-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

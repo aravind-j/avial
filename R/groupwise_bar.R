@@ -701,7 +701,7 @@ groupwise_bar <- function(data, group, trait,
     }
 
     return(outg +
-             xlab(trait) +
+             xlab(ifelse(by == "group", trait, group)) +
              ylab(ifelse(relative.freq, "Proportion", "Count")) +
              theme_bw())
 
@@ -964,7 +964,7 @@ groupwise_bar <- function(data, group, trait,
     ## Final theme ----
     outg_list <- lapply(seq_along(p), function(i) {
       outg_list[[i]] <- outg_list[[i]] +
-        xlab(trait) +
+        xlab(ifelse(by == "group", trait, group)) +
         ylab(ifelse(relative.freq, "Proportion", "Count")) +
         theme_bw()
     })

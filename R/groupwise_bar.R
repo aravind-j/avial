@@ -22,8 +22,9 @@
 #'   \code{ggplot2} plot grobs.
 #'
 #' @import ggplot2
-#' @importFrom dplyr all_of arrange mutate n summarise
+#' @importFrom dplyr all_of group_by arrange mutate summarise
 #' @importFrom scales hue_pal
+#' @importFrom tidyr drop_na
 #' @importFrom utils modifyList
 #' @export
 #'
@@ -33,7 +34,6 @@
 #' library(patchwork)
 #'
 #' soydata <- australia.soybean
-#' # soydata[soydata$loc == "Nambour", ]$lodging <- NA
 #'
 #' clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00", "gray25")
 #' clrs_dark <- colorspace::darken(clrs, amount = 0.2)
@@ -43,6 +43,13 @@
 #'                        include.lowest = TRUE)
 #' levels(soydata$lodging) <- 1:4
 #'
+#' # soydata[soydata$loc == "Nambour", ]$lodging <- NA
+#' # #soydata[soydata$lodging == 1, ]$lodging
+#' # soydata[!(is.na(soydata$lodging)) & soydata$lodging == 1, ]$lodging <- NA
+#'
+#' # set.seed(123)
+#' # ind <- sample(1:nrow(soydata), size = nrow(soydata) * 0.1, replace = FALSE)
+#' # soydata[ind, ]$lodging <- NA
 #'
 #' # Group-wise side-by-side bar plot with counts ----
 #'
@@ -210,11 +217,6 @@
 #'
 #' wrap_plots(outg_group_stack_rfreq_list, nrow = 2, guides = "collect")
 #'
-#' # Trait-wise side-by-side bar plot with counts ----
-#'
-#' # Trait-
-#' #   _trait_
-#' #   by = "trait"
 #'
 #' # Trait-wise side-by-side bar plot with counts ----
 #'
@@ -445,15 +447,9 @@ groupwise_bar <- function(data, group, trait,
 
   p <- levels(data[, group])
 
-  ## Remove na data ----
-  # if (na.rm) {
-  #   na_ind <- is.na(data[, trait])
-  #   data <- data[!na_ind, ]
-  #   # data[, group] <- droplevels(data[, group])
-  #   data[, trait] <- droplevels(data[, trait])
-  # }
+  ## Na.rm ? ----
 
-  ## Add overall data ----
+  ## Add overall data ??? ----
   if (include.overall == TRUE) {
     data_total <- data
     nlevels <- length(p)
@@ -467,51 +463,75 @@ groupwise_bar <- function(data, group, trait,
     p <- levels(data[, group])
   }
 
-  ## Summary data.frame ----
-  if (show.counts == TRUE) {
+  ## Summary counts ----
 
-    total_ind <- data[, trait] != "Total"
-    data_summ <- summarise(.data = data[total_ind, ],
-                           .by = all_of(c(group)),
-                           count = n())
-    data_summ <- dplyr::arrange(.data = data_summ, .by = .data[[group]])
+  ### Add counts to the group levels ----
+  if (by == "group" & position == "stack" & show.counts == TRUE) {
+    data <- mutate(data, .by = all_of(c(group)),
+                   {{group}} := paste0(.data[[group]],
+                                       ' (n = ',
+                                       sum(!is.na(.data[[trait]])),
+                                       ')'))
+    data[, group] <- as.factor(data[, group])
 
-    if (subset != "none" & by == "trait") {
-      data_summ2 <-
-        summarise(.data = data[total_ind, ],
-                  .by = all_of(c(group, trait)),
-                  count = n())
-    }
-
-    if (by == "group" & position == "stack") {
-      data <- mutate(data, .by = all_of(c(group)),
-                     {{group}} := paste0(.data[[group]], ' (n = ', n(), ')'))
-      data[, group] <- as.factor(data[, group])
-
-      p <- levels(data[, group])
-
-    }
+    p <- levels(data[, group])
 
   }
 
-  ## Count and Prop data.frame ----
+  ### Group-wise count ----
+  data_gp_count <- # for showing counts
+    data %>%
+    group_by(.data[[group]], .drop = FALSE) %>%
+    summarise(count = sum(!is.na(.data[[trait]]))) %>%
+    drop_na()
 
-  data_cp <- count(x = data, .data[[group]], .data[[trait]], .drop = FALSE, name = "count")
-  data_cp <- data_cp[!is.na(data_cp[trait]), ]
+  ### Trait-wise count ----
+  total_ind <- data[, group] != "Total"
+  data_trt_count <- # for background histogram
+    data[total_ind, ] %>%
+    group_by(.data[[trait]], .drop = FALSE) %>%
+    summarise(count = sum(!is.na(.data[[trait]]))) %>%
+    drop_na()
 
-  data_total_cp <- count(x = data_total, .data[[group]], .data[[trait]], .drop = FALSE, name = "count")
-  data_total_cp <- data_total_cp[!is.na(data_total_cp[trait]), ]
+  data_trt_count$prop_trt <- data_trt_count$count /
+    sum(data_trt_count$count, na.rm = TRUE)
+  if (any(is.nan(data_trt_count$prop_trt))) {
+    data_trt_count[is.nan(data_trt_count$prop_trt), ]$prop_trt <- 0
+  }
 
-  ## Prepare aesthetics according to by and bar.border ----
+  ### Group and Trait-wise count ----
+  data_count <-
+    data %>%
+    group_by(.data[[group]], .data[[trait]], .drop=FALSE) %>%
+    summarise(count = sum(!is.na(.data[[trait]])), .groups = "drop") %>%
+    drop_na(all_of(c(group, trait)))
+
+  data_count <- merge.data.frame(data_count, data_gp_count,
+                                 by = group, suffixes = c("", "_gp"))
+  data_count$prop_gp <- data_count$count / data_count$count_gp
+  if (any(is.nan(data_count$prop_gp))) {
+    data_count[is.nan(data_count$prop_gp), ]$prop_gp <- 0
+  }
+
+  data_count <- merge.data.frame(data_count, data_trt_count,
+                                 by = trait, suffixes = c("", "_trt"))
+  data_count$prop_trt <- data_count$count / data_count$count_trt
+  if (any(is.nan(data_count$prop_trt))) {
+    data_count[is.nan(data_count$prop_trt), ]$prop_trt <- 0
+  }
+
+  ## Prepare aesthetics according to by & bar.border ----
   if (by == "group") {
-    gp_aes <- aes(x = .data[[trait]], fill = .data[[group]])
+    gp_aes <- aes(x = .data[[trait]], # y = count,
+                  fill = .data[[group]], group = .data[[group]])
     # Prepare aesthetics according to bar.border
     if (bar.border == TRUE) {
       gp_aes <- modifyList(gp_aes, aes(colour = .data[[group]]))
     }
   }
   if (by == "trait") {
-    gp_aes <- aes(x = .data[[group]], fill = .data[[trait]])
+    gp_aes <- aes(x = .data[[group]], # y = count,
+                  fill = .data[[trait]], group = .data[[trait]])
     # Prepare aesthetics according to bar.border
     if (bar.border == TRUE) {
       gp_aes <- modifyList(gp_aes, aes(colour = .data[[trait]]))
@@ -523,33 +543,31 @@ groupwise_bar <- function(data, group, trait,
 
     if (by == "group") {
 
-      if (position == "dodge") {
-        gp_aes <- modifyList(gp_aes, aes(y = after_stat(prop),
-                                         group = .data[[group]]))
-      }
       if (position == "stack") {
-        gp_aes <- modifyList(gp_aes, aes(#y = after_stat(prop),
-          group = .data[[group]]))
+        gp_aes <- modifyList(gp_aes, aes(y = prop_trt))
+      } else {
+        gp_aes <- modifyList(gp_aes, aes(y = prop_gp))
       }
 
     }
 
     if (by == "trait") {
 
-      if (position == "dodge") {
-        gp_aes <- modifyList(gp_aes, aes(y = after_stat(prop),
-                                         group = .data[[trait]]))
-      }
       if (position == "stack") {
-        gp_aes <- modifyList(gp_aes, aes(#y = after_stat(prop),
-          group = .data[[trait]]))
+        gp_aes <- modifyList(gp_aes, aes(y = prop_gp))
+      } else {
+        gp_aes <- modifyList(gp_aes, aes(y = prop_trt))
       }
 
     }
 
     if (relative.freq && position == "stack") {
-      position = "fill"
+      # position = "fill"
     }
+
+  } else {
+
+    gp_aes <- modifyList(gp_aes, aes(y = count))
 
   }
 
@@ -557,10 +575,9 @@ groupwise_bar <- function(data, group, trait,
       subset == "none") {
 
     if (relative.freq == TRUE) {
-      gp_aes_bg <- aes(x = .data[[trait]], y = after_stat(prop),
-                       group = .data[[group]])
+      gp_aes_bg <- aes(x = .data[[trait]], y = prop_trt)
     } else {
-      gp_aes_bg <- aes(x = .data[[trait]])
+      gp_aes_bg <- aes(x = .data[[trait]], y = count)
     }
   }
 
@@ -570,21 +587,19 @@ groupwise_bar <- function(data, group, trait,
 
   if (subset != "list") {
 
-    outg <-  ggplot(data = data)
+    outg <-  ggplot(data = data_count)
 
     if (by == "group" & position == "dodge" & background.bar == TRUE &
         subset == "none") {
 
       outg <- outg +
-        geom_bar(data = data_total, mapping = gp_aes_bg,
+        geom_col(data = data_trt_count, mapping = gp_aes_bg,
                  position = position, alpha = 0.1, fill = "black") +
-        geom_bar(mapping = gp_aes, position = position, alpha = bar.alpha)
+        geom_col(mapping = gp_aes, position = position, alpha = bar.alpha)
 
     } else {
-
       outg <- outg +
-        geom_bar(mapping = gp_aes, position = position, alpha = bar.alpha)
-
+        geom_col(mapping = gp_aes, position = position, alpha = bar.alpha)
     }
 
     if (subset == "facet") {
@@ -626,76 +641,69 @@ groupwise_bar <- function(data, group, trait,
           vjust_custom <- 1.5
 
           if (subset == "none") {
-            p <- levels(data[, group])
-            missing_gp_ind <- unlist(lapply(levels(data[, group]), function(x) {
-              all(is.na(data[data[, group] == x, trait]))
-            }))
-            p <- levels(data[, group])[!missing_gp_ind]
+
             vjust_custom <- (seq_along(p) * 2) + (count.text.size)
           }
 
           outg <-
             outg +
-            geom_text(data = data_summ, aes(x = Inf, y = Inf,
-                                            vjust = vjust_custom, hjust = 1.5,
-                                            colour = .data[[group]],
-                                            label = paste("n =", count)),
+            geom_text(data = data_gp_count,
+                      aes(x = Inf, y = Inf,
+                          vjust = vjust_custom, hjust = 1.5,
+                          colour = .data[[group]],
+                          label = paste("n =", count)),
                       size = count.text.size) +
-            # expand_limits(x = c(1, length(levels(data[, trait])) + 1)) +
             scale_x_discrete(expand = expansion(add = c(0.6, 1)))
 
         }
 
       }
 
-      if (by == "trait") {
-        # yscale_min <- layer_scales(outg)$y$range$range[1]
-        # yscale_max <- layer_scales(outg)$y$range$range[2]
-        # yscale_max <- yscale_max + (0.1 * yscale_max)
+    }
 
-        if (subset == "none") {
+    if (by == "trait") {
+
+      if (subset == "none") {
+
+        outg <-
+          outg +
+          geom_text(data = data_gp_count,
+                    aes(x = .data[[group]], y = Inf,
+                        vjust = 1.5, label = paste("n =", count)),
+                    size = count.text.size) +
+          scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+
+      }
+
+      if (subset == "facet") {
+
+        if (position == "dodge") {
 
           outg <-
             outg +
-            geom_text(data = data_summ, aes(x = .data[[group]], y = Inf,
-                                            vjust = 1.5,
-                                            #hjust = 1.5,
-                                            # colour = .data[[group]],
-                                            label = paste("n =", count)),
+            geom_text(data = data_count,
+                      aes(x = .data[[group]], y = Inf,
+                          vjust = 1.5,
+                          colour = .data[[trait]],
+                          label = paste("n =", count)),
                       size = count.text.size) +
-            # expand_limits(y = c(0, yscale_max)) +
             scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
-        }
-
-        if (subset == "facet") {
-
-          if (position == "dodge") {
-            outg <-
-              outg +
-              geom_text(data = data_summ2, aes(x = .data[[group]], y = Inf,
-                                               vjust = 1.5,
-                                               #hjust = 1.5,
-                                               colour = .data[[trait]],
-                                               label = paste("n =", count)),
-                        size = count.text.size) +
-              # expand_limits(y = c(0, yscale_max)) +
-              scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
-          }
-
-          if (position == "stack" | position == "fill") {
-            outg <-
-              outg +
-              geom_text(data = data_summ, aes(x = .data[[group]], y = Inf,
-                                               vjust = 1.5,
-                                               #hjust = 1.5,
-                                               # colour = .data[[trait]],
-                                               label = paste("n =", count)),
-                        size = count.text.size) +
-              # expand_limits(y = c(0, yscale_max)) +
-              scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
-          }
 
         }
+
+        if (position == "stack" | position == "fill") {
+
+          outg <-
+            outg +
+            geom_text(data = data_gp_count,
+                      aes(x = .data[[group]], y = Inf,
+                          vjust = 1.5,
+                          label = paste("n =", count)),
+                      size = count.text.size) +
+            scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+
+        }
+
       }
 
     }
@@ -712,27 +720,27 @@ groupwise_bar <- function(data, group, trait,
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     if (by == "group") {
+
       if (position == "dodge") {
 
         p <- levels(data[, group])
 
         colhex <- scales::hue_pal()(length(p))
 
-        gpdata_list <- lapply(seq_along(p), function(i) {
-          data[data[, group] == p[i], ]
+        gpdata_count_list <- lapply(seq_along(p), function(i) {
+          data_count[data_count[, group] == p[i], ]
         })
-        names(gpdata_list) <- p
+        names(gpdata_count_list) <- p
 
-        gpdata_summ_list <- lapply(seq_along(p), function(i) {
-          data_summ[data_summ[, group] == p[i], ]
+        gpdata_gp_count_list <- lapply(seq_along(p), function(i) {
+          data_gp_count[data_gp_count[, group] == p[i], ]
         })
-        names(gpdata_summ_list) <- p
+        names(gpdata_gp_count_list) <- p
 
         outg_list <- lapply(seq_along(p), function(i) {
 
-          ggplot(data = gpdata_list[[i]]) +
-            geom_bar(mapping = gp_aes,
-                     position = position, alpha = bar.alpha) +
+          ggplot(data = gpdata_count_list[[i]]) +
+            geom_col(mapping = gp_aes, position = position, alpha = bar.alpha) +
             scale_fill_manual(values = colhex[i]) +
             scale_colour_manual(values = colhex[i])
 
@@ -746,100 +754,85 @@ groupwise_bar <- function(data, group, trait,
         })
 
       }
+
       if (position == "stack" | position == "fill") {
 
-        p <- levels(data[, trait])
+        k <- levels(data[, trait])
 
-        # colhex <- scales::hue_pal()(length(p))
-
-        gpdata_list <- lapply(seq_along(p), function(i) {
-          data[data[, trait] == p[i], ]
+        trtdata_count_list <- lapply(seq_along(k), function(i) {
+          data_count[data_count[, trait] == k[i], ]
         })
-        names(gpdata_list) <- p
+        names(trtdata_count_list) <- k
 
-        outg_list <- lapply(seq_along(p), function(i) {
+        outg_list <- lapply(seq_along(k), function(i) {
 
-          ggplot(data = gpdata_list[[i]]) +
-            geom_bar(mapping = gp_aes,
-                     position = position, alpha = bar.alpha)
+          ggplot(data = trtdata_count_list[[i]]) +
+            geom_col(mapping = gp_aes, position = position, alpha = bar.alpha)
 
         })
-        names(outg_list) <- p
+        names(outg_list) <- k
 
-        outg_list <- lapply(seq_along(p), function(i) {
+        outg_list <- lapply(seq_along(k), function(i) {
           outg_list[[i]] +
             facet_wrap(~ .data[[trait]], scales = "free_x",
                        nrow = nrow, ncol = ncol)
         })
 
       }
+
     }
+
     if (by == "trait") {
+
       if (position == "dodge") {
 
-        p <- levels(data[, trait])
+        k <- levels(data[, trait])
 
-        colhex <- scales::hue_pal()(length(p))
+        colhex <- scales::hue_pal()(length(k))
 
-        gpdata_list <- lapply(seq_along(p), function(i) {
-          data[data[, trait] == p[i], ]
+        trtdata_count_list <- lapply(seq_along(k), function(i) {
+          data_count[data_count[, trait] == k[i], ]
         })
-        names(gpdata_list) <- p
+        names(trtdata_count_list) <- k
 
-        # gpdata_summ_list <- lapply(seq_along(p), function(i) {
-        #   data_summ[data_summ[, group] == p[i], ]
-        # })
-        # names(gpdata_summ_list) <- p
+        outg_list <- lapply(seq_along(k), function(i) {
 
-        gpdata_summ2_list <- lapply(seq_along(p), function(i) {
-          data_summ2[data_summ2[, trait] == p[i], ]
-        })
-        names(gpdata_summ2_list) <- p
-
-        outg_list <- lapply(seq_along(p), function(i) {
-
-          ggplot(data = gpdata_list[[i]]) +
-            geom_bar(mapping = gp_aes,
-                     position = position, alpha = bar.alpha) +
+          ggplot(data = trtdata_count_list[[i]]) +
+            geom_col(mapping = gp_aes, position = position, alpha = bar.alpha) +
             scale_fill_manual(values = colhex[i]) +
             scale_colour_manual(values = colhex[i])
 
         })
-        names(outg_list) <- p
+        names(outg_list) <- k
 
-        outg_list <- lapply(seq_along(p), function(i) {
+        outg_list <- lapply(seq_along(k), function(i) {
           outg_list[[i]] +
-            facet_wrap(~ .data[[trait]], scales = "fixed",
+            facet_wrap(~ .data[[trait]], scales = "free_x",
                        nrow = nrow, ncol = ncol)
         })
 
       }
+
       if (position == "stack" | position == "fill") {
 
         p <- levels(data[, group])
 
         colhex <- scales::hue_pal()(length(p))
 
-        gpdata_list <- lapply(seq_along(p), function(i) {
-          data[data[, group] == p[i], ]
+        gpdata_count_list <- lapply(seq_along(p), function(i) {
+          data_count[data_count[, group] == p[i], ]
         })
-        names(gpdata_list) <- p
+        names(gpdata_count_list) <- p
 
-        gpdata_summ_list <- lapply(seq_along(p), function(i) {
-          data_summ[data_summ[, group] == p[i], ]
+        gpdata_gp_count_list <- lapply(seq_along(p), function(i) {
+          data_gp_count[data_gp_count[, group] == p[i], ]
         })
-        names(gpdata_summ_list) <- p
-
-        # gpdata_summ2_list <- lapply(seq_along(p), function(i) {
-        #   data_summ2[data_summ2[, trait] == p[i], ]
-        # })
-        # names(gpdata_summ2_list) <- p
+        names(gpdata_gp_count_list) <- p
 
         outg_list <- lapply(seq_along(p), function(i) {
 
-          ggplot(data = gpdata_list[[i]]) +
-            geom_bar(mapping = gp_aes,
-                     position = position, alpha = bar.alpha)
+          ggplot(data = gpdata_count_list[[i]]) +
+            geom_col(mapping = gp_aes, position = position, alpha = bar.alpha)
 
         })
         names(outg_list) <- p
@@ -849,7 +842,9 @@ groupwise_bar <- function(data, group, trait,
             facet_wrap(~ .data[[group]], scales = "free_x",
                        nrow = nrow, ncol = ncol)
         })
+
       }
+
     }
 
     ## Show counts ----
@@ -867,38 +862,31 @@ groupwise_bar <- function(data, group, trait,
 
           outg_list <- lapply(seq_along(p), function(i) {
             outg_list[[i]] +
-              geom_text(data = gpdata_summ_list[[i]],
+              geom_text(data = gpdata_gp_count_list[[i]],
                         aes(x = Inf, y = Inf,
                             vjust = vjust_custom, hjust = 1.5,
                             colour = .data[[group]],
                             label = paste("n =", count)),
                         size = count.text.size) +
-              # expand_limits(x = c(1, length(levels(data[, trait])) + 1)) +
               scale_x_discrete(expand = expansion(add = c(0.6, 1)))
           })
 
         }
+
       }
 
       if (by == "trait") {
 
-
-        # yscale_min <- layer_scales(outg)$y$range$range[1]
-        # yscale_max <- layer_scales(outg)$y$range$range[2]
-        # yscale_max <- yscale_max + (0.1 * yscale_max)
-
         if (position == "dodge") {
 
-          outg_list <- lapply(seq_along(p), function(i) {
+          outg_list <- lapply(seq_along(outg_list), function(i) {
             outg_list[[i]] +
-              geom_text(data = gpdata_summ2_list[[i]],
+              geom_text(data = trtdata_count_list[[i]],
                         aes(x = .data[[group]], y = Inf,
                             vjust = 1.5,
-                            #hjust = 1.5,
                             colour = .data[[trait]],
                             label = paste("n =", count)),
                         size = count.text.size) +
-              # expand_limits(y = c(0, yscale_max)) +
               scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
           })
 
@@ -906,22 +894,19 @@ groupwise_bar <- function(data, group, trait,
 
         if (position == "stack" | position == "fill") {
 
-          outg_list <- lapply(seq_along(p), function(i) {
+          outg_list <- lapply(seq_along(outg_list), function(i) {
             outg_list[[i]] +
-              geom_text(data = gpdata_summ_list[[i]],
+              geom_text(data = gpdata_gp_count_list[[i]],
                         aes(x = .data[[group]], y = Inf,
                             vjust = 1.5,
-                            #hjust = 1.5,
-                            # colour = .data[[trait]],
                             label = paste("n =", count)),
                         size = count.text.size) +
-              # expand_limits(y = c(0, yscale_max)) +
               scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
           })
 
         }
-
       }
+
     }
 
     ## Standardize limits ----
@@ -934,7 +919,7 @@ groupwise_bar <- function(data, group, trait,
     }))
 
     ### Remove y scale ----
-    outg_list <- lapply(seq_along(p), function(i) {
+    outg_list <- lapply(seq_along(outg_list), function(i) {
 
       remove_scales(outg_list[[i]], scales = "y")
 
@@ -942,7 +927,7 @@ groupwise_bar <- function(data, group, trait,
 
     if (is.null(yexpand)) {
 
-      outg_list <- lapply(seq_along(p), function(i) {
+      outg_list <- lapply(seq_along(outg_list), function(i) {
         outg_list[[i]] <- outg_list[[i]] +
           scale_y_continuous(limits = c(min(yrange), max(yrange)))
 
@@ -952,7 +937,7 @@ groupwise_bar <- function(data, group, trait,
 
       yexpand <- max(yexpand)
 
-      outg_list <- lapply(seq_along(p), function(i) {
+      outg_list <- lapply(seq_along(outg_list), function(i) {
         outg_list[[i]] <- outg_list[[i]] +
           scale_y_continuous(limits = c(min(yrange), max(yrange)),
                              expand = expansion(mult = c(0.05, yexpand)))
@@ -962,7 +947,7 @@ groupwise_bar <- function(data, group, trait,
     }
 
     ## Final theme ----
-    outg_list <- lapply(seq_along(p), function(i) {
+    outg_list <- lapply(seq_along(outg_list), function(i) {
       outg_list[[i]] <- outg_list[[i]] +
         xlab(ifelse(by == "group", trait, group)) +
         ylab(ifelse(relative.freq, "Proportion", "Count")) +
@@ -970,7 +955,6 @@ groupwise_bar <- function(data, group, trait,
     })
 
     return(outg_list)
-
 
   }
 

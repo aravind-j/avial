@@ -10,14 +10,16 @@ Description: A bunch of miscellaneous R functions primarly for personal use.
     These functions may be migrated to other packages in the future as required.
 License: GPL-2 | GPL-3
 Encoding: UTF-8
-Imports: dplyr,
+Imports: 
+    dplyr,
     ggplot2 (>= 3.5.0),
     mathjaxr,
     Rdpack,
     readr,
     stringi,
     scales,
-    tidyr
+    tidyr,
+    magrittr
 Suggests: agridat,
     EvaluateCore,
     colorspace,

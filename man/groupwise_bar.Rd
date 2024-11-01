@@ -83,7 +83,6 @@ library(ggplot2)
 library(patchwork)
 
 soydata <- australia.soybean
-# soydata[soydata$loc == "Nambour", ]$lodging <- NA
 
 clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00", "gray25")
 clrs_dark <- colorspace::darken(clrs, amount = 0.2)
@@ -93,6 +92,13 @@ soydata$lodging <- cut(soydata$lodging,
                        include.lowest = TRUE)
 levels(soydata$lodging) <- 1:4
 
+# soydata[soydata$loc == "Nambour", ]$lodging <- NA
+# #soydata[soydata$lodging == 1, ]$lodging
+# soydata[!(is.na(soydata$lodging)) & soydata$lodging == 1, ]$lodging <- NA
+
+# set.seed(123)
+# ind <- sample(1:nrow(soydata), size = nrow(soydata) * 0.1, replace = FALSE)
+# soydata[ind, ]$lodging <- NA
 
 # Group-wise side-by-side bar plot with counts ----
 
@@ -258,13 +264,8 @@ outg_group_stack_rfreq_list <-
       scale_colour_manual(values = clrs_dark)
   })
 
-wrap_plots(outg_group_stack_count_list, nrow = 2, guides = "collect")
+wrap_plots(outg_group_stack_rfreq_list, nrow = 2, guides = "collect")
 
-# Trait-wise side-by-side bar plot with counts ----
-
-# Trait-
-#   _trait_
-#   by = "trait"
 
 # Trait-wise side-by-side bar plot with counts ----
 
@@ -430,6 +431,6 @@ outg_trait_stack_rfreq_list <-
       scale_colour_manual(values = clrs_dark)
   })
 
-wrap_plots(outg_trait_stack_count_list, nrow = 2, guides = "collect")
+wrap_plots(outg_trait_stack_rfreq_list, nrow = 2, guides = "collect")
 
 }

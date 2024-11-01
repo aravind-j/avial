@@ -33,12 +33,13 @@
 #' library(patchwork)
 #'
 #' soydata <- australia.soybean
+#' # soydata[soydata$loc == "Nambour", ]$lodging <- NA
 #'
 #' clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00", "gray25")
 #' clrs_dark <- colorspace::darken(clrs, amount = 0.2)
 #'
 #' soydata$lodging <- cut(soydata$lodging,
-#'                        breaks = quantile(soydata$lodging),
+#'                        breaks = quantile(soydata$lodging, na.rm = TRUE),
 #'                        include.lowest = TRUE)
 #' levels(soydata$lodging) <- 1:4
 #'
@@ -207,7 +208,7 @@
 #'       scale_colour_manual(values = clrs_dark)
 #'   })
 #'
-#' wrap_plots(outg_group_stack_count_list, nrow = 2, guides = "collect")
+#' wrap_plots(outg_group_stack_rfreq_list, nrow = 2, guides = "collect")
 #'
 #' # Trait-wise side-by-side bar plot with counts ----
 #'
@@ -379,7 +380,7 @@
 #'       scale_colour_manual(values = clrs_dark)
 #'   })
 #'
-#' wrap_plots(outg_trait_stack_count_list, nrow = 2, guides = "collect")
+#' wrap_plots(outg_trait_stack_rfreq_list, nrow = 2, guides = "collect")
 #'
 groupwise_bar <- function(data, group, trait,
                           bar.border = TRUE,
@@ -444,6 +445,14 @@ groupwise_bar <- function(data, group, trait,
 
   p <- levels(data[, group])
 
+  ## Remove na data ----
+  # if (na.rm) {
+  #   na_ind <- is.na(data[, trait])
+  #   data <- data[!na_ind, ]
+  #   # data[, group] <- droplevels(data[, group])
+  #   data[, trait] <- droplevels(data[, trait])
+  # }
+
   ## Add overall data ----
   if (include.overall == TRUE) {
     data_total <- data
@@ -456,12 +465,6 @@ groupwise_bar <- function(data, group, trait,
     }
 
     p <- levels(data[, group])
-  }
-
-  ## Remove na data ----
-  if (na.rm) {
-    na_ind <- is.na(data[, trait])
-    data <- data[!na_ind, ]
   }
 
   ## Summary data.frame ----
@@ -490,6 +493,14 @@ groupwise_bar <- function(data, group, trait,
     }
 
   }
+
+  ## Count and Prop data.frame ----
+
+  data_cp <- count(x = data, .data[[group]], .data[[trait]], .drop = FALSE, name = "count")
+  data_cp <- data_cp[!is.na(data_cp[trait]), ]
+
+  data_total_cp <- count(x = data_total, .data[[group]], .data[[trait]], .drop = FALSE, name = "count")
+  data_total_cp <- data_total_cp[!is.na(data_total_cp[trait]), ]
 
   ## Prepare aesthetics according to by and bar.border ----
   if (by == "group") {
@@ -615,6 +626,11 @@ groupwise_bar <- function(data, group, trait,
           vjust_custom <- 1.5
 
           if (subset == "none") {
+            p <- levels(data[, group])
+            missing_gp_ind <- unlist(lapply(levels(data[, group]), function(x) {
+              all(is.na(data[data[, group] == x, trait]))
+            }))
+            p <- levels(data[, group])[!missing_gp_ind]
             vjust_custom <- (seq_along(p) * 2) + (count.text.size)
           }
 

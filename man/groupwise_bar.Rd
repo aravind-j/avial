@@ -83,12 +83,13 @@ library(ggplot2)
 library(patchwork)
 
 soydata <- australia.soybean
+# soydata[soydata$loc == "Nambour", ]$lodging <- NA
 
 clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00", "gray25")
 clrs_dark <- colorspace::darken(clrs, amount = 0.2)
 
 soydata$lodging <- cut(soydata$lodging,
-                       breaks = quantile(soydata$lodging),
+                       breaks = quantile(soydata$lodging, na.rm = TRUE),
                        include.lowest = TRUE)
 levels(soydata$lodging) <- 1:4
 

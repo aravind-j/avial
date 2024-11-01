@@ -412,7 +412,7 @@ groupwise_histogram <- function(data, group, trait,
         geom_vline(data = data_summ[data_summ$count != 0, ],
                    aes(xintercept = mean,
                        colour = .data[[group]]),
-                   linetype = "dashed")
+                   linetype = "dashed", show.legend = TRUE)
     }
 
     ## Show counts ----
@@ -430,12 +430,12 @@ groupwise_histogram <- function(data, group, trait,
                       vjust = vjust_custom, hjust = 1.5,
                       colour = .data[[group]],
                       label = paste("n =", count)),
-                  size = count.text.size)
+                  size = count.text.size, show.legend = TRUE)
     }
 
     return(outg +
-             scale_fill_discrete(drop = FALSE) +
-             scale_colour_discrete(drop = FALSE) +
+             scale_fill_discrete(drop = FALSE) +    # To ensure missing data
+             scale_colour_discrete(drop = FALSE) +  # is plotted
              xlab(trait) +
              ylab("Count") +
              theme_bw())

@@ -33,7 +33,7 @@ Size](https://img.shields.io/github/languages/code-size/aravind-j/avial.svg)](ht
 [![Project Status:
 WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2024--10--17-yellowgreen.svg)](https://github.com/aravind-j/avial/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2025--03--10-yellowgreen.svg)](https://github.com/aravind-j/avial/)
 <!-- [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxxxxxx.svg)](https://doi.org/10.5281/zenodo.xxxxxxxx) -->
 [![Website -
 pkgdown](https://img.shields.io/website-up-down-green-red/https/aravind-j.github.io/avial.svg)](https://aravind-j.github.io/avial/)
@@ -99,17 +99,16 @@ To cite the methods in the package use:
 citation("avial")
 ```
 
-    To cite the R package 'avial' in publications use:
+    To cite the R package 'augmentedRCBD' in publications use:
 
-      Aravind, J. (2024).  avial: A Mixed Bag of R Functions. R package
-      version 0.0.0.9000, https://aravind-j.github.io/avial/.
+      Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version
+      0.0.0.9000, https://aravind-j.github.io/avial/.
 
     A BibTeX entry for LaTeX users is
 
       @Manual{,
-        title = {avial: A Mixed Bag of R Functions},
+        title = {avial: A Mixed Bag of R Functionss},
         author = {J. Aravind},
-        year = {2024},
         note = {R package version 0.0.0.9000 https://aravind-j.github.io/avial/},
       }
 

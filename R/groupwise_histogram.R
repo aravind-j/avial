@@ -277,14 +277,14 @@ groupwise_histogram <- function(data, group, trait,
   }
 
   # Check if group column is of type factor
-  if (class(data[, group]) != "factor") {
+  if (!is.factor(data[, group])) {
     stop(paste('Column ', group,
                ' in "data" is not of type "factor".',
                sep = ""))
   }
 
   # Check if trait column is of type numeric
-  if (class(data[, trait]) != "numeric") {
+  if (!is.numeric(data[, trait])) {
     stop(paste('Column ', trait,
                ' in "data" is not of type "numeric".',
                sep = ""))

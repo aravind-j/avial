@@ -222,6 +222,8 @@ prep_powercore_input <- function(data, genotype,
 
   genotype <- fix_names(genotype)
 
+  traits <- c(qualitative, quantitative)
+
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Prepare data file ----
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

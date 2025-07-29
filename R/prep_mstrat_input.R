@@ -35,6 +35,9 @@
 #'   saved.
 #' @param folder.path The path to folder where the input files are to be saved.
 #'
+#' @note Any \code{NA} values will be considered as missing value and converted
+#'   to 9999 which is the code for the same in \code{MStrat}.
+#'
 #' @importFrom readr format_delim
 #' @importFrom dplyr mutate row_number
 #' @importFrom utils write.table
@@ -214,10 +217,10 @@ prep_mstrat_input <- function(data, genotype,
 
   traits <- c(qualitative, quantitative)
 
-  # check if number of variables is >500
-  if (ncol(data) >500) {
-    stop('The number of variables exceeds 500.')
-  }
+  # # check if number of variables is >500
+  # if (ncol(data) >500) {
+  #   stop('The number of variables exceeds 500.')
+  # }
 
   # check if 'active' traits/markers are present in 'traits'
   if (FALSE %in% (active %in% traits))  {
@@ -277,30 +280,53 @@ prep_mstrat_input <- function(data, genotype,
   }
 
   # Check for 9999 data
-  qual_9999_check <- unlist(lapply(data[, qualitative],
-                                   function(x) {
-                                     x <- as.integer(x)
-                                     any(x == 9999)
-                                   }))
-  quant_9999_check <- unlist(lapply(data[, quantitative],
-                                    function(x) {
-                                      any(x == 9999)
-                                    }))
+  if (!is.null(qualitative)) {
+    qual_9999_check <- unlist(lapply(data[, qualitative],
+                                     function(x) {
+                                       x <- as.integer(x)
+                                       any(!is.na(x) & x == 9999)
+                                     }))
 
-  if (any(qual_9999_check)) {
-    stop('The following "qualitative" column(s) in "data" have a level ',
-         'equal to 9999.',
-         '\nThis is the code for missing data in MStrat.\n',
-         paste(names(qual_9999_check[qual_9999_check]), collapse = ", "))
+    if (any(qual_9999_check)) {
+      stop('The following "qualitative" column(s) in "data" have a level ',
+           'equal to 9999.',
+           '\nThis is the code for missing data in MStrat.\n',
+           paste(names(qual_9999_check[qual_9999_check]), collapse = ", "))
+    }
   }
 
-  if (any(quant_9999_check)) {
-    stop('The following "quantitative" column(s) in "data" have a value ',
-         'equal to 9999.',
-         '\nThis is the code for missing data in MStrat.\n',
-         paste(names(quant_9999_check[quant_9999_check]), collapse = ", "))
+  if (!is.null(quantitative)) {
+    quant_9999_check <- unlist(lapply(data[, quantitative],
+                                      function(x) {
+                                        any(!is.na(x) & x == 9999)
+                                      }))
+
+    if (any(quant_9999_check)) {
+      stop('The following "quantitative" column(s) in "data" have a value ',
+           'equal to 9999.',
+           '\nThis is the code for missing data in MStrat.\n',
+           paste(names(quant_9999_check[quant_9999_check]), collapse = ", "))
+    }
   }
 
+  # Convert missing values (NA) to 9999
+  # data[, quantitative] <-
+  #   lapply(data[, quantitative],
+  #          function(x) {
+  #            if (any(is.na(x))) {
+  #              x[is.na(x)] <- 9999
+  #            }
+  #            return(x)
+  #          })
+  # data[, qualitative] <-
+  #   lapply(data[, qualitative],
+  #          function(x) {
+  #            if (any(is.na(x))) {
+  #              x <- addNA(x, ifany = TRUE)
+  #              levels(x)[is.na(levels(x))] <- "9999"
+  #            }
+  #            return(x)
+  #          })
 
   # Check always.selected
   if (!is.null(always.selected)) {
@@ -374,8 +400,9 @@ prep_mstrat_input <- function(data, genotype,
   inactive <- c(genotype, inactive)
 
   # Fix inactive
-  data[, inactive] <-
-    lapply(data[, inactive],
+  inactive_ind <- which(colnames(data) %in% inactive)
+  data[inactive_ind] <-
+    lapply(data[inactive_ind],
            function(x) {
              stringi::stri_replace_all_regex(str = x,
                                              pattern = "\\s+",
@@ -383,8 +410,9 @@ prep_mstrat_input <- function(data, genotype,
            })
 
   # Scale and center the quantitative data (Z scaling)
-  data[, quantitative] <-
-    apply(data[, quantitative], 2,
+  quantitative_ind <- which(colnames(data) %in% quantitative)
+  data[quantitative_ind] <-
+    apply(data[quantitative_ind], 2,
           function(x) scale(x, center = center, scale = scale))
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

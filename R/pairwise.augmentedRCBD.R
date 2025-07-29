@@ -21,12 +21,13 @@
 #'
 #' @importFrom augmentedRCBD augmentedRCBD
 #' @importFrom parallel clusterExport makeCluster parLapply stopCluster
-#' @importFrom stats pt
+#' @importFrom stats pt qtukey
 #' @importFrom utils combn
 #' @export
 #'
 #' @examples
 #' library(augmentedRCBD)
+#'
 #' blk <- c(rep(1,7),rep(2,6),rep(3,7))
 #' trt <- c(1, 2, 3, 4, 7, 11, 12, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 8, 6, 10)
 #' y1 <- c(92, 79, 87, 81, 96, 89, 82, 79, 81, 81, 91, 79, 78, 83, 77, 78, 78,
@@ -45,26 +46,42 @@
 #'                       alpha = 0.05, group = TRUE, console = TRUE)
 #'
 #' # Make cluster
+#' library(parallel)
 #' ncores <- max(2, parallel::detectCores() - 2)
-#' cl <- makeCluster(getOption("cl.cores", ncores))
 #'
 #' # Pairwise t test without p value adjustment
-#' pout1 <- pairwise.augmentedRCBD(out1, cl = NULL,
-#'                                 p.adjust = c("none"))
-#' pout2 <- pairwise.augmentedRCBD(out1, cl = NULL,
-#'                                 p.adjust = c("none"))
+#' cl <- makeCluster(getOption("cl.cores", ncores))
+#' pout1 <- pairwise.augmentedRCBD(out1, cl = cl,
+#'                                 p.adjust = "none")
+#' stopCluster(cl)
+#'
+#' cl <- makeCluster(getOption("cl.cores", ncores))
+#' pout2 <- pairwise.augmentedRCBD(out1, cl = cl,
+#'                                 p.adjust = "none")
+#' stopCluster(cl)
 #'
 #' # Pairwise t test with tukey adjustment
-#' pout1_tukey <- pairwise.augmentedRCBD(out1, cl = NULL,
+#' cl <- makeCluster(getOption("cl.cores", ncores))
+#' pout1_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
 #'                                       p.adjust = "tukey")
-#' pout2_tukey <- pairwise.augmentedRCBD(out1, cl = NULL,
+#' stopCluster(cl)
+#'
+#' cl <- makeCluster(getOption("cl.cores", ncores))
+#' pout2_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
 #'                                       p.adjust = "tukey")
+#' stopCluster(cl)
 #'
 #' # Pairwise t test with sidak p value adjustment
-#' pout1 <- pairwise.augmentedRCBD(out1, cl = NULL,
-#'                                 p.adjust = "sidak")
-#' pout2 <- pairwise.augmentedRCBD(out1, cl = NULL,
-#'                                 p.adjust = "sidak")
+#' cl <- makeCluster(getOption("cl.cores", ncores))
+#' pout1_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
+#'                                       p.adjust = "sidak")
+#' stopCluster(cl)
+#'
+#' cl <- makeCluster(getOption("cl.cores", ncores))
+#' pout2_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
+#'                                       p.adjust = "sidak")
+#' stopCluster(cl)
+#'
 pairwise.augmentedRCBD <- function(aug, cl = NULL,
                                    p.adjust = c("none", "tukey", "sidak")) {
 
@@ -88,7 +105,16 @@ pairwise.augmentedRCBD <- function(aug, cl = NULL,
 
   SEcol <- "Std. Error of Diff."
   if (p.adjust == "tukey") {
-    SEcol <- colnames(SE)[3]
+    if (!is.na(colnames(SE)[3])) {
+      SEcol <- colnames(SE)[3]
+    } else {
+      alpha <- gsub(pattern = "\\D", replacement = "", x = colnames(SE)[2])
+      alpha <- as.numeric(alpha) / 100
+      q0 <- qtukey(p = 1 - alpha, nmeans = length(treatment),
+                   df = df)
+      SE$THSD <- c((q0 * SE[1:3,]$`Std. Error of Diff.`)/sqrt(2), 0)
+      SEcol <- "THSD"
+    }
   }
 
   clusterExport(cl, c("pairs_list", "SE",
@@ -132,7 +158,7 @@ pairwise.augmentedRCBD <- function(aug, cl = NULL,
     return(out)
   }, cl = cl)
 
-  stopCluster(cl)
+  # stopCluster(cl)
 
   pairs_aug <- dplyr::bind_rows(pairs_aug)
   pairs_aug$p.value <- 2 * pt(q = pairs_aug$t.ratio, df = pairs_aug$df)

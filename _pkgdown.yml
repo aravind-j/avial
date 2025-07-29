@@ -62,6 +62,7 @@ reference:
 
     - title: Statistical functions
       contents:
+         - '`pairwise.augmentedRCBD`'
          - '`mse.bartlett.test`'
 
     - title: Prepare input files

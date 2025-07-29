@@ -31,6 +31,7 @@ computing with the package \code{\link[parallel]{parallel-package}}.
 }
 \examples{
 library(augmentedRCBD)
+
 blk <- c(rep(1,7),rep(2,6),rep(3,7))
 trt <- c(1, 2, 3, 4, 7, 11, 12, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 8, 6, 10)
 y1 <- c(92, 79, 87, 81, 96, 89, 82, 79, 81, 81, 91, 79, 78, 83, 77, 78, 78,
@@ -49,26 +50,42 @@ out2 <- augmentedRCBD(data$blk, data$trt, data$y1, method.comp = "lsd",
                       alpha = 0.05, group = TRUE, console = TRUE)
 
 # Make cluster
+library(parallel)
 ncores <- max(2, parallel::detectCores() - 2)
-cl <- makeCluster(getOption("cl.cores", ncores))
 
 # Pairwise t test without p value adjustment
-pout1 <- pairwise.augmentedRCBD(out1, cl = NULL,
-                                p.adjust = c("none"))
-pout2 <- pairwise.augmentedRCBD(out1, cl = NULL,
-                                p.adjust = c("none"))
+cl <- makeCluster(getOption("cl.cores", ncores))
+pout1 <- pairwise.augmentedRCBD(out1, cl = cl,
+                                p.adjust = "none")
+stopCluster(cl)
+
+cl <- makeCluster(getOption("cl.cores", ncores))
+pout2 <- pairwise.augmentedRCBD(out1, cl = cl,
+                                p.adjust = "none")
+stopCluster(cl)
 
 # Pairwise t test with tukey adjustment
-pout1_tukey <- pairwise.augmentedRCBD(out1, cl = NULL,
+cl <- makeCluster(getOption("cl.cores", ncores))
+pout1_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
                                       p.adjust = "tukey")
-pout2_tukey <- pairwise.augmentedRCBD(out1, cl = NULL,
+stopCluster(cl)
+
+cl <- makeCluster(getOption("cl.cores", ncores))
+pout2_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
                                       p.adjust = "tukey")
+stopCluster(cl)
 
 # Pairwise t test with sidak p value adjustment
-pout1 <- pairwise.augmentedRCBD(out1, cl = NULL,
-                                p.adjust = "sidak")
-pout2 <- pairwise.augmentedRCBD(out1, cl = NULL,
-                                p.adjust = "sidak")
+cl <- makeCluster(getOption("cl.cores", ncores))
+pout1_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
+                                      p.adjust = "sidak")
+stopCluster(cl)
+
+cl <- makeCluster(getOption("cl.cores", ncores))
+pout2_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
+                                      p.adjust = "sidak")
+stopCluster(cl)
+
 }
 \seealso{
 \code{\link[parallel]{makeCluster}}

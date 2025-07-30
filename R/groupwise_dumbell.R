@@ -217,7 +217,7 @@ groupwise_dumbell <- function(data, group, trait, genotype,
         outg <- outg +
           geom_line(aes(x = mean, y = .data[[genotype]],
                         group = .data[[genotype]]),
-                    colour = segment.colour, size = segment.size,
+                    colour = segment.colour, linewidth = segment.size,
                     alpha = segment.alpha)
       }
 

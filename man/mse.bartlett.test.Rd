@@ -19,7 +19,7 @@ A list with the chi-square value test statistic, corresponding
 \description{
 Perform chi-square test for homogeneity of variance (Bartlett's test) to test
 equality of several error variances or mean squared errors
-\insertCite{gomez_Statistical_1984}{avial}.
+\insertCite{gomez_Statistical_1984}{avial}. \loadmathjax
 }
 \examples{
 # Examples from Page 467-471 Gomez KA and AA Gomez (1984) Statistical

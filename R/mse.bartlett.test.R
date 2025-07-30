@@ -2,7 +2,7 @@
 #'
 #' Perform chi-square test for homogeneity of variance (Bartlett's test) to test
 #' equality of several error variances or mean squared errors
-#' \insertCite{gomez_Statistical_1984}{avial}.
+#' \insertCite{gomez_Statistical_1984}{avial}. \loadmathjax
 #'
 #' @param mse A vector of error variances or mean squared errors from each
 #'   environment (years and/or locations).
@@ -11,6 +11,7 @@
 #' @return A list with the chi-square value test statistic, corresponding
 #'   degrees of freedom and p value.
 #'
+#' @import mathjaxr
 #' @importFrom stats pchisq
 #' @export
 #'

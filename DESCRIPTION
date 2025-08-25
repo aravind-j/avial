@@ -11,6 +11,7 @@ Description: A bunch of miscellaneous R functions primarly for personal use.
 License: GPL-2 | GPL-3
 Encoding: UTF-8
 Imports: augmentedRCBD,
+    data.table,
     dplyr,
     ggplot2,
     magrittr,

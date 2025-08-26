@@ -23,9 +23,9 @@ Imports: augmentedRCBD,
     scales,
     tidyr
 Suggests: agridat,
-    EvaluateCore,
     colorspace,
-    patchwork,
+    patchwork
+Remotes: aravind-j/EvaluateCore
 RdMacros: mathjaxr,
     Rdpack
 LazyData: true

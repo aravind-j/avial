@@ -51,7 +51,7 @@ jobs:
         with:
           extra-packages: |
             any::rcmdcheck
-            github::r-lib/EvaluateCore?reinstall
+            github::aravind-j/EvaluateCore?reinstall
           needs: check
 
       - name: Check

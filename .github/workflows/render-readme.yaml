@@ -29,7 +29,7 @@ jobs:
             local::.
             any::devtools
             any::kableExtra
-            github::r-lib/EvaluateCore?reinstall
+            github::aravind-j/EvaluateCore?reinstall
 
       - name: Render README.md using rmarkdown
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "github_document")'

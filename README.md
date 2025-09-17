@@ -87,7 +87,6 @@ news(package='avial')
 [Documentation website](https://aravind-j.github.io/avial/)
 
 <!-- [Zenodo DOI](https://doi.org/10.5281/zenodo.xxxxxxx) -->
-
 <!-- ## CRAN checks -->
 
 ## Citing `avial`
@@ -100,8 +99,8 @@ citation("avial")
 
     To cite the R package 'augmentedRCBD' in publications use:
 
-      Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version 0.0.0.9000,
-      https://aravind-j.github.io/avial/.
+      Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version
+      0.0.0.9000, https://aravind-j.github.io/avial/.
 
     A BibTeX entry for LaTeX users is
 
@@ -111,5 +110,6 @@ citation("avial")
         note = {R package version 0.0.0.9000 https://aravind-j.github.io/avial/},
       }
 
-    This free and open-source software implements academic research by the authors and
-    co-workers. If you use it, please support the project by citing the package.
+    This free and open-source software implements academic research by the
+    authors and co-workers. If you use it, please support the project by
+    citing the package.

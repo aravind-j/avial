@@ -287,7 +287,7 @@ freq_distribution <- function(data, trait,
     }
 
     if (length(highlight.col) != 1) {
-      if (length(highlight.col) != length(checks)) {
+      if (length(highlight.col) != length(highlights)) {
         stop('"highlights" and "highlight.col" are of unequal lengths.')
       }
     }

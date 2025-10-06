@@ -32,7 +32,7 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Language: en-GB
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/Needs/website: rmarkdown
 URL: https://github.com/aravind-j/avial, https://aravind-j.github.io/avial/
 BugReports: https://github.com/aravind-j/avial/issues

@@ -50,6 +50,7 @@ reference:
 
     - title: Wrappers and helpers for `ggplot2`
       contents:
+         - '`freq_distribution`'
          - '`groupwise_bar`'
          - '`groupwise_histogram`'
          - '`groupwise_dumbell`'

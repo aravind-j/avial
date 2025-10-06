@@ -281,9 +281,8 @@ pointrange plot x axis ranges are standardized. Default is <code>TRUE</code>.</p
 <span class="r-in"><span>                    genotype <span class="op">=</span> <span class="st">"gen"</span>,</span></span>
 <span class="r-in"><span>                    highlight.genotype.vline <span class="op">=</span> <span class="cn">TRUE</span>, highlights <span class="op">=</span> <span class="va">checks</span>,</span></span>
 <span class="r-in"><span>                    highlight.col <span class="op">=</span> <span class="va">check_cols</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in freq_distribution(data = soydata, trait = "lodging", hist = TRUE,     hist.col = "lemonchiffon", density = FALSE, normal.curve = FALSE,     highlight.mean = FALSE, show.counts = FALSE, genotype = "gen",     highlight.genotype.vline = TRUE, highlights = checks, highlight.col = check_cols):</span> object 'checks' not found</span>
 <span class="r-in"><span><span class="va">freq_hist5</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'freq_hist5' not found</span>
+<span class="r-plt img"><img src="freq_distribution-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Frequency distribution as histogram with check values</span></span></span>
 <span class="r-in"><span><span class="co"># highlighted as a separate pointrange plot</span></span></span>
@@ -298,15 +297,13 @@ pointrange plot x axis ranges are standardized. Default is <code>TRUE</code>.</p
 <span class="r-in"><span>                    highlight.genotype.pointrange <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                    highlights <span class="op">=</span> <span class="va">checks</span>,</span></span>
 <span class="r-in"><span>                    highlight.col <span class="op">=</span> <span class="va">check_cols</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in freq_distribution(data = soydata, trait = "lodging", hist = TRUE,     hist.col = "lemonchiffon", density = FALSE, normal.curve = FALSE,     highlight.mean = FALSE, show.counts = FALSE, genotype = "gen",     highlight.genotype.vline = TRUE, highlight.genotype.pointrange = TRUE,     highlights = checks, highlight.col = check_cols):</span> object 'checks' not found</span>
 <span class="r-in"><span><span class="va">freq_hist6</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="va">freq_hist6</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.ticks.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>        axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'freq_hist6' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">freq_hist6</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_spacer.html" class="external-link">plot_spacer</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">freq_hist6</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>           ncol <span class="op">=</span> <span class="fl">1</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'freq_hist6' not found</span>
+<span class="r-plt img"><img src="freq_distribution-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Frequency distribution as kernel density plot</span></span></span>
 <span class="r-in"><span><span class="va">freq_dens1</span> <span class="op">&lt;-</span></span></span>
@@ -317,7 +314,7 @@ pointrange plot x axis ranges are standardized. Default is <code>TRUE</code>.</p
 <span class="r-in"><span>                    normal.curve <span class="op">=</span> <span class="cn">FALSE</span>, highlight.mean <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                    show.counts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">freq_dens1</span></span></span>
-<span class="r-plt img"><img src="freq_distribution-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="freq_distribution-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Frequency distribution as kernel density plot with mean highlighted</span></span></span>
 <span class="r-in"><span><span class="va">freq_dens2</span> <span class="op">&lt;-</span></span></span>
@@ -329,7 +326,7 @@ pointrange plot x axis ranges are standardized. Default is <code>TRUE</code>.</p
 <span class="r-in"><span>                    highlight.mean <span class="op">=</span> <span class="cn">TRUE</span>, highlight.mean.col <span class="op">=</span> <span class="st">"red"</span>,</span></span>
 <span class="r-in"><span>                    show.counts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">freq_dens2</span></span></span>
-<span class="r-plt img"><img src="freq_distribution-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="freq_distribution-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Frequency distribution as kernel density plot with count value</span></span></span>
 <span class="r-in"><span><span class="va">freq_dens3</span> <span class="op">&lt;-</span></span></span>
@@ -341,7 +338,7 @@ pointrange plot x axis ranges are standardized. Default is <code>TRUE</code>.</p
 <span class="r-in"><span>                    highlight.mean <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                    show.counts <span class="op">=</span> <span class="cn">TRUE</span>, count.text.col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">freq_dens3</span></span></span>
-<span class="r-plt img"><img src="freq_distribution-7.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="freq_distribution-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Frequency distribution as kernel density plot with check values</span></span></span>
 <span class="r-in"><span><span class="co"># highlighted as vertical lines</span></span></span>
@@ -355,9 +352,8 @@ pointrange plot x axis ranges are standardized. Default is <code>TRUE</code>.</p
 <span class="r-in"><span>                    genotype <span class="op">=</span> <span class="st">"gen"</span>,</span></span>
 <span class="r-in"><span>                    highlight.genotype.vline <span class="op">=</span> <span class="cn">TRUE</span>, highlights <span class="op">=</span> <span class="va">checks</span>,</span></span>
 <span class="r-in"><span>                    highlight.col <span class="op">=</span> <span class="va">check_cols</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in freq_distribution(data = soydata, trait = "lodging", hist = FALSE,     density = TRUE, density.fill = "lemonchiffon", normal.curve = FALSE,     highlight.mean = FALSE, show.counts = FALSE, genotype = "gen",     highlight.genotype.vline = TRUE, highlights = checks, highlight.col = check_cols):</span> object 'checks' not found</span>
 <span class="r-in"><span><span class="va">freq_dens4</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'freq_dens4' not found</span>
+<span class="r-plt img"><img src="freq_distribution-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Frequency distribution as kernel density plot with check values</span></span></span>
 <span class="r-in"><span><span class="co"># highlighted as a separate pointrange plot</span></span></span>
@@ -373,15 +369,13 @@ pointrange plot x axis ranges are standardized. Default is <code>TRUE</code>.</p
 <span class="r-in"><span>                    highlight.genotype.pointrange <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                    highlights <span class="op">=</span> <span class="va">checks</span>,</span></span>
 <span class="r-in"><span>                    highlight.col <span class="op">=</span> <span class="va">check_cols</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in freq_distribution(data = soydata, trait = "lodging", hist = FALSE,     density = TRUE, density.fill = "lemonchiffon", normal.curve = FALSE,     highlight.mean = FALSE, show.counts = FALSE, genotype = "gen",     highlight.genotype.vline = TRUE, highlight.genotype.pointrange = TRUE,     highlights = checks, highlight.col = check_cols):</span> object 'checks' not found</span>
 <span class="r-in"><span><span class="va">freq_dens5</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="va">freq_dens5</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.ticks.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>        axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'freq_dens5' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">freq_dens5</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_spacer.html" class="external-link">plot_spacer</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">freq_dens5</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>           ncol <span class="op">=</span> <span class="fl">1</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'freq_dens5' not found</span>
+<span class="r-plt img"><img src="freq_distribution-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -3,7 +3,7 @@ pkgdown: 2.1.3.9000
 pkgdown_sha: aa23abdbb8ba457f39be57bf5fa1f4462aef6cfb
 articles:
   articles/Highlight-Checks: Highlight-Checks.html
-last_built: 2025-10-06T17:41Z
+last_built: 2025-10-06T18:04Z
 urls:
   reference: https://aravind-j.github.io/avial/reference
   article: https://aravind-j.github.io/avial/articles

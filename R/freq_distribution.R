@@ -4,7 +4,9 @@
 #' @param data The data as a data frame object. The data frame should possess
 #'   columns specifying the trait (and genotypes if \code{highlight.genotype.* =
 #'   TRUE}).
-#' @param trait Name of column specifying the trait as a character string.
+#' @param trait Name of column specifying the trait as a character string. The
+#'   trait column should be of type \code{"numeric"} for quantitative traits and
+#'   of type \code{"factor"} for qualitative traits.
 #' @param genotype Name of column specifying the group as a character string.
 #'   Required only when \code{highlight.genotype.* =  TRUE}.
 #' @param hist logical. If \code{TRUE}, the histogram is plotted. Default is
@@ -256,9 +258,9 @@ freq_distribution <- function(data, trait,
   }
 
   # Check if trait column is of type numeric
-  if (!is.numeric(data[, trait])) {
+  if (!(is.numeric(data[, trait]) | is.factor(data[, trait]))) {
     stop(paste('Column ', trait,
-               ' in "data" is not of type "numeric".',
+               ' in "data" is not of type "numeric" or "factor".',
                sep = ""))
   }
 
@@ -293,20 +295,38 @@ freq_distribution <- function(data, trait,
     }
   }
 
+  # Remove components not applicable to qualitative traits
+  if (is.factor(data[, trait])) {
+    normal.curve = FALSE
+    density = FALSE
+    highlight.mean = FALSE
+  }
+
   # Compute the binwidth
-  bw <- binw(data[, trait], "sturges")
+  if (!is.factor(data[, trait])) {
+    bw <- binw(data[, trait], "sturges")
+  } else {
+    bw <- binw(as.numeric(data[, trait]), "sturges")
+  }
 
   # Summary data.frame
   if (highlight.mean == TRUE | show.counts == TRUE) {
-    data_summ <-
-      summarise(.data = data,
-                # count = n(),
-                count = sum(!is.na(.data[[trait]])),
-                mean = mean(.data[[trait]], na.rm = TRUE),
-                # se = plotrix::std.error(.data[[trait]], na.rm = TRUE),
-                se = sd(.data[[trait]], na.rm = TRUE) /
-                  sqrt(length(.data[[trait]]
-                              [!is.na(.data[[trait]])])))
+    if (!is.factor(data[, trait])) {
+      data_summ <-
+        summarise(.data = data,
+                  # count = n(),
+                  count = sum(!is.na(.data[[trait]])),
+                  mean = mean(.data[[trait]], na.rm = TRUE),
+                  # se = plotrix::std.error(.data[[trait]], na.rm = TRUE),
+                  se = sd(.data[[trait]], na.rm = TRUE) /
+                    sqrt(length(.data[[trait]]
+                                [!is.na(.data[[trait]])])))
+    } else {
+      data_summ <-
+        summarise(.data = data,
+                  # count = n(),
+                  count = sum(!is.na(.data[[trait]])))
+    }
   }
 
   if (hist.border) {
@@ -324,13 +344,18 @@ freq_distribution <- function(data, trait,
   ## Add histogram ----
 
   if (hist == TRUE) {
-
-    outg <- outg +
-      geom_histogram(alpha = hist.alpha, binwidth = bw * bw.adjust,
-                     position = "identity", show.legend = FALSE,
-                     fill = hist.col,
-                     colour = hist.border.col)
-
+    if (!is.factor(data[, trait])) {
+      outg <- outg +
+        geom_histogram(alpha = hist.alpha, binwidth = bw * bw.adjust,
+                       position = "identity", show.legend = FALSE,
+                       fill = hist.col,
+                       colour = hist.border.col)
+    } else {
+      outg <- outg +
+        stat_count(show.legend = FALSE,
+                   fill = hist.col,
+                   colour = hist.border.col)
+    }
   }
 
   ## Add density ----
@@ -387,25 +412,56 @@ freq_distribution <- function(data, trait,
   ## Highlight checks ----
   if (highlight.genotype.vline == TRUE ||
       highlight.genotype.pointrange == TRUE) {
-    data_summ_highlights <-
-      summarise(.data = data[data[, genotype] %in% highlights, ],
-                .by = all_of(c(genotype)),
-                # count = n(),
-                count = sum(!is.na(.data[[trait]])),
-                mean = mean(.data[[trait]], na.rm = TRUE),
-                # se = plotrix::std.error(.data[[trait]], na.rm = TRUE),
-                se = sd(.data[[trait]], na.rm = TRUE) /
-                  sqrt(length(.data[[trait]]
-                              [!is.na(.data[[trait]])])))
+    if (!is.factor(data[, trait])) {
+      data_summ_highlights <-
+        summarise(.data = data[data[, genotype] %in% highlights, ],
+                  .by = all_of(c(genotype)),
+                  # count = n(),
+                  count = sum(!is.na(.data[[trait]])),
+                  mean = mean(.data[[trait]], na.rm = TRUE),
+                  # se = plotrix::std.error(.data[[trait]], na.rm = TRUE),
+                  se = sd(.data[[trait]], na.rm = TRUE) /
+                    sqrt(length(.data[[trait]]
+                                [!is.na(.data[[trait]])])))
+    } else {
+      data_summ_highlights <-
+        data[data[, genotype] %in% highlights, ] %>%
+        group_by(.data[[trait]], .data[[genotype]]) %>%
+        summarise(count = sum(!is.na(.data[[trait]])), .groups = 'drop')
+
+      if (any(duplicated(data_summ_highlights[, trait]))) {
+
+        data_summ_highlights <- data.frame(data_summ_highlights)
+        data_summ_highlights$pos_nudged <-
+          as.numeric(data_summ_highlights[, trait])
+        dup_cond <- duplicated(data_summ_highlights$pos_nudged) |
+          duplicated(data_summ_highlights$pos_nudged, fromLast = TRUE)
+        data_summ_highlights[dup_cond, "pos_nudged"] <-
+          make_unique_nudge(data_summ_highlights[dup_cond, "pos_nudged"],
+                            nudge = 0.01)
+
+      }
+    }
   }
 
   if (highlight.genotype.vline == TRUE) {
-    outg <-
-      outg +
-      geom_vline(data = data_summ_highlights[data_summ_highlights$count != 0, ],
-                 aes(xintercept = mean, colour = .data[[genotype]]),
-                 linetype = "dashed", show.legend = TRUE) +
-      scale_colour_manual(values = highlight.col)
+
+    if (!is.factor(data[, trait])) {
+      outg <-
+        outg +
+        geom_vline(data = data_summ_highlights[data_summ_highlights$count != 0, ],
+                   aes(xintercept = mean, colour = .data[[genotype]]),
+                   linetype = "dashed", show.legend = TRUE) +
+        scale_colour_manual(values = highlight.col)
+    } else {
+      outg <-
+        outg +
+        geom_vline(data = data_summ_highlights[data_summ_highlights$count != 0, ],
+                   aes(xintercept = pos_nudged, 2, colour = .data[[genotype]]),
+                   linetype = "dashed", show.legend = TRUE) +
+        scale_colour_manual(values = highlight.col)
+    }
+
   }
 
   outg <- outg +
@@ -414,15 +470,22 @@ freq_distribution <- function(data, trait,
     theme_bw()
 
   if (highlight.genotype.pointrange == TRUE) {
-    data_summ_highlights$lower <-
-      data_summ_highlights$mean - data_summ_highlights$se
-    data_summ_highlights$upper <-
-      data_summ_highlights$mean + data_summ_highlights$se
+    if (!is.factor(data[, trait])) {
+      data_summ_highlights$lower <-
+        data_summ_highlights$mean - data_summ_highlights$se
+      data_summ_highlights$upper <-
+        data_summ_highlights$mean + data_summ_highlights$se
 
-    outg_h <-
-      ggplot(data_summ_highlights, aes(y = .data[[genotype]], x = mean)) +
-      geom_pointrange(aes(xmin = lower, xmax = upper),
-                      colour = highlight.col)
+      outg_h <-
+        ggplot(data_summ_highlights, aes(y = .data[[genotype]], x = mean)) +
+        geom_pointrange(aes(xmin = lower, xmax = upper),
+                        colour = highlight.col)
+    } else {
+      outg_h <- ggplot(data_summ_highlights,
+                       aes(y = .data[[genotype]], x = .data[[trait]],
+                           size = count)) +
+        geom_point(colour = highlight.col)
+    }
     outg_h <-
       outg_h +
       ylab("") +
@@ -432,9 +495,13 @@ freq_distribution <- function(data, trait,
     if (standardize.xrange == TRUE) {
       xrange <- c(layer_scales(outg_h)$x$range$range,
                   layer_scales(outg)$x$range$range)
-
+      if (!is.factor(data[, trait])) {
       outg_h <- outg_h + xlim(c(min(xrange), max(xrange)))
       outg <- outg + xlim(c(min(xrange), max(xrange)))
+      } else {
+        outg_h <- outg_h + xlim(unique(xrange))
+        outg <- outg + xlim(unique(xrange))
+      }
     }
 
     outg <- list(outg_h, outg)
@@ -442,4 +509,33 @@ freq_distribution <- function(data, trait,
 
   return(outg)
 
+}
+
+
+
+make_unique_nudge <- function(x, nudge = 1e-3) {
+  # Get unique values to iterate over
+  unique_vals <- unique(x)
+
+  for (val in unique_vals) {
+    # Get indices of all occurrences of val
+    idx <- which(x == val)
+
+    if (length(idx) > 1) {
+      # Leave first occurrence unchanged
+      # For the rest, nudge alternately up/down by multiples of nudge
+
+      # Generate nudges: 1*nudge, 2*nudge, 3*nudge, ...
+      nudges <- seq_len(length(idx) - 1)
+
+      # Alternate directions: +, -, +, -, ...
+      directions <- rep(c(1, -1), length.out = length(nudges))
+
+      # Apply nudges to duplicates except the first
+      for (i in seq_along(nudges)) {
+        x[idx[i + 1]] <- x[idx[i + 1]] + directions[i] * nudges[i] * nudge
+      }
+    }
+  }
+  return(x)
 }

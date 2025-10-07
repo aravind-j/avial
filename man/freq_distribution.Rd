@@ -38,7 +38,9 @@ freq_distribution(
 columns specifying the trait (and genotypes if \code{highlight.genotype.* =
 TRUE}).}
 
-\item{trait}{Name of column specifying the trait as a character string.}
+\item{trait}{Name of column specifying the trait as a character string. The
+trait column should be of type \code{"numeric"} for quantitative traits and
+of type \code{"factor"} for qualitative traits.}
 
 \item{genotype}{Name of column specifying the group as a character string.
 Required only when \code{highlight.genotype.* =  TRUE}.}

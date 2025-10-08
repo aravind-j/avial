@@ -257,7 +257,7 @@ freq_distribution <- function(data, trait,
                sep = ""))
   }
 
-  # Check if trait column is of type numeric
+  # Check if trait column is of type numeric or factor
   if (!(is.numeric(data[, trait]) | is.factor(data[, trait]))) {
     stop(paste('Column ', trait,
                ' in "data" is not of type "numeric" or "factor".',

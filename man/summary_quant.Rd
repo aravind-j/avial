@@ -5,9 +5,9 @@
 \alias{summary_qual}
 \title{Summary Statistics of Qualitative and Quantitative trait data}
 \usage{
-summary_quant(data, group, trait, out.format = c("long", "wide"))
+summary_quant(data, group = NULL, trait, out.format = c("long", "wide"))
 
-summary_qual(data, group, trait, out.format = c("long", "wide"))
+summary_qual(data, group = NULL, trait, out.format = c("long", "wide"))
 }
 \arguments{
 \item{data}{The data as a data frame object. The data frame should possess
@@ -26,4 +26,40 @@ A \code{tibble} data.frame with the summary statistics.
 }
 \description{
 Summary Statistics of Qualitative and Quantitative trait data
+}
+\examples{
+library(agridat)
+library(dplyr)
+
+soydata <- australia.soybean
+
+soydata$year <- as.factor(soydata$year)
+
+quant_traits <- c("yield", "height", "lodging",
+                  "size", "protein", "oil")
+set.seed(123)
+soydata <-
+  soydata \%>\%
+  mutate(
+    across(
+      .cols = all_of(quant_traits),
+      .fns = ~factor(cut(.x, breaks = quantile(.x, na.rm = TRUE),
+                         include.lowest = TRUE),
+                     labels = sample(1:9, size = 4)),
+      .names = "{.col}_score"
+    )
+  )
+
+qual_traits <- c("yield_score", "height_score", "lodging_score",
+                 "size_score", "protein_score", "oil_score")
+
+summary_quant(data = soydata, trait = quant_traits)
+summary_qual(data = soydata, trait = qual_traits)
+
+summary_quant(data = soydata, group = "loc", trait = quant_traits)
+summary_qual(data = soydata, group = "loc", trait = qual_traits)
+
+summary_quant(data = soydata, group = c("loc", "year"), trait = quant_traits)
+summary_qual(data = soydata, group = c("loc", "year"), trait = qual_traits)
+
 }

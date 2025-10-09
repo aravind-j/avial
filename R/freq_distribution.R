@@ -60,12 +60,31 @@
 #' library(agridat)
 #' library(ggplot2)
 #' library(patchwork)
+#' library(dplyr)
 #'
 #' soydata <- australia.soybean
 #' soydata$gen <- as.character(soydata$gen)
 #' checks <- c("G01", "G05")
 #'
 #' check_cols <- c("#B2182B", "#2166AC")
+#'
+#' quant_traits <- c("yield", "height", "lodging",
+#'                   "size", "protein", "oil")
+#' set.seed(123)
+#' soydata <-
+#'   soydata %>%
+#'   mutate(
+#'     across(
+#'       .cols = all_of(quant_traits),
+#'       .fns = ~factor(cut(.x, breaks = quantile(.x, na.rm = TRUE),
+#'                          include.lowest = TRUE),
+#'                      labels = sample(1:9, size = 4)),
+#'       .names = "{.col}_score"
+#'     )
+#'   )
+#'
+#' qual_traits <- c("yield_score", "height_score", "lodging_score",
+#'                  "size_score", "protein_score", "oil_score")
 #'
 #'
 #' # Frequency distribution as histogram
@@ -209,6 +228,36 @@
 #' wrap_plots(freq_dens5[[1]], plot_spacer(), freq_dens5[[2]],
 #'            ncol = 1, heights = c(1, -0.5, 4))
 #'
+#' # Frequency counts of categorical data as a bar plot
+#' freq_bar1 <-
+#'   freq_distribution(data = soydata, trait = "lodging_score",
+#'                     hist = TRUE,
+#'                     hist.col = "lemonchiffon")
+#' freq_bar1
+#'
+#' # Frequency counts of categorical data as a bar plot with check values
+#' # highlighted as vertical lines
+#' freq_bar2 <-
+#'   freq_distribution(data = soydata, trait = "lodging_score",
+#'                     hist = TRUE,
+#'                     hist.col = "lemonchiffon",
+#'                     genotype = "gen",
+#'                     highlight.genotype.vline = TRUE,
+#'                     highlights = checks,
+#'                     highlight.col = check_cols)
+#' freq_bar2
+#'
+#' # Frequency counts of categorical data as a bar plot with check values
+#' # highlighted as a separate pointrange plot
+#' freq_bar3 <- freq_distribution(data = soydata, trait = "lodging_score",
+#'                                hist = TRUE,
+#'                                hist.col = "lemonchiffon",
+#'                                genotype = "gen",
+#'                                highlight.genotype.vline = TRUE,
+#'                                highlight.genotype.pointrange = TRUE,
+#'                                highlights = checks,
+#'                                highlight.col = check_cols)
+#' freq_bar3
 #'
 freq_distribution <- function(data, trait,
                               genotype = NULL,
@@ -352,9 +401,13 @@ freq_distribution <- function(data, trait,
                        colour = hist.border.col)
     } else {
       outg <- outg +
-        stat_count(show.legend = FALSE,
-                   fill = hist.col,
-                   colour = hist.border.col)
+        # stat_count(show.legend = FALSE,
+        #            fill = hist.col, colour = hist.border.col,
+        #            na.rm = TRUE)  +
+        geom_bar(show.legend = FALSE,
+                   fill = hist.col, colour = hist.border.col,
+                   na.rm = TRUE)  +
+        scale_x_discrete(na.translate = FALSE)
     }
   }
 
@@ -424,10 +477,15 @@ freq_distribution <- function(data, trait,
                     sqrt(length(.data[[trait]]
                                 [!is.na(.data[[trait]])])))
     } else {
-      data_summ_highlights <-
+     data_summ_highlights <-
         data[data[, genotype] %in% highlights, ] %>%
         group_by(.data[[trait]], .data[[genotype]]) %>%
         summarise(count = sum(!is.na(.data[[trait]])), .groups = 'drop')
+
+     data_summ_highlights <- data.frame(data_summ_highlights)
+
+     data_summ_highlights[, genotype] <-
+       as.factor(data_summ_highlights[, genotype])
 
       if (any(duplicated(data_summ_highlights[, trait]))) {
 
@@ -457,7 +515,7 @@ freq_distribution <- function(data, trait,
       outg <-
         outg +
         geom_vline(data = data_summ_highlights[data_summ_highlights$count != 0, ],
-                   aes(xintercept = pos_nudged, 2, colour = .data[[genotype]]),
+                   aes(xintercept = pos_nudged, colour = .data[[genotype]]),
                    linetype = "dashed", show.legend = TRUE) +
         scale_colour_manual(values = highlight.col)
     }
@@ -481,10 +539,13 @@ freq_distribution <- function(data, trait,
         geom_pointrange(aes(xmin = lower, xmax = upper),
                         colour = highlight.col)
     } else {
-      outg_h <- ggplot(data_summ_highlights,
-                       aes(y = .data[[genotype]], x = .data[[trait]],
-                           size = count)) +
-        geom_point(colour = highlight.col)
+      outg_h <-
+        ggplot(data_summ_highlights,
+               aes(y = .data[[genotype]], x = .data[[trait]],
+                   size = count)) +
+        geom_point(mapping = aes(colour = .data[[genotype]])) +
+        scale_colour_manual(values = highlight.col) +
+        guides(colour = "none", size = guide_legend(""))
     }
     outg_h <-
       outg_h +
@@ -497,9 +558,15 @@ freq_distribution <- function(data, trait,
                   layer_scales(outg)$x$range$range)
       if (!is.factor(data[, trait])) {
       outg_h <- outg_h + xlim(c(min(xrange), max(xrange)))
+      outg <- remove_scales(outg, scales = "x")
       outg <- outg + xlim(c(min(xrange), max(xrange)))
       } else {
+        xrange <- unique(xrange)
+        xrange_ord_ind <- order(as.numeric(xrange))
+        xrange <- xrange[xrange_ord_ind]
+
         outg_h <- outg_h + xlim(unique(xrange))
+        outg <- remove_scales(outg, scales = "x")
         outg <- outg + xlim(unique(xrange))
       }
     }

@@ -118,12 +118,31 @@ Plot Frequency Distribution and Density Plots
 library(agridat)
 library(ggplot2)
 library(patchwork)
+library(dplyr)
 
 soydata <- australia.soybean
 soydata$gen <- as.character(soydata$gen)
 checks <- c("G01", "G05")
 
 check_cols <- c("#B2182B", "#2166AC")
+
+quant_traits <- c("yield", "height", "lodging",
+                  "size", "protein", "oil")
+set.seed(123)
+soydata <-
+  soydata \%>\%
+  mutate(
+    across(
+      .cols = all_of(quant_traits),
+      .fns = ~factor(cut(.x, breaks = quantile(.x, na.rm = TRUE),
+                         include.lowest = TRUE),
+                     labels = sample(1:9, size = 4)),
+      .names = "{.col}_score"
+    )
+  )
+
+qual_traits <- c("yield_score", "height_score", "lodging_score",
+                 "size_score", "protein_score", "oil_score")
 
 
 # Frequency distribution as histogram
@@ -267,5 +286,35 @@ freq_dens5[[1]] <-
 wrap_plots(freq_dens5[[1]], plot_spacer(), freq_dens5[[2]],
            ncol = 1, heights = c(1, -0.5, 4))
 
+# Frequency counts of categorical data as a bar plot
+freq_bar1 <-
+  freq_distribution(data = soydata, trait = "lodging_score",
+                    hist = TRUE,
+                    hist.col = "lemonchiffon")
+freq_bar1
+
+# Frequency counts of categorical data as a bar plot with check values
+# highlighted as vertical lines
+freq_bar2 <-
+  freq_distribution(data = soydata, trait = "lodging_score",
+                    hist = TRUE,
+                    hist.col = "lemonchiffon",
+                    genotype = "gen",
+                    highlight.genotype.vline = TRUE,
+                    highlights = checks,
+                    highlight.col = check_cols)
+freq_bar2
+
+# Frequency counts of categorical data as a bar plot with check values
+# highlighted as a separate pointrange plot
+freq_bar3 <- freq_distribution(data = soydata, trait = "lodging_score",
+                               hist = TRUE,
+                               hist.col = "lemonchiffon",
+                               genotype = "gen",
+                               highlight.genotype.vline = TRUE,
+                               highlight.genotype.pointrange = TRUE,
+                               highlights = checks,
+                               highlight.col = check_cols)
+freq_bar3
 
 }

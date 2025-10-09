@@ -17,6 +17,7 @@
 #'
 #' @examples
 #' library(agridat)
+#' library(dplyr)
 #'
 #' soydata <- australia.soybean
 #'

@@ -55,6 +55,7 @@ reference:
          - '`groupwise_bar`'
          - '`groupwise_histogram`'
          - '`groupwise_dumbell`'
+         - '`uniform_barwidth_grid`'
          - '`remove_scales`'
          - '`dnorm_ggplot`'
 

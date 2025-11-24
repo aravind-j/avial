@@ -4,13 +4,20 @@
 \alias{pairwise.augmentedRCBD}
 \title{Perform Pairwise t Tests of Adjusted Means from \code{augmentedRCBD} Output}
 \usage{
-pairwise.augmentedRCBD(aug, cl = NULL, p.adjust = c("none", "tukey", "sidak"))
+pairwise.augmentedRCBD(
+  aug,
+  cl = NULL,
+  alpha = NULL,
+  p.adjust = c("none", "tukey", "sidak")
+)
 }
 \arguments{
 \item{aug}{An object of class \code{augmentedRCBD}.}
 
 \item{cl}{A cluster object created by \code{\link[parallel]{makeCluster}} for
 parallel evaluations.}
+
+\item{alpha}{Type I error probability (Significance level).}
 
 \item{p.adjust}{The p value adjustment method. Either \code{"none"},
 \code{"tukey"} or \code{"sidak"}.}
@@ -60,7 +67,7 @@ pout1 <- pairwise.augmentedRCBD(out1, cl = cl,
 stopCluster(cl)
 
 cl <- makeCluster(getOption("cl.cores", ncores))
-pout2 <- pairwise.augmentedRCBD(out1, cl = cl,
+pout2 <- pairwise.augmentedRCBD(out2, cl = cl,
                                 p.adjust = "none")
 stopCluster(cl)
 
@@ -71,7 +78,7 @@ pout1_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
 stopCluster(cl)
 
 cl <- makeCluster(getOption("cl.cores", ncores))
-pout2_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
+pout2_tukey <- pairwise.augmentedRCBD(out2, cl = cl,
                                       p.adjust = "tukey")
 stopCluster(cl)
 
@@ -82,7 +89,7 @@ pout1_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
 stopCluster(cl)
 
 cl <- makeCluster(getOption("cl.cores", ncores))
-pout2_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
+pout2_sidak <- pairwise.augmentedRCBD(out2, cl = cl,
                                       p.adjust = "sidak")
 stopCluster(cl)
 

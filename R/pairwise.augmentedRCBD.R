@@ -10,6 +10,7 @@
 #' computing with the package \code{\link[parallel]{parallel-package}}.
 #'
 #' @param aug An object of class \code{augmentedRCBD}.
+#' @param alpha Type I error probability (Significance level).
 #' @param cl A cluster object created by \code{\link[parallel]{makeCluster}} for
 #'   parallel evaluations.
 #' @param p.adjust The p value adjustment method. Either \code{"none"},
@@ -21,7 +22,7 @@
 #'
 #' @importFrom augmentedRCBD augmentedRCBD
 #' @importFrom parallel clusterExport makeCluster parLapply stopCluster
-#' @importFrom stats pt qtukey
+#' @importFrom stats pt ptukey
 #' @importFrom utils combn
 #' @export
 #'
@@ -56,7 +57,7 @@
 #' stopCluster(cl)
 #'
 #' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout2 <- pairwise.augmentedRCBD(out1, cl = cl,
+#' pout2 <- pairwise.augmentedRCBD(out2, cl = cl,
 #'                                 p.adjust = "none")
 #' stopCluster(cl)
 #'
@@ -67,7 +68,7 @@
 #' stopCluster(cl)
 #'
 #' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout2_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
+#' pout2_tukey <- pairwise.augmentedRCBD(out2, cl = cl,
 #'                                       p.adjust = "tukey")
 #' stopCluster(cl)
 #'
@@ -78,12 +79,22 @@
 #' stopCluster(cl)
 #'
 #' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout2_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
+#' pout2_sidak <- pairwise.augmentedRCBD(out2, cl = cl,
 #'                                       p.adjust = "sidak")
 #' stopCluster(cl)
 #'
 pairwise.augmentedRCBD <- function(aug, cl = NULL,
+                                   alpha = NULL,
                                    p.adjust = c("none", "tukey", "sidak")) {
+
+  p.adjust <- match.arg(p.adjust)
+
+  # alpha
+  if (!is.null(alpha)) {
+    if (!(0 < alpha && alpha < 1)) {
+      stop('"alpha" should be between 0 and 1 (0 < alpha < 1).')
+    }
+  }
 
   ntr <- aug$Details$`Number of treatments`
   n.pairs <- (ntr * (ntr - 1)) / 2
@@ -104,18 +115,19 @@ pairwise.augmentedRCBD <- function(aug, cl = NULL,
   SE <- aug$`Std. Errors`
 
   SEcol <- "Std. Error of Diff."
-  if (p.adjust == "tukey") {
-    if (!is.na(colnames(SE)[3])) {
-      SEcol <- colnames(SE)[3]
-    } else {
-      alpha <- gsub(pattern = "\\D", replacement = "", x = colnames(SE)[2])
-      alpha <- as.numeric(alpha) / 100
-      q0 <- qtukey(p = 1 - alpha, nmeans = length(treatment),
-                   df = df)
-      SE$THSD <- c((q0 * SE[1:3,]$`Std. Error of Diff.`)/sqrt(2), 0)
-      SEcol <- "THSD"
-    }
-  }
+
+  # if (p.adjust == "tukey") {
+  #   if (!is.na(colnames(SE)[3])) {
+  #     SEcol <- colnames(SE)[3]
+  #   } else {
+  #     alpha <- gsub(pattern = "\\D", replacement = "", x = colnames(SE)[2])
+  #     alpha <- as.numeric(alpha) / 100
+  #     q0 <- qtukey(p = 1 - alpha, nmeans = length(treatment),
+  #                  df = df)
+  #     SE$THSD <- c((q0 * SE[1:3,]$`Std. Error of Diff.`)/sqrt(2), 0)
+  #     SEcol <- "THSD"
+  #   }
+  # }
 
   clusterExport(cl, c("pairs_list", "SE",
                       "treatment", "block", "adjmeans", "df",
@@ -161,10 +173,28 @@ pairwise.augmentedRCBD <- function(aug, cl = NULL,
   # stopCluster(cl)
 
   pairs_aug <- dplyr::bind_rows(pairs_aug)
-  pairs_aug$p.value <- 2 * pt(q = pairs_aug$t.ratio, df = pairs_aug$df)
+  if (p.adjust != "tukey") {
+    pairs_aug$p.value <- 2 * pt(q = pairs_aug$t.ratio, df = pairs_aug$df)
+  }
+
   if (p.adjust == "sidak") {
     pairs_aug$p.value <-
       1 - (1 - pairs_aug$p.value) ^ length(pairs_aug$p.value)
+  }
+
+  if (p.adjust == "tukey") {
+
+    if (is.null(alpha)) {
+      alpha <- gsub(pattern = "\\D", replacement = "", x = colnames(SE)[2])
+      alpha <- as.numeric(alpha) / 100
+    }
+
+    MSE <- aug$`ANOVA, Block Adjusted`[[1]]["Residuals", "Mean Sq"]
+    q_stat <- abs(pairs_aug$estimate) / sqrt(MSE / df)
+
+    pairs_aug$p.value <- 1 - ptukey(q = pairs_aug$t.ratio,
+                                    nmeans = length(treatment),
+                                    df = pairs_aug$df)
   }
   pairs_aug$sig <- ifelse(pairs_aug$p.value < 0.001, "***",
                           ifelse(pairs_aug$p.value < 0.01, "**",

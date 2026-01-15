@@ -103,6 +103,7 @@ summary_quant <- function(data, group = NULL, trait,
   }
 
   out_wide <-
+
     summarise(.data = data,
               across(
                 .cols = all_of(trait),
@@ -115,14 +116,18 @@ summary_quant <- function(data, group = NULL, trait,
                   sd = ~sd(.x, na.rm = TRUE),
                   se = ~sd(.x, na.rm = TRUE) /
                     sqrt(length(.x[!is.na(.x)])),
-                  skew= ~moments::agostino.test(.x,
-                                                 alternative = "two.sided")$statistic["skew"],
-                  skew.pvalue = ~moments::agostino.test(.x,
-                                                 alternative = "two.sided")$p.value,
-                  kurt = ~moments::anscombe.test(.x,
-                                                 alternative = "two.sided")$statistic["kurt"],
-                  kurt.pvalue = ~moments::anscombe.test(.x,
-                                                        alternative = "two.sided")$p.value
+                  skew = ~ifelse(n_distinct(.x) == 1, NA,
+                                 moments::agostino.test(.x,
+                                                        alternative = "two.sided")$statistic["skew"]),
+                  skew.pvalue = ~ifelse(n_distinct(.x) == 1, NA,
+                                        moments::agostino.test(.x,
+                                                               alternative = "two.sided")$p.value),
+                  kurt = ~ifelse(n_distinct(.x) == 1, NA,
+                                 moments::anscombe.test(.x,
+                                                        alternative = "two.sided")$statistic["kurt"]),
+                  kurt.pvalue = ~ifelse(n_distinct(.x) == 1, NA,
+                                        moments::anscombe.test(.x,
+                                                               alternative = "two.sided")$p.value)
                 ),
                 .names = "{col}_#_{fn}"
               )

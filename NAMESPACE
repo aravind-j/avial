@@ -2,6 +2,7 @@
 
 export("%>%")
 export(binw)
+export(bootstrap.ci)
 export(diversity.calc)
 export(dnorm_ggplot)
 export(flatten.data.frame)

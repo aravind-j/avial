@@ -46,8 +46,19 @@ reference:
     - title: Helpers
       contents:
          - '`flatten.data.frame`'
-         - '`pairwise.augmentedRCBD`'
-         - '`summary_stats`'
+
+    - title: Plotting helpers
+      contents:
+         - '`binw`'
+
+    - title: Dendrogram helpers
+      contents:
+         - '`group_constrained_order`'
+         - '`reorder_dend_by_groups`'
+
+    - title: Diversity functions
+      contents:
+         - '`diversity.calc`'
 
     - title: Wrappers and helpers for `ggplot2`
       contents:
@@ -59,20 +70,17 @@ reference:
          - '`remove_scales`'
          - '`dnorm_ggplot`'
 
-    - title: Plotting helpers
-      contents:
-         - '`binw`'
-
     - title: Statistical functions
       contents:
          - '`pairwise.augmentedRCBD`'
          - '`mse.bartlett.test`'
+         - '`summary_stats`'
 
     - title: Prepare input files
       contents:
          - '`prep_mstrat_input`'
          - '`prep_powercore_input`'
 
-    - title: Prepare input files
+    - title: Prepare output files
       contents:
          - '`parse_mstrat_out`'

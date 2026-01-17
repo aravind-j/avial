@@ -1,0 +1,591 @@
+# Plot Group-wise Bar Plots
+
+Plot Group-wise Bar Plots
+
+## Usage
+
+``` r
+groupwise_bar(
+  data,
+  group,
+  trait,
+  bar.border = TRUE,
+  bar.alpha = 0.8,
+  by = c("group", "trait"),
+  relative.freq = FALSE,
+  subset = c("facet", "none"),
+  na.rm = TRUE,
+  include.overall = TRUE,
+  background.bar = TRUE,
+  background.bar.alpha = 0.25,
+  show.counts = TRUE,
+  count.text.size = 3,
+  position = c("dodge", "stack"),
+  ncol = NULL,
+  nrow = NULL
+)
+```
+
+## Arguments
+
+- data:
+
+  The data as a data frame object. The data frame should possess columns
+  specifying the group and trait.
+
+- group:
+
+  Name of column specifying the group as a character string.
+
+- trait:
+
+  Name of column specifying the trait as a character string.
+
+- bar.border:
+
+  logical. If `TRUE`, bar border is also plotted. Default is `TRUE`.
+
+- bar.alpha:
+
+  Alpha transparency for the group-wise bar plot.
+
+- by:
+
+  The factor according to which the bars have to be grouped. Either
+  `"group"` or `"trait"`.
+
+- relative.freq:
+
+  logical. If `TRUE`, the relative frequency or proportion is plotted
+  instead of counts. Default is `FALSE`.
+
+- subset:
+
+  The method for subsetting the plots according to the argument
+  `"group"`. Either `"facet"` for getting an plot using faceting in
+  `ggplot2` or `"list"` for getting a list of plots.
+
+- na.rm:
+
+  logical. If `TRUE`, the `NA` factor levels are excluded from the plot.
+  Default is `TRUE`.
+
+- include.overall:
+
+  logical. If `TRUE`, the overall or total data is also plotted. Default
+  is `TRUE`.
+
+- background.bar:
+
+  logical. If `TRUE`, the overall data is plotted as a background bar
+  plot when `by = "group"`, `include.overall = TRUE`, and
+  `position = "dodge"`. Default is `TRUE`.
+
+- background.bar.alpha:
+
+  Alpha transparency for the background bar plot.
+
+- show.counts:
+
+  logical. If `TRUE`, group wise counts are plotted as a text
+  annotation. Default is `TRUE`.
+
+- count.text.size:
+
+  The size of the count text annotation.
+
+- position:
+
+  Bar position adjustment. Either "dodge" or "stack".
+
+- ncol:
+
+  Number of columns when `subset = "facet"`.
+
+- nrow:
+
+  Number of rows when `subset = "facet"`.
+
+## Value
+
+The group-wise bar plot as a `ggplot2` plot grob or as a list of
+`ggplot2` plot grobs.
+
+## Examples
+
+``` r
+library(agridat)
+library(ggplot2)
+library(patchwork)
+
+soydata <- australia.soybean
+
+clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00", "gray25")
+clrs_dark <- colorspace::darken(clrs, amount = 0.2)
+
+soydata$lodging <- cut(soydata$lodging,
+                       breaks = quantile(soydata$lodging, na.rm = TRUE),
+                       include.lowest = TRUE)
+levels(soydata$lodging) <- 1:4
+
+# soydata[soydata$loc == "Nambour", ]$lodging <- NA
+# #soydata[soydata$lodging == 1, ]$lodging
+# soydata[!(is.na(soydata$lodging)) & soydata$lodging == 1, ]$lodging <- NA
+
+# set.seed(123)
+# ind <- sample(1:nrow(soydata), size = nrow(soydata) * 0.1, replace = FALSE)
+# soydata[ind, ]$lodging <- NA
+
+# Group-wise side-by-side bar plot with counts ----
+
+outg_group_dodge_count <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                subset = "none", position = "dodge")
+
+outg_group_dodge_count
+
+
+outg_group_dodge_count +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_dodge_count_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                subset = "facet", position = "dodge")
+
+outg_group_dodge_count_facet
+
+
+outg_group_dodge_count_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_dodge_count_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                subset = "list", position = "dodge")
+
+wrap_plots(outg_group_dodge_count_list, nrow = 2, guides = "collect")
+
+
+outg_group_dodge_count_list <-
+  lapply(seq_along(outg_group_dodge_count_list), function(i) {
+    outg_group_dodge_count_list[[i]] +
+      scale_fill_manual(values = clrs[i]) +
+      scale_colour_manual(values = clrs_dark[i])
+  })
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+
+wrap_plots(outg_group_dodge_count_list, nrow = 2, guides = "collect")
+
+
+# Group-wise side-by-side bar plot with relative frequencies ----
+
+outg_group_dodge_rfreq <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                relative.freq = TRUE,
+                subset = "none", position = "dodge")
+
+outg_group_dodge_rfreq
+
+
+outg_group_dodge_rfreq +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_dodge_rfreq_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                relative.freq = TRUE,
+                subset = "facet", position = "dodge")
+
+outg_group_dodge_rfreq_facet
+
+
+outg_group_dodge_rfreq_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_dodge_rfreq_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                relative.freq = TRUE,
+                subset = "list", position = "dodge")
+
+wrap_plots(outg_group_dodge_rfreq_list, nrow = 2, guides = "collect")
+
+
+outg_group_dodge_rfreq_list <-
+  lapply(seq_along(outg_group_dodge_rfreq_list), function(i) {
+    outg_group_dodge_rfreq_list[[i]] +
+      scale_fill_manual(values = clrs[i]) +
+      scale_colour_manual(values = clrs_dark[i])
+  })
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+
+wrap_plots(outg_group_dodge_rfreq_list, nrow = 2, guides = "collect")
+
+
+# Group-wise stacked bar plot with counts ----
+
+outg_group_stack_count <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                subset = "none", position = "stack")
+
+outg_group_stack_count
+
+
+outg_group_stack_count +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_stack_count_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                subset = "facet", position = "stack")
+
+outg_group_stack_count_facet
+
+
+outg_group_stack_count_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_stack_count_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                subset = "list", position = "stack")
+
+wrap_plots(outg_group_stack_count_list, nrow = 2, guides = "collect")
+
+
+outg_group_stack_count_list <-
+  lapply(seq_along(outg_group_stack_count_list), function(i) {
+    outg_group_stack_count_list[[i]] +
+      scale_fill_manual(values = clrs) +
+      scale_colour_manual(values = clrs_dark)
+  })
+
+wrap_plots(outg_group_stack_count_list, nrow = 2, guides = "collect")
+
+
+# Group-wise stacked bar plot with relative frequencies ----
+
+outg_group_stack_rfreq <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                relative.freq = TRUE,
+                subset = "none", position = "stack")
+
+outg_group_stack_rfreq
+
+
+outg_group_stack_rfreq +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_stack_rfreq_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                relative.freq = TRUE,
+                subset = "facet", position = "stack")
+
+outg_group_stack_rfreq_facet
+
+
+outg_group_stack_rfreq_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_group_stack_rfreq_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "group",
+                relative.freq = TRUE,
+                subset = "list", position = "stack")
+
+wrap_plots(outg_group_stack_rfreq_list, nrow = 2, guides = "collect")
+
+
+outg_group_stack_rfreq_list <-
+  lapply(seq_along(outg_group_stack_rfreq_list), function(i) {
+    outg_group_stack_rfreq_list[[i]] +
+      scale_fill_manual(values = clrs) +
+      scale_colour_manual(values = clrs_dark)
+  })
+
+wrap_plots(outg_group_stack_rfreq_list, nrow = 2, guides = "collect")
+
+
+
+# Trait-wise side-by-side bar plot with counts ----
+
+outg_trait_dodge_count <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                subset = "none", position = "dodge")
+
+outg_trait_dodge_count
+
+
+outg_trait_dodge_count +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_dodge_count_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                subset = "facet", position = "dodge")
+
+outg_trait_dodge_count_facet
+
+
+outg_trait_dodge_count_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_dodge_count_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                subset = "list", position = "dodge")
+
+wrap_plots(outg_trait_dodge_count_list, nrow = 2, guides = "collect")
+
+
+outg_trait_dodge_count_list <-
+  lapply(seq_along(outg_trait_dodge_count_list), function(i) {
+    outg_trait_dodge_count_list[[i]] +
+      scale_fill_manual(values = clrs[i]) +
+      scale_colour_manual(values = clrs_dark[i])
+  })
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+
+wrap_plots(outg_trait_dodge_count_list, nrow = 2, guides = "collect")
+
+
+# Trait-wise side-by-side bar plot with relative frequencies ----
+
+outg_trait_dodge_rfreq <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                relative.freq = TRUE,
+                subset = "none", position = "dodge")
+
+outg_trait_dodge_rfreq
+
+
+outg_trait_dodge_rfreq +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_dodge_rfreq_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                relative.freq = TRUE,
+                subset = "facet", position = "dodge")
+
+outg_trait_dodge_rfreq_facet
+
+
+outg_trait_dodge_rfreq_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_dodge_rfreq_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                relative.freq = TRUE,
+                subset = "list", position = "dodge")
+
+wrap_plots(outg_trait_dodge_rfreq_list, nrow = 2, guides = "collect")
+
+
+outg_trait_dodge_rfreq_list <-
+  lapply(seq_along(outg_trait_dodge_rfreq_list), function(i) {
+    outg_trait_dodge_rfreq_list[[i]] +
+      scale_fill_manual(values = clrs[i]) +
+      scale_colour_manual(values = clrs_dark[i])
+  })
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+#> Scale for colour is already present.
+#> Adding another scale for colour, which will replace the existing scale.
+
+wrap_plots(outg_trait_dodge_rfreq_list, nrow = 2, guides = "collect")
+
+
+# Trait-wise stacked bar plot with counts ----
+
+outg_trait_stack_count <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                subset = "none", position = "stack")
+
+outg_trait_stack_count
+
+
+outg_trait_stack_count +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_stack_count_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                subset = "facet", position = "stack")
+
+outg_trait_stack_count_facet
+
+
+outg_trait_stack_count_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_stack_count_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                subset = "list", position = "stack")
+
+wrap_plots(outg_trait_stack_count_list, nrow = 2, guides = "collect")
+
+
+outg_trait_stack_count_list <-
+  lapply(seq_along(outg_trait_stack_count_list), function(i) {
+    outg_trait_stack_count_list[[i]] +
+      scale_fill_manual(values = clrs) +
+      scale_colour_manual(values = clrs_dark)
+  })
+
+wrap_plots(outg_trait_stack_count_list, nrow = 2, guides = "collect")
+
+
+# Trait-wise stacked bar plot with relative frequencies ----
+
+outg_trait_stack_rfreq <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                relative.freq = TRUE,
+                subset = "none", position = "stack")
+
+outg_trait_stack_rfreq
+
+
+outg_trait_stack_rfreq +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_stack_rfreq_facet <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                relative.freq = TRUE,
+                subset = "facet", position = "stack")
+
+outg_trait_stack_rfreq_facet
+
+
+outg_trait_stack_rfreq_facet +
+  scale_fill_manual(values = clrs) +
+  scale_colour_manual(values = clrs_dark)
+
+
+outg_trait_stack_rfreq_list <-
+  groupwise_bar(data = soydata, group = "loc", trait = "lodging",
+                bar.border = TRUE, by = "trait",
+                relative.freq = TRUE,
+                subset = "list", position = "stack")
+
+wrap_plots(outg_trait_stack_rfreq_list, nrow = 2, guides = "collect")
+
+
+outg_trait_stack_rfreq_list <-
+  lapply(seq_along(outg_trait_stack_rfreq_list), function(i) {
+    outg_trait_stack_rfreq_list[[i]] +
+      scale_fill_manual(values = clrs) +
+      scale_colour_manual(values = clrs_dark)
+  })
+
+wrap_plots(outg_trait_stack_rfreq_list, nrow = 2, guides = "collect")
+
+```

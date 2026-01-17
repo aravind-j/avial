@@ -64,33 +64,39 @@ ncores <- max(2, parallel::detectCores() - 2)
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout1 <- pairwise.augmentedRCBD(out1, cl = cl,
                                 p.adjust = "none")
+pout1
 stopCluster(cl)
 
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout2 <- pairwise.augmentedRCBD(out2, cl = cl,
                                 p.adjust = "none")
+pout2
 stopCluster(cl)
 
 # Pairwise t test with tukey adjustment
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout1_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
                                       p.adjust = "tukey")
+pout1_tukey
 stopCluster(cl)
 
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout2_tukey <- pairwise.augmentedRCBD(out2, cl = cl,
                                       p.adjust = "tukey")
+pout2_tukey
 stopCluster(cl)
 
 # Pairwise t test with sidak p value adjustment
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout1_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
                                       p.adjust = "sidak")
+pout1_sidak
 stopCluster(cl)
 
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout2_sidak <- pairwise.augmentedRCBD(out2, cl = cl,
                                       p.adjust = "sidak")
+pout2_sidak
 stopCluster(cl)
 
 }

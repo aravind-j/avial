@@ -315,6 +315,11 @@ freq_bar3 <- freq_distribution(data = soydata, trait = "lodging_score",
                                highlight.genotype.pointrange = TRUE,
                                highlights = checks,
                                highlight.col = check_cols)
-freq_bar3
+freq_bar3[[1]] <-
+  freq_bar3[[1]] +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
+wrap_plots(freq_bar3[[1]], plot_spacer(), freq_bar3[[2]],
+           ncol = 1, heights = c(1, -0.5, 4))
 
 }

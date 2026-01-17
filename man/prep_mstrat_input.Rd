@@ -74,7 +74,7 @@ saved.}
 \description{
 Prepare input files for \code{MStrat}, a software for building germplasm core
 collections by maximizing allelic or phenotypic richness
-\insertCite{schoen_conservation_1993a,gouesnard_MSTRAT_2001,gouesnard_MStrat_2002}{avial}.
+\insertCite{schoen_Conservation_1993,gouesnard_MSTRAT_2001,gouesnard_MStrat_2002}{avial}.
 }
 \note{
 Any \code{NA} values will be considered as missing value and converted

@@ -1,9 +1,8 @@
 
-#' Permutation tests
+#' Permutation Tests
 #'
 #' These functions perform permutation-based hypothesis tests to compare groups
 #' with respect to a summary statistic (e.g., mean, diversity index).
-#'
 #' \itemize{ \item{\code{perm.test.global} performs a global test across all
 #' groups simultaneously, using a weighted sum of squares between group summary
 #' indices as the test statistic} \item{\code{perm.test.pairwise} performs
@@ -21,12 +20,52 @@
 #'   \code{"holm"}. Default is \code{"bonferroni"}.
 #' @param ... Additional arguments passed to \code{fun}.
 #'
-#' @returns
+#' @returns \describe{ \item{\code{perm.test.global}}{A list of the following
+#'   elements. \describe{ \item{test_stat}{The test statistic value.}
+#'   \item{observed_values}{The observed values for each group.}
+#'   \item{p_value}{The p value.} } } \item{\code{perm.test.pairwise}}{A data
+#'   frame of the following columns. \describe{
+#'   \item{Comparison}{The comparison.} \item{p.value}{The p value.}
+#'   \item{adj.p.value}{The adjusted p value.} } } }
 #'
 #' @name permutation_tests
 #' @rdname permutation_tests
 #'
 #' @examples
+#' library(EvaluateCore)
+#'
+#' pdata <- cassava_CC
+#'
+#' qual <- c("CUAL", "LNGS", "PTLC", "DSTA", "LFRT", "LBTEF", "CBTR", "NMLB",
+#'           "ANGB", "CUAL9M", "LVC9M", "TNPR9M", "PL9M", "STRP", "STRC",
+#'           "PSTR")
+#'
+#' # Conver '#t qualitative data columns to factor
+#' pdata[, qual] <- lapply(pdata[, qual], as.factor)
+#'
+#' str(pdata)
+#'
+#' # Global tests ----
+#'
+#' perm.test.global(x = pdata$NMSR, group = pdata$CUAL, fun = mean,
+#'                  R = 1000)
+#'
+#' perm.test.global(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
+#'                  R = 1000)
+#'
+#' perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
+#'                  R = 1000)
+#'
+#' # Pairwise tests ----
+#'
+#' perm.test.pairwise(x = pdata$NMSR, group = pdata$CUAL, fun = mean,
+#'                    R = 1000)
+#'
+#' perm.test.pairwise(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
+#'                    R = 1000)
+#'
+#' perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
+#'                  R = 1000)
 #'
 NULL
 
@@ -36,8 +75,10 @@ NULL
 perm.test.global <- function(x, group, fun, R = 1000, ...) {
 
   stopifnot(length(x) == length(group))
-  # stopifnot(is.factor(x))
+  stopifnot(is.factor(x) || is.numeric(x))
   stopifnot(is.factor(group))
+
+  group <- droplevels(group)
 
   # group-wise observed indices
   obs_indices <- tapply(x, group, fun, ...)
@@ -87,7 +128,7 @@ perm.test.global <- function(x, group, fun, R = 1000, ...) {
     (sum(null_stats >= test_stat) + 1) / (R + 1)
 
   out <- list(test_stat = test_stat,
-              observed_indices = obs_indices,
+              observed_values = obs_indices,
               p_value = p_val)
 
   return(out)
@@ -103,8 +144,10 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
   p.adjust.method <- match.arg(p.adjust.method)
 
   stopifnot(length(x) == length(group))
-  # stopifnot(is.factor(x))
+  stopifnot(is.factor(x) || is.numeric(x))
   stopifnot(is.factor(group))
+
+  group <- droplevels(group)
 
   lvls <- levels(group)
   pairs <- combn(lvls, 2, simplify = FALSE)
@@ -112,7 +155,7 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
   pw_results <- do.call(rbind, lapply(pairs, function(p) {
     # Filter for pair
     mask <- group %in% p
-    sub_x <- droplevels(x[mask])
+    sub_x <- x[mask]
     sub_g <- droplevels(group[mask])
     # Pairwise Permutation
     grp_levels <- levels(sub_g)

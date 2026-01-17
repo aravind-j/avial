@@ -11,7 +11,9 @@ Description: A bunch of miscellaneous R functions primarly for personal use.
 License: GPL-2 | GPL-3
 Encoding: UTF-8
 Imports: augmentedRCBD,
+    boot,
     data.table,
+    dendextend,
     dplyr,
     ggplot2,
     magrittr,
@@ -26,8 +28,8 @@ Imports: augmentedRCBD,
     tidyr
 Suggests: agridat,
     colorspace,
-    patchwork
-Remotes: aravind-j/EvaluateCore
+    EvaluateCore,
+    vegan
 RdMacros: mathjaxr,
     Rdpack
 LazyData: true

@@ -59,6 +59,7 @@ reference:
     - title: Diversity functions
       contents:
          - '`diversity.calc`'
+         - '`perm.test.global`'
 
     - title: Wrappers and helpers for `ggplot2`
       contents:
@@ -74,7 +75,8 @@ reference:
       contents:
          - '`pairwise.augmentedRCBD`'
          - '`mse.bartlett.test`'
-         - '`summary_stats`'
+         - '`summary_quant`'
+         - '`summary_qual`'
 
     - title: Prepare input files
       contents:

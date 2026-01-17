@@ -2,7 +2,7 @@
 #'
 #' Prepare input files for \code{MStrat}, a software for building germplasm core
 #' collections by maximizing allelic or phenotypic richness
-#' \insertCite{schoen_Conservation_1993a,gouesnard_MSTRAT_2001,gouesnard_MStrat_2002}{avial}.
+#' \insertCite{schoen_conservation_1993a,gouesnard_MSTRAT_2001,gouesnard_MStrat_2002}{avial}.
 #'
 #' @param data The data as a data frame object. The data frame should possess
 #'   columns with the genotype names and multiple quantitative and/or

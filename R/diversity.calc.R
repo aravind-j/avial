@@ -433,9 +433,9 @@ diversity.calc <- function(x, base = exp(1), na.omit = TRUE) {
               tsallis_entropy_0 = tsallis_entropy(x, q = 0, base = base),
               tsallis_entropy_1 = tsallis_entropy(x, q = 1, base = base),
               tsallis_entropy_2 = tsallis_entropy(x, q = 2, base = base),
-              hill_number_0 = hill_number(x, q = 0, base = base),
-              hill_number_1 = hill_number(x, q = 1, base = base),
-              hill_number_2 = hill_number(x, q = 2, base = base))
+              hill_number_0 = hill_number(x, q = 0),
+              hill_number_1 = hill_number(x, q = 1),
+              hill_number_2 = hill_number(x, q = 2))
 
   return(out)
 

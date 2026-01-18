@@ -532,7 +532,7 @@ mcintosh_diversity <- function(x) {
   (N - U) / (N - sqrt(N))
 }
 
-## # McIntosh Evenness
+## McIntosh Evenness
 mcintosh_evenness <- function(x) {
   x <- droplevels(x)
   n <- as.vector(table(x))

@@ -79,19 +79,15 @@ hill_stat_ci <- function(x, q = c(0, 1, 2)) {
   }, numeric(1))
 }
 
-renyi_stat_ci <- function(x, q = c(0, 1, 2), base = 2) {
+renyi_stat_ci <- function(x, q = c(0, 1, 2), base = exp(1)) {
   vapply(q, function(qq) {
     renyi_entropy(x, qq, base = base)
   }, numeric(1))
 }
 
-tsallis_stat_ci <- function(x, q = c(0, 1, 2), base = 2) {
+tsallis_stat_ci <- function(x, q = c(0, 1, 2), base = exp(1)) {
   vapply(q, function(qq) {
     tsallis_entropy(x, qq, base = base)
   }, numeric(1))
 }
-
-
-
-
 

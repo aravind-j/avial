@@ -267,7 +267,7 @@
 #' @param x A factor vector of categories (e.g., species, traits). The frequency
 #'   of each level is treated as the abundance of that category.
 #' @param base The logarithm base to be used for computation of different
-#'   diversity indices. Default is 2.
+#'   diversity indices. Default is \code{exp(1)}.
 #' @param na.omit logical. If \code{TRUE}, missing values (\code{NA}) are
 #'   ignored and not included as a distinct factor level for computation.
 #'   Default is \code{TRUE}.
@@ -390,7 +390,7 @@
 #' div_out2 <- lapply(abundance_site_raw, diversity.calc)
 #' do.call(rbind, div_out2)
 #'
-diversity.calc <- function(x, base = 2, na.omit = TRUE) {
+diversity.calc <- function(x, base = exp(1), na.omit = TRUE) {
 
   # check if 'x' is a factor vector
     if (!is.factor(x)) {
@@ -586,17 +586,6 @@ menhinick_index <- function(x) {
   S / sqrt(N)
 }
 
-# Hill numbers ----
-hill_number <- function(x, q = 1, base = 2) {
-  x <- droplevels(x)
-  p <- prop.table(table(x))
-  S <- length(p)
-  if(q == 1) {
-    exp(-sum(p * log(p, base = base)))
-  } else {
-    (sum(p ^ q)) ^ (1 / (1 - q))
-  }
-}
 
 # Brillouin index ----
 brillouin_index <- function(x) {
@@ -611,13 +600,25 @@ brillouin_index <- function(x) {
   }
   (ln_factorial(N) - sum(sapply(n, ln_factorial))) / N
 }
+# Parametric indicees ----
+# Hill number
+hill_number <- function(x, q = 1) {
+  x <- droplevels(x)
+  p <- prop.table(table(x))
+  S <- length(p)
+  if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
+    exp(-sum(p * log(p, base = exp(1)))) # hill numbers are base invariant
+  } else {
+    (sum(p ^ q)) ^ (1 / (1 - q))
+  }
+}
 
 # Rényi Entropy
-renyi_entropy <- function(x, q = 1, base = 2) {
+renyi_entropy <- function(x, q = 1, base = exp(1)) {
   x <- droplevels(x)
   p <- prop.table(table(x))
 
-  if(q == 1) {
+  if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
     -sum(p * log(p, base = base))
   } else {
     log(sum(p ^ q), base = base) / (1 - q)
@@ -625,11 +626,11 @@ renyi_entropy <- function(x, q = 1, base = 2) {
 }
 
 # Tsallis Entropy
-tsallis_entropy <- function(x, q = 1, base = 2) {
+tsallis_entropy <- function(x, q = 1, base = exp(1)) {
   x <- droplevels(x)
   p <- prop.table(table(x))
 
-  if(q == 1) {
+  if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
     -sum(p * log(p, base = base))
   } else {
     (1 - sum(p ^ q)) / (q - 1)

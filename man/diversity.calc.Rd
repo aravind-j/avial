@@ -4,14 +4,14 @@
 \alias{diversity.calc}
 \title{Compute Diversity Measures}
 \usage{
-diversity.calc(x, base = 2, na.omit = TRUE)
+diversity.calc(x, base = exp(1), na.omit = TRUE)
 }
 \arguments{
 \item{x}{A factor vector of categories (e.g., species, traits). The frequency
 of each level is treated as the abundance of that category.}
 
 \item{base}{The logarithm base to be used for computation of different
-diversity indices. Default is 2.}
+diversity indices. Default is \code{exp(1)}.}
 
 \item{na.omit}{logical. If \code{TRUE}, missing values (\code{NA}) are
 ignored and not included as a distinct factor level for computation.

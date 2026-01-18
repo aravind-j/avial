@@ -3,7 +3,8 @@
 #'
 #' This function generates bootstrap resamples using \code{\link[boot]{boot}}
 #' and computes confidence intervals using several standard bootstrap methods
-#' via \code{\link[boot]{boot.ci}}.
+#' via \code{\link[boot]{boot.ci}}. The indexing for the statistic function is
+#' handled internally.
 #'
 #' Supported interval types include normal approximation, basic, studentized
 #' (bootstrap-t), percentile, and bias-corrected and accelerated (BCa)
@@ -14,6 +15,11 @@
 #' @param x A numeric or factor vector of observations.
 #' @param fun A function to summarize the observations.
 #' @param R Integer specifying the number of permutations. Default is 1000.
+#' @param conf Confidence level of the interval. Default is 0.95.
+#' @param type A vector of character strings representing the type of intervals
+#'   required. The value should be any subset of the values \code{c("norm",
+#'   "basic", "stud", "perc", "bca")} or simply \code{"all"} which will compute
+#'   all five types of intervals.
 #' @inheritParams boot::boot
 #' @param ... Additional arguments passed to \code{fun}.
 #'
@@ -74,7 +80,7 @@
 #'   c(est, se)
 #' }
 #'
-#' bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")3
+#' bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")
 #'
 bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
                          type = c("norm", "basic", "stud", "perc", "bca"),
@@ -89,67 +95,159 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
 
   # Bootstrap (single statistic only)
   b <- boot::boot(x,
-    statistic = function(data, i) fun(data[i], ...),
-    R = R,
-    parallel = parallel,
-    ncpus = ncpus,
-    cl = cl)
+                  statistic = function(data, i) fun(data[i], ...),
+                  R = R,
+                  parallel = parallel,
+                  ncpus = ncpus,
+                  cl = cl)
+
+  # Clean NA / NaN from bootstrap replicates
+  b$t[is.nan(b$t)] <- NA
+  if (anyNA(b$t)) {
+    warning("Some bootstrap replicates contain NA/NaN values.",
+            call. = FALSE)
+  }
+
+  # Number of statistics
+  p <- if (is.null(dim(b$t))) {
+    1L
+  } else {
+    ncol(b$t)
+  }
 
   lower.prob <- (1 - conf) / 2
   upper.prob <- 1 - lower.prob
 
-  # Percentile fallback
-  perc_fallback <- function() {
-    q <- stats::quantile(b$t,
-      probs = c(lower.prob, upper.prob),
-      names = FALSE,
-      type = 6)
-    c(lower = q[1], upper = q[2])
+  # Percentile CI (vector-safe)
+  perc_ci <- function() {
+    if (p == 1L) {
+      q <- quantile(b$t, c(lower.prob, upper.prob),
+                    na.rm = TRUE, names = FALSE, type = 6)
+      c(lower = q[1], upper = q[2])
+    } else {
+      apply(b$t, 2, function(col) {
+        q <- quantile(col, c(lower.prob, upper.prob),
+                      na.rm = TRUE, names = FALSE, type = 6)
+        names(q) <- c("lower", "upper")
+        q
+      })
+    }
+  }
+
+  # Percentile CI (single value)
+  perc_ci_scalar <- function() {
+    q <- quantile(b$t[, 1],
+                  probs = c(lower.prob, upper.prob),
+                  na.rm = TRUE, names = FALSE, type = 6)
+    names(q) <- c("lower", "upper")
+    q
   }
 
   ci_out <- lapply(type, function(tp) {
 
-    # Percentile handled directly
+    # Percentile
     if (tp == "perc") {
-      return(perc_fallback())
+      return(perc_ci())
     }
 
-    ci <- try(suppressWarnings(
-        boot::boot.ci(b, type = tp, conf = conf)), silent = TRUE)
-
-    # Studentized-specific handling
+    ## Studentized CI ----
     if (tp == "stud") {
+
+      # Require estimate + SE
+      # !is.matrix(b$t) || ncol(b$t) != 2
+      if (!(is.matrix(b$t) && ncol(b$t) == 2)) {
+        warning("Studentized CI requires fun() to return c(estimate, SE); ",
+                "falling back to percentile CI.",
+                call. = FALSE)
+        return(perc_ci_scalar())
+      }
+
+      ci <-
+        try(suppressWarnings(boot::boot.ci(b, type = "stud",
+                                           conf = conf,
+                                           index = 1)),
+            silent = TRUE)
+
       if (inherits(ci, "try-error") || is.null(ci$stud)) {
-        warning(
-          "Studentized intervals require bootstrap standard errors; ",
-          "falling back to percentile CI.",
-          call. = FALSE
-        )
-        return(perc_fallback())
+        warning("Studentized CI failed; falling back to percentile CI.",
+                call. = FALSE)
+        return(perc_ci_scalar())
+      }
+
+      out <- ci$stud[4:5]
+      names(out) <- c("lower", "upper")
+      return(out)
+    }
+
+    ## OTHER CI TYPES (norm, basic, bca) -----
+    if (p == 1L) {
+      ci <- try(suppressWarnings(boot::boot.ci(b, type = tp, conf = conf)),
+                silent = TRUE)
+
+      tp2 <- tp
+      tp2 <- ifelse(tp2 == "norm", "normal", tp2)
+
+      if (inherits(ci, "try-error") || is.null(ci[[tp2]])) {
+        warning(tp, " CI failed; using percentile CI.", call. = FALSE)
+        return(perc_ci())
+      }
+
+      if (tp == "norm") {
+        out <- ci[[tp2]][2:3]
+      } else {
+        out <- ci[[tp2]][4:5]
+      }
+
+      names(out) <- c("lower", "upper")
+      return(out)
+    }
+
+    # Vector-valued -> index loop
+    out <- matrix(NA_real_, nrow = 2, ncol = p,
+                  dimnames = list(c("lower", "upper"), NULL))
+
+    perc <- perc_ci()
+
+    for (i in seq_len(p)) {
+      ci <-
+        try(suppressWarnings(boot::boot.ci(b, type = tp,
+                                           conf = conf,
+                                           index = i)),
+            silent = TRUE)
+
+      tp2 <- tp
+      tp2 <- ifelse(tp2 == "norm", "normal", tp2)
+
+      if (!inherits(ci, "try-error") && !is.null(ci[[tp2]])) {
+        if (tp == "norm") {
+          out[, i] <- ci[[tp2]][2:3]
+        } else {
+          out[, i] <- ci[[tp2]][4:5]
+        }
+      } else {
+        warning(sprintf("%s CI failed for component %d; using percentile CI.",
+                        tp, i),
+                call. = FALSE)
+        out[, i] <- perc[, i]
       }
     }
 
-    # General failure fallback
-    if (inherits(ci, "try-error") || is.null(ci[[tp]])) {
-      return(perc_fallback())
-    }
-
-    out <- ci[[tp]][4:5]
-    names(out) <- c("lower", "upper")
     out
   })
+
 
   names(ci_out) <- type
 
   # Attach common summaries
   attr(ci_out, "observed") <- b$t0
-  attr(ci_out, "mean") <- mean(b$t)
+  # attr(ci_out, "mean") <- mean(b$t)
+  attr(ci_out, "mean") <- if (is.null(dim(b$t))) {
+    mean(b$t, na.rm = TRUE)
+  } else {
+    colMeans(b$t, na.rm = TRUE)
+  }
   attr(ci_out, "R") <- R
   attr(ci_out, "conf") <- conf
 
   ci_out
 }
-
-
-
-

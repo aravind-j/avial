@@ -23,6 +23,13 @@ bootstrap.ci(
 
 \item{R}{Integer specifying the number of permutations. Default is 1000.}
 
+\item{conf}{Confidence level of the interval. Default is 0.95.}
+
+\item{type}{A vector of character strings representing the type of intervals
+required. The value should be any subset of the values \code{c("norm",
+"basic", "stud", "perc", "bca")} or simply \code{"all"} which will compute
+all five types of intervals.}
+
 \item{parallel}{
     The type of parallel operation to be used (if any).  If missing, the
     default is taken from the option \code{"boot.parallel"} (and if that
@@ -50,7 +57,8 @@ A a named list of confidence intervals, each containing lower and
 \description{
 This function generates bootstrap resamples using \code{\link[boot]{boot}}
 and computes confidence intervals using several standard bootstrap methods
-via \code{\link[boot]{boot.ci}}.
+via \code{\link[boot]{boot.ci}}. The indexing for the statistic function is
+handled internally.
 }
 \details{
 Supported interval types include normal approximation, basic, studentized
@@ -111,6 +119,6 @@ stat_fun_shannon <- function(x, base = 2) {
   c(est, se)
 }
 
-bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")3
+bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")
 
 }

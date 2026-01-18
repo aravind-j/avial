@@ -144,6 +144,13 @@ ggplot(renyi_profile1_df, aes(x = q, y = mean,
        color = "Group", fill = "Group") +
   theme_bw()
 
+ggplot(renyi_profile1_df, aes(x = q, y = mean)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
+  geom_line(color = "black", linewidth = 1) +
+  facet_wrap(~ group, scales = "free_y") +
+  labs(x = "Order (q)", y = "Hill number") +
+  theme_bw()
+
 # Tsallis profile - Percentile CIs ----
 
 tsallis_profile1 <-

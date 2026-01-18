@@ -42,12 +42,44 @@
 #'
 #' str(pdata)
 #'
-#' # Bootstrap CIs
+#' # Bootstrap CIs ----
 #'
 #' bootstrap.ci(pdata$NMSR, mean, type = "norm")
 #' bootstrap.ci(pdata$NMSR, mean, type = "basic")
 #' bootstrap.ci(pdata$NMSR, mean, type = "perc")
 #' bootstrap.ci(pdata$NMSR, mean, type = "bca")
+#'
+#' # Simpson's Index (d)
+#' simpson <- function(x) {
+#'   x <- droplevels(x)
+#'   sum(prop.table(table(x)) ^ 2)
+#' }
+#'
+#' # Shannon-Wiener Diversity Index (H)
+#' shannon <- function(x, base = 2) {
+#'   x <- droplevels(x)
+#'   p <- prop.table(table(x))
+#'   -sum(p * log(p, base = base))
+#' }
+#'
+#' # McIntosh Index
+#' mcintosh_diversity <- function(x) {
+#'   x <- droplevels(x)
+#'   n <- as.vector(table(x))
+#'   N <- sum(n)
+#'   U <- sqrt(sum(n^2))
+#'   (N - U) / (N - sqrt(N))
+#' }
+#'
+#' # McIntosh Evenness
+#' mcintosh_evenness <- function(x) {
+#'   x <- droplevels(x)
+#'   n <- as.vector(table(x))
+#'   N <- sum(n)
+#'   U <- sqrt(sum(n^2))
+#'   S <- length(levels(x))
+#'   (N - U) / (N - (N / sqrt(S)))
+#' }
 #'
 #' bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 #' bootstrap.ci(pdata$PTLC, simpson, type = "basic")

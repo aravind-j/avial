@@ -61,6 +61,7 @@ reference:
          - '`diversity.calc`'
          - '`perm.test.global`'
          - '`bootstrap.ci`'
+         - '`diversity.profile`'
 
     - title: Wrappers and helpers for `ggplot2`
       contents:

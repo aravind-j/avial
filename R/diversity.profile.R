@@ -10,9 +10,7 @@
 #' @param parameter The parametric index. Options include \code{"hill"},
 #'   \code{"renyi"} and \code{"tsallis"}. Default is \code{"hill"}.
 #' @param ci.type A vector of character strings representing the type of
-#'   intervals required. The value should be any subset of the values
-#'   \code{c("norm", "basic", "stud", "perc", "bca")} or simply \code{"all"}
-#'   which will compute all five types of intervals.
+#'   intervals required. The options are \code{c("perc", "bca")}.
 #' @inheritParams boot::boot
 #' @param ...
 #'
@@ -22,6 +20,224 @@
 #' @export
 #'
 #' @examples
+#'
+#' library(EvaluateCore)
+#' library(dplyr)
+#' library(ggplot2)
+#'
+#' pdata <- cassava_CC
+#'
+#' qual <- c("CUAL", "LNGS", "PTLC", "DSTA", "LFRT", "LBTEF", "CBTR", "NMLB",
+#'           "ANGB", "CUAL9M", "LVC9M", "TNPR9M", "PL9M", "STRP", "STRC",
+#'           "PSTR")
+#'
+#' # Convert qualitative data columns to factor
+#' pdata[, qual] <- lapply(pdata[, qual], as.factor)
+#'
+#' str(pdata)
+#'
+#' important_q <- c(0, 1, 2)
+#' important_labels <- c("0D", "1D", "2D")
+#'
+#' # Hill profile - Percentile CIs ----
+#'
+#' hill_profile1 <-
+#'   diversity.profile(x = pdata$CUAL, group = pdata$LNGS,
+#'                     parameter = "hill", ci.type = "perc")
+#' hill_profile1
+#'
+#' hill_profile1_df <- dplyr::bind_rows(hill_profile1, .id = "group")
+#'
+#' hill_points1_df <- hill_profile1_df %>%
+#'   filter(q %in% important_q) %>%
+#'   mutate(order_label = factor(q, levels = important_q,
+#'                               labels = important_labels))
+#'
+#' ggplot(hill_profile1_df, aes(x = q, y = mean,
+#'                              color = group, fill = group)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
+#'   geom_line(linewidth = 1) +
+#'   geom_vline(xintercept = c(0, 1, 2), linetype = "dashed",
+#'              color = "grey60") +
+#'   geom_point(data = hill_points1_df, aes(shape = order_label),
+#'     size = 3, stroke = 1, inherit.aes = TRUE) +
+#'   scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+#'   labs(x = "Order (q)", y = "Hill number",
+#'     color = "Group", fill = "Group") +
+#'   theme_bw()
+#'
+#' ggplot(hill_profile1_df, aes(x = q, y = mean)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
+#'   geom_line(color = "black", linewidth = 1) +
+#'   facet_wrap(~ group, scales = "free_y") +
+#'   labs(x = "Order (q)", y = "Hill number") +
+#'   theme_bw()
+#'
+#' # Rényi profile - Percentile CIs ----
+#'
+#' renyi_profile1 <-
+#'   diversity.profile(pdata$CUAL, group = pdata$LNGS,
+#'                     parameter = "renyi", ci.type = "perc")
+#' renyi_profile1
+#'
+#' renyi_profile1_df <- dplyr::bind_rows(renyi_profile1, .id = "group")
+#'
+#' renyi_points1_df <- renyi_profile1_df %>%
+#'   filter(q %in% important_q) %>%
+#'   mutate(order_label = factor(q, levels = important_q,
+#'                               labels = important_labels))
+#'
+#' ggplot(renyi_profile1_df, aes(x = q, y = mean,
+#'                               color = group, fill = group)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
+#'   geom_line(linewidth = 1) +
+#'   geom_vline(xintercept = c(0, 1, 2), linetype = "dashed",
+#'              color = "grey60") +
+#'   geom_point(data = renyi_points1_df, aes(shape = order_label),
+#'              size = 3, stroke = 1, inherit.aes = TRUE) +
+#'   scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+#'   labs(x = "Order (q)", y = "Hill number",
+#'        color = "Group", fill = "Group") +
+#'   theme_bw()
+#'
+#' # Tsallis profile - Percentile CIs ----
+#'
+#' tsallis_profile1 <-
+#'   diversity.profile(pdata$CUAL, group = pdata$LNGS,
+#'                     parameter = "tsallis", ci.type = "perc")
+#' tsallis_profile1 <-
+#'   diversity.profile(x = pdata$CUAL, group = pdata$LNGS,
+#'                     parameter = "hill", ci.type = "perc")
+#' tsallis_profile1
+#'
+#' tsallis_profile1_df <- dplyr::bind_rows(tsallis_profile1, .id = "group")
+#'
+#' tsallis_points1_df <- tsallis_profile1_df %>%
+#'   filter(q %in% important_q) %>%
+#'   mutate(order_label = factor(q, levels = important_q,
+#'                               labels = important_labels))
+#'
+#' ggplot(tsallis_profile1_df, aes(x = q, y = mean,
+#'                                 color = group, fill = group)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
+#'   geom_line(linewidth = 1) +
+#'   geom_vline(xintercept = c(0, 1, 2), linetype = "dashed",
+#'              color = "grey60") +
+#'   geom_point(data = tsallis_points1_df, aes(shape = order_label),
+#'              size = 3, stroke = 1, inherit.aes = TRUE) +
+#'   scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+#'   labs(x = "Order (q)", y = "Hill number",
+#'        color = "Group", fill = "Group") +
+#'   theme_bw()
+#'
+#' ggplot(tsallis_profile1_df, aes(x = q, y = mean)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
+#'   geom_line(color = "black", linewidth = 1) +
+#'   facet_wrap(~ group, scales = "free_y") +
+#'   labs(x = "Order (q)", y = "Hill number") +
+#'   theme_bw()
+#'
+#' # Hill profile - BCa CIs ----
+#'
+#' hill_profile2 <-
+#'   diversity.profile(pdata$CUAL, group = pdata$LNGS,
+#'                     parameter = "hill", ci.type = "bca")
+#' hill_profile2
+#'
+#' hill_profile2_df <- dplyr::bind_rows(hill_profile2, .id = "group")
+#'
+#' hill_points2_df <- hill_profile2_df %>%
+#'   filter(q %in% important_q) %>%
+#'   mutate(order_label = factor(q, levels = important_q,
+#'                               labels = important_labels))
+#'
+#' ggplot(hill_profile2_df, aes(x = q, y = mean,
+#'                              color = group, fill = group)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
+#'   geom_line(linewidth = 1) +
+#'   geom_vline(xintercept = c(0, 1, 2), linetype = "dashed",
+#'              color = "grey60") +
+#'   geom_point(data = hill_points2_df, aes(shape = order_label),
+#'              size = 3, stroke = 1, inherit.aes = TRUE) +
+#'   scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+#'   labs(x = "Order (q)", y = "Hill number",
+#'        color = "Group", fill = "Group") +
+#'   theme_bw()
+#'
+#' ggplot(hill_profile2_df, aes(x = q, y = mean)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
+#'   geom_line(color = "black", linewidth = 1) +
+#'   facet_wrap(~ group, scales = "free_y") +
+#'   labs(x = "Order (q)", y = "Hill number") +
+#'   theme_bw()
+#'
+#' # Rényi profile - BCa CIs ----
+#'
+#' renyi_profile2 <-
+#'   diversity.profile(pdata$CUAL, group = pdata$LNGS,
+#'                     parameter = "renyi", ci.type = "bca")
+#' renyi_profile2
+#'
+#' renyi_profile2_df <- dplyr::bind_rows(renyi_profile2, .id = "group")
+#'
+#' renyi_points2_df <- renyi_profile2_df %>%
+#'   filter(q %in% important_q) %>%
+#'   mutate(order_label = factor(q, levels = important_q,
+#'                               labels = important_labels))
+#'
+#' ggplot(renyi_profile2_df, aes(x = q, y = mean,
+#'                               color = group, fill = group)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
+#'   geom_line(linewidth = 1) +
+#'   geom_vline(xintercept = c(0, 1, 2), linetype = "dashed",
+#'              color = "grey60") +
+#'   geom_point(data = renyi_points2_df, aes(shape = order_label),
+#'              size = 3, stroke = 1, inherit.aes = TRUE) +
+#'   scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+#'   labs(x = "Order (q)", y = "Hill number",
+#'        color = "Group", fill = "Group") +
+#'   theme_bw()
+#'
+#' ggplot(renyi_profile2_df, aes(x = q, y = mean)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
+#'   geom_line(color = "black", linewidth = 1) +
+#'   facet_wrap(~ group, scales = "free_y") +
+#'   labs(x = "Order (q)", y = "Hill number") +
+#'   theme_bw()
+#'
+#' # Tsallis profile - BCa CIs ----
+#'
+#' tsallis_profile2 <-
+#'   diversity.profile(pdata$CUAL, group = pdata$LNGS,
+#'                     parameter = "tsallis", ci.type = "bca")
+#' tsallis_profile2
+#'
+#' tsallis_profile2_df <- dplyr::bind_rows(tsallis_profile2, .id = "group")
+#'
+#' tsallis_points2_df <- tsallis_profile2_df %>%
+#'   filter(q %in% important_q) %>%
+#'   mutate(order_label = factor(q, levels = important_q,
+#'                               labels = important_labels))
+#'
+#' ggplot(tsallis_profile2_df, aes(x = q, y = mean,
+#'                                 color = group, fill = group)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
+#'   geom_line(linewidth = 1) +
+#'   geom_vline(xintercept = c(0, 1, 2), linetype = "dashed",
+#'              color = "grey60") +
+#'   geom_point(data = tsallis_points2_df, aes(shape = order_label),
+#'              size = 3, stroke = 1, inherit.aes = TRUE) +
+#'   scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+#'   labs(x = "Order (q)", y = "Hill number",
+#'        color = "Group", fill = "Group") +
+#'   theme_bw()
+#'
+#' ggplot(tsallis_profile2_df, aes(x = q, y = mean)) +
+#'   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
+#'   geom_line(color = "black", linewidth = 1) +
+#'   facet_wrap(~ group, scales = "free_y") +
+#'   labs(x = "Order (q)", y = "Hill number") +
+#'   theme_bw()
 diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
                               conf = 0.95, R = 1000,
                               parameter = c("hill", "renyi", "tsallis"),

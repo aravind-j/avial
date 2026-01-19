@@ -48,7 +48,12 @@
 #'
 #' # Make cluster
 #' library(parallel)
-#' ncores <- max(2, parallel::detectCores() - 2)
+#' # Check if running under R CMD check and adjust cores accordingly
+#' if (nzchar(Sys.getenv("_R_CHECK_LIMIT_CORES_"))) {
+#'   ncores <- 2
+#' } else {
+#'   ncores <- max(2L, parallel::detectCores() - 2)
+#' }
 #'
 #' # Pairwise t test without p value adjustment
 #' cl <- makeCluster(getOption("cl.cores", ncores))

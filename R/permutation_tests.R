@@ -18,6 +18,7 @@
 #' @param p.adjust.method (perm.test.pairwise only) Method for adjusting
 #'   p-values for multiple comparisons. Options include \code{"bonferroni"} and
 #'   \code{"holm"}. Default is \code{"bonferroni"}.
+#' @inheritParams boot::boot
 #' @param ... Additional arguments passed to \code{fun}.
 #'
 #' @returns \describe{ \item{\code{perm.test.global}}{A list of the following
@@ -72,7 +73,13 @@ NULL
 # Global permutation test ----
 #' @rdname permutation_tests
 #' @export
-perm.test.global <- function(x, group, fun, R = 1000, ...) {
+perm.test.global <- function(x, group, fun, R = 1000,
+                             parallel = c("no", "multicore", "snow"),
+                             ncpus = 1L,
+                             cl = NULL,
+                             ...) {
+
+  parallel <- match.arg(parallel)
 
   stopifnot(length(x) == length(group))
   stopifnot(is.factor(x) || is.numeric(x))
@@ -104,23 +111,25 @@ perm.test.global <- function(x, group, fun, R = 1000, ...) {
   # test_stat <-  sum(obs_indices^2 * counts)
 
   # permutation loop to get null variance
-  null_stats <- vapply(seq_len(R), function(i) {
-    shuffled_group <- sample(group)
-    perm_indices <- tapply(x, shuffled_group, fun, ...)
+  null_stats <-
+    apply_parallel(seq_len(R), function(i) {
+      shuffled_group <- sample(group)
+      perm_indices <- tapply(x, shuffled_group, fun, ...)
 
-    perm_tab <- table(shuffled_group)
-    perm_counts <- as.vector(perm_tab)
-    names(perm_counts) <- names(perm_tab)
+      perm_tab <- table(shuffled_group)
+      perm_counts <- as.vector(perm_tab)
+      names(perm_counts) <- names(perm_tab)
 
-    # enforce order
-    perm_indices <- perm_indices[names(perm_counts)]
+      # enforce order
+      perm_indices <- perm_indices[names(perm_counts)]
 
-    perm_grand_mean <- sum(perm_indices * perm_counts) / sum(perm_counts)
+      perm_grand_mean <- sum(perm_indices * perm_counts) / sum(perm_counts)
 
-    # var(perm_indices)
-    sum(perm_counts * ((perm_indices - perm_grand_mean) ^ 2))
-    # sum(perm_indices^2 * perm_counts)
-  }, numeric(1))
+      # var(perm_indices)
+      sum(perm_counts * ((perm_indices - perm_grand_mean) ^ 2))
+      # sum(perm_indices^2 * perm_counts)
+    }, parallel = parallel, ncpus = ncpus, cl = cl)
+  null_stats <- sapply(null_stats, identity)
 
   # Calculate P-value
   # phipson_permutation_2010
@@ -139,7 +148,12 @@ perm.test.global <- function(x, group, fun, R = 1000, ...) {
 #' @export
 perm.test.pairwise <- function(x, group, fun, R = 1000,
                                p.adjust.method = c("bonferroni", "holm"),
+                               parallel = c("no", "multicore", "snow"),
+                               ncpus = 1L,
+                               cl = NULL,
                                ...)  {
+
+  parallel <- match.arg(parallel)
 
   p.adjust.method <- match.arg(p.adjust.method)
 
@@ -152,7 +166,18 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
   lvls <- levels(group)
   pairs <- combn(lvls, 2, simplify = FALSE)
 
-  pw_results <- do.call(rbind, lapply(pairs, function(p) {
+  if (parallel == "snow") {
+    parallel::clusterSetRNGStream(cl, iseed = 123)
+  }
+
+  pw_results_list <- vector("list", length(pairs))
+  names(pw_results_list) <-
+    vapply(pairs, function(p) {
+      paste(p[1], "vs", p[2])
+    }, character(1))
+
+  for (i in seq_along(pairs)) {
+    p <- pairs[[i]]
     # Filter for pair
     mask <- group %in% p
     sub_x <- x[mask]
@@ -163,19 +188,24 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
     obs_vals <- obs_vals[grp_levels]
     obs_diff <- abs(diff(obs_vals[grp_levels]))  # two-tailed
 
-    null_diffs <- vapply(seq_len(R), function(i) {
-      perm_g <- sample(sub_g)
-      perm_vals <- tapply(sub_x, perm_g, fun, ...)
-      perm_vals <- perm_vals[grp_levels]
-      abs(diff(perm_vals[grp_levels]))
-    }, numeric(1))
+    null_diffs <-
+      apply_parallel(seq_len(R), function(i) {
+        perm_g <- sample(sub_g)
+        perm_vals <- tapply(sub_x, perm_g, fun, ...)
+        perm_vals <- perm_vals[grp_levels]
+        abs(diff(perm_vals[grp_levels]))
+      }, parallel = parallel, ncpus = ncpus, cl = cl)
 
     # phipson_permutation_2010
     p_val <- # mean(null_diffs >= obs_diff)
       (sum(null_diffs >= obs_diff) + 1) / (R + 1)
 
-    data.frame(Comparison = paste(p[1], "vs", p[2]), p.value = p_val)
-  }))
+    # data.frame(Comparison = paste(p[1], "vs", p[2]), p.value = p_val)
+    data.frame(p.value = p_val)
+    pw_results_list[[i]] <- data.frame(p.value = p_val)
+  }
+
+  pw_results <- dplyr::bind_rows(pw_results_list, .id = "Comparison")
 
   # P-value correction
   # pw_results$adj.p.value <- pmin(pw_results$p.value * nrow(pw_results), 1)
@@ -184,3 +214,29 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
   return(pw_results)
 }
+
+
+# parallel lapply switch function ----
+apply_parallel <- function(X, FUN,
+                           parallel = c("no", "multicore", "snow"),
+                           ncpus = 1L,
+                           cl = NULL,
+                           ...) {
+
+  parallel <- match.arg(parallel)
+
+  if (parallel == "no") {
+    # Sequential
+    lapply(X, FUN, ...)
+
+  } else if (parallel == "multicore") {
+    # Unix only
+    parallel::mclapply(X, FUN, mc.cores = ncpus, ...)
+
+  } else if (parallel == "snow") {
+    # Windows & snow clusters
+    if (is.null(cl)) stop("Please supply a cluster object 'cl' for snow mode")
+    parallel::parLapply(cl, X, FUN, ...)
+  }
+}
+

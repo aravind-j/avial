@@ -6,7 +6,16 @@
 \alias{perm.test.pairwise}
 \title{Permutation Tests}
 \usage{
-perm.test.global(x, group, fun, R = 1000, ...)
+perm.test.global(
+  x,
+  group,
+  fun,
+  R = 1000,
+  parallel = c("no", "multicore", "snow"),
+  ncpus = 1L,
+  cl = NULL,
+  ...
+)
 
 perm.test.pairwise(
   x,
@@ -14,6 +23,9 @@ perm.test.pairwise(
   fun,
   R = 1000,
   p.adjust.method = c("bonferroni", "holm"),
+  parallel = c("no", "multicore", "snow"),
+  ncpus = 1L,
+  cl = NULL,
   ...
 )
 }
@@ -26,6 +38,23 @@ have the same length as \code{x}.}
 \item{fun}{A function to summarize values within each group.}
 
 \item{R}{Integer specifying the number of permutations. Default is 1000.}
+
+\item{parallel}{
+    The type of parallel operation to be used (if any).  If missing, the
+    default is taken from the option \code{"boot.parallel"} (and if that
+    is not set, \code{"no"}).
+  }
+
+\item{ncpus}{
+    integer: number of processes to be used in parallel operation:
+    typically one would chose this to the number of available CPUs.
+  }
+
+\item{cl}{
+    An optional \pkg{parallel} or \pkg{snow} cluster for use if
+    \code{parallel = "snow"}.  If not supplied, a cluster on the
+    local machine is created for the duration of the \code{boot} call.
+  }
 
 \item{...}{Additional arguments passed to \code{fun}.}
 

@@ -266,8 +266,8 @@
 #'
 #' @param x A factor vector of categories (e.g., species, traits). The frequency
 #'   of each level is treated as the abundance of that category.
-#' @param base The logarithm base to be used for computation of different
-#'   diversity indices. Default is \code{exp(1)}.
+#' @param base The logarithm base to be used for computation of shannon family
+#'   of diversity indices. Default is \code{exp(1)}.
 #' @param na.omit logical. If \code{TRUE}, missing values (\code{NA}) are
 #'   ignored and not included as a distinct factor level for computation.
 #'   Default is \code{TRUE}.
@@ -277,8 +277,9 @@
 #'   Index (\mjseqn{D_{Margalef}})
 #'   \insertCite{margalef_information_1973}{avial}}
 #'   \item{menhinick_index}{Menhinick's Index (\mjseqn{D_{Menhinick}})
-#'   \insertCite{menhinick_comparison_1964}{avial}} \item{berger_parker}{Berger–Parker Index
-#'   (\mjseqn{D_{BP}}) \insertCite{berger_diversity_1970}{avial}}
+#'   \insertCite{menhinick_comparison_1964}{avial}}
+#'   \item{berger_parker}{Berger–Parker Index (\mjseqn{D_{BP}})
+#'   \insertCite{berger_diversity_1970}{avial}}
 #'   \item{berger_parker_reciprocal}{Reciprocal Berger–Parker Index
 #'   (\mjseqn{D_{BP_{R}}}) \insertCite{magurran_measuring_2011}{avial}}
 #'   \item{simpson}{Simpson's index (\mjseqn{d})
@@ -393,9 +394,9 @@
 diversity.calc <- function(x, base = exp(1), na.omit = TRUE) {
 
   # check if 'x' is a factor vector
-    if (!is.factor(x)) {
-      stop('"x" should be a factor.')
-    }
+  if (!is.factor(x)) {
+    stop('"x" should be a factor.')
+  }
 
   if (!na.omit) {
     if (any(is.na(x))) {
@@ -427,12 +428,12 @@ diversity.calc <- function(x, base = exp(1), na.omit = TRUE) {
               mcintosh_evenness = mcintosh_evenness(x),
               smith_wilson = smith_wilson(x),
               brillouin_index = brillouin_index(x),
-              renyi_entropy_0 = renyi_entropy(x, q = 0, base = base),
-              renyi_entropy_1 = renyi_entropy(x, q = 1, base = base),
-              renyi_entropy_2 = renyi_entropy(x, q = 2, base = base),
-              tsallis_entropy_0 = tsallis_entropy(x, q = 0, base = base),
-              tsallis_entropy_1 = tsallis_entropy(x, q = 1, base = base),
-              tsallis_entropy_2 = tsallis_entropy(x, q = 2, base = base),
+              renyi_entropy_0 = renyi_entropy(x, q = 0),
+              renyi_entropy_1 = renyi_entropy(x, q = 1),
+              renyi_entropy_2 = renyi_entropy(x, q = 2),
+              tsallis_entropy_0 = tsallis_entropy(x, q = 0),
+              tsallis_entropy_1 = tsallis_entropy(x, q = 1),
+              tsallis_entropy_2 = tsallis_entropy(x, q = 2),
               hill_number_0 = hill_number(x, q = 0),
               hill_number_1 = hill_number(x, q = 1),
               hill_number_2 = hill_number(x, q = 2))
@@ -592,11 +593,15 @@ brillouin_index <- function(x) {
   x <- droplevels(x)
   n <- as.numeric(table(x))
   N <- sum(n)
-  if(N <= 1) {
+  if (N <= 1) {
     return(NA_real_)
   }
   ln_factorial <- function(k) {
-    if(k == 0) 0 else sum(log(1:k))
+    if (k == 0) {
+      0
+    } else {
+      sum(log(1:k))
+    }
   }
   (ln_factorial(N) - sum(sapply(n, ln_factorial))) / N
 }
@@ -614,24 +619,24 @@ hill_number <- function(x, q = 1) {
 }
 
 # Rényi Entropy
-renyi_entropy <- function(x, q = 1, base = exp(1)) {
+renyi_entropy <- function(x, q = 1) {
   x <- droplevels(x)
   p <- prop.table(table(x))
 
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
-    -sum(p * log(p, base = base))
+    -sum(p * log(p, base = exp(1))) # use natural log
   } else {
     log(sum(p ^ q), base = base) / (1 - q)
   }
 }
 
 # Tsallis Entropy
-tsallis_entropy <- function(x, q = 1, base = exp(1)) {
+tsallis_entropy <- function(x, q = 1) {
   x <- droplevels(x)
   p <- prop.table(table(x))
 
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
-    -sum(p * log(p, base = base))
+    -sum(p * log(p, base = exp(1))) # use natural log
   } else {
     (1 - sum(p ^ q)) / (q - 1)
   }

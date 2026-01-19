@@ -10,8 +10,8 @@ diversity.calc(x, base = exp(1), na.omit = TRUE)
 \item{x}{A factor vector of categories (e.g., species, traits). The frequency
 of each level is treated as the abundance of that category.}
 
-\item{base}{The logarithm base to be used for computation of different
-diversity indices. Default is \code{exp(1)}.}
+\item{base}{The logarithm base to be used for computation of shannon family
+of diversity indices. Default is \code{exp(1)}.}
 
 \item{na.omit}{logical. If \code{TRUE}, missing values (\code{NA}) are
 ignored and not included as a distinct factor level for computation.
@@ -23,8 +23,9 @@ A list of different \describe{ \item{richness}{The number of classes
   Index (\mjseqn{D_{Margalef}})
   \insertCite{margalef_information_1973}{avial}}
   \item{menhinick_index}{Menhinick's Index (\mjseqn{D_{Menhinick}})
-  \insertCite{menhinick_comparison_1964}{avial}} \item{berger_parker}{Berger–Parker Index
-  (\mjseqn{D_{BP}}) \insertCite{berger_diversity_1970}{avial}}
+  \insertCite{menhinick_comparison_1964}{avial}}
+  \item{berger_parker}{Berger–Parker Index (\mjseqn{D_{BP}})
+  \insertCite{berger_diversity_1970}{avial}}
   \item{berger_parker_reciprocal}{Reciprocal Berger–Parker Index
   (\mjseqn{D_{BP_{R}}}) \insertCite{magurran_measuring_2011}{avial}}
   \item{simpson}{Simpson's index (\mjseqn{d})

@@ -12,7 +12,8 @@
 #' @param ci.type A vector of character strings representing the type of
 #'   intervals required. The options are \code{c("perc", "bca")}.
 #' @inheritParams boot::boot
-#' @param ...
+#' @param base The logarithm base to be used for computation of Rényi and
+#'   Tsallis entropy. Default is \code{exp(1)}.
 #'
 #' @returns A list of data frames with the following columns for each factor
 #'   level in \code{group}. \describe{ \item{q}{} \item{observed}{}
@@ -251,7 +252,7 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
                               ci.type = c("perc", "bca"),
                               parallel = c("no", "multicore", "snow"),
                               ncpus = getOption("boot.ncpus", 1L),
-                              cl = NULL, ...) {
+                              cl = NULL, base = exp(1)) {
 
   parallel <- match.arg(parallel)
   ci.type <- match.arg(ci.type)  # only one CI type
@@ -272,10 +273,17 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
     xg <- x[group == g]
 
     # Compute bootstrap CI
-    b_res <-
-      bootstrap.ci(xg, fun = param.fun, R = R,
-                   conf = conf, type = ci.type, parallel = parallel,
-                   ncpus = ncpus, cl = cl, q = q, ...)
+    if (parameter == "hill") {
+      b_res <-
+        bootstrap.ci(xg, fun = param.fun, R = R,
+                     conf = conf, type = ci.type, parallel = parallel,
+                     ncpus = ncpus, cl = cl, q = q)
+    } else {
+      b_res <-
+        bootstrap.ci(xg, fun = param.fun, R = R,
+                     conf = conf, type = ci.type, parallel = parallel,
+                     ncpus = ncpus, cl = cl, q = q, base = base)
+    }
 
     # Convert results to data.frame per group
     ci_mat <- b_res[[ci.type]]  # just the selected CI type

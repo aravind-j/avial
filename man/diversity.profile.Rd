@@ -15,7 +15,7 @@ diversity.profile(
   parallel = c("no", "multicore", "snow"),
   ncpus = getOption("boot.ncpus", 1L),
   cl = NULL,
-  ...
+  base = exp(1)
 )
 }
 \arguments{
@@ -53,7 +53,8 @@ intervals required. The options are \code{c("perc", "bca")}.}
     local machine is created for the duration of the \code{boot} call.
   }
 
-\item{...}{}
+\item{base}{The logarithm base to be used for computation of Rényi and
+Tsallis entropy. Default is \code{exp(1)}.}
 }
 \value{
 A list of data frames with the following columns for each factor

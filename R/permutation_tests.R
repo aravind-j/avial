@@ -49,24 +49,24 @@
 #' # Global tests ----
 #'
 #' perm.test.global(x = pdata$NMSR, group = pdata$CUAL, fun = mean,
-#'                  R = 1000)
+#'                  R = 100)
 #'
 #' perm.test.global(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
-#'                  R = 1000)
+#'                  R = 100)
 #'
 #' perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
-#'                  R = 1000)
+#'                  R = 100)
 #'
 #' # Pairwise tests ----
 #'
 #' perm.test.pairwise(x = pdata$NMSR, group = pdata$CUAL, fun = mean,
-#'                    R = 1000)
+#'                    R = 100)
 #'
 #' perm.test.pairwise(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
-#'                    R = 1000)
+#'                    R = 100)
 #'
-#' perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
-#'                  R = 1000)
+#' perm.test.pairwise(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
+#'                    R = 100)
 #'
 NULL
 

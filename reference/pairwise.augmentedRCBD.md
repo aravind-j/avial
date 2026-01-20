@@ -408,12 +408,18 @@ out2 <- augmentedRCBD(data$blk, data$trt, data$y1, method.comp = "lsd",
 #>         11          86.50 5.61  6    72.77   100.23    12
 #>          7          93.50 5.61  6    79.77   107.23     2
 
-# Make cluster
+# Make cluster ----
 library(parallel)
-ncores <- max(2, parallel::detectCores() - 2)
+# Check if running under R CMD check and adjust cores accordingly
+if (nzchar(Sys.getenv("_R_CHECK_LIMIT_CORES_"))) {
+  ncores <- 2
+} else {
+  ncores <- max(2L, parallel::detectCores() - 4)
+}
 
-# Pairwise t test without p value adjustment
 cl <- makeCluster(getOption("cl.cores", ncores))
+
+# Pairwise t test without p value adjustment ----
 pout1 <- pairwise.augmentedRCBD(out1, cl = cl,
                                 p.adjust = "none")
 pout1
@@ -559,7 +565,7 @@ pout2
 #> 66   (8) - (9)  -4.000000 8.211611  6 -0.48711513 0.64346045    
 stopCluster(cl)
 
-# Pairwise t test with tukey adjustment
+# Pairwise t test with tukey adjustment ----
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout1_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
                                       p.adjust = "tukey")
@@ -706,7 +712,7 @@ pout2_tukey
 #> 66   (8) - (9)  -4.000000 8.211611  6 -0.48711513 1.0000000    
 stopCluster(cl)
 
-# Pairwise t test with sidak p value adjustment
+# Pairwise t test with sidak p value adjustment ----
 cl <- makeCluster(getOption("cl.cores", ncores))
 pout1_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
                                       p.adjust = "sidak")

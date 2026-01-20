@@ -451,12 +451,18 @@ computing with the package <code><a href="https://rdrr.io/r/parallel/parallel-pa
 <span class="r-out co"><span class="r-pr">#&gt;</span>         11          86.50 5.61  6    72.77   100.23    12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          7          93.50 5.61  6    79.77   107.23     2</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Make cluster</span></span></span>
+<span class="r-in"><span><span class="co"># Make cluster ----</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ncores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Check if running under R CMD check and adjust cores accordingly</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nzchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"_R_CHECK_LIMIT_CORES_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">ncores</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">ncores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Pairwise t test without p value adjustment</span></span></span>
 <span class="r-in"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="va">ncores</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pairwise t test without p value adjustment ----</span></span></span>
 <span class="r-in"><span><span class="va">pout1</span> <span class="op">&lt;-</span> <span class="fu">pairwise.augmentedRCBD</span><span class="op">(</span><span class="va">out1</span>, cl <span class="op">=</span> <span class="va">cl</span>,</span></span>
 <span class="r-in"><span>                                p.adjust <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pout1</span></span></span>
@@ -602,7 +608,7 @@ computing with the package <code><a href="https://rdrr.io/r/parallel/parallel-pa
 <span class="r-out co"><span class="r-pr">#&gt;</span> 66   (8) - (9)  -4.000000 8.211611  6 -0.48711513 0.64346045    </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Pairwise t test with tukey adjustment</span></span></span>
+<span class="r-in"><span><span class="co"># Pairwise t test with tukey adjustment ----</span></span></span>
 <span class="r-in"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="va">ncores</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pout1_tukey</span> <span class="op">&lt;-</span> <span class="fu">pairwise.augmentedRCBD</span><span class="op">(</span><span class="va">out1</span>, cl <span class="op">=</span> <span class="va">cl</span>,</span></span>
 <span class="r-in"><span>                                      p.adjust <span class="op">=</span> <span class="st">"tukey"</span><span class="op">)</span></span></span>
@@ -749,7 +755,7 @@ computing with the package <code><a href="https://rdrr.io/r/parallel/parallel-pa
 <span class="r-out co"><span class="r-pr">#&gt;</span> 66   (8) - (9)  -4.000000 8.211611  6 -0.48711513 1.0000000    </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Pairwise t test with sidak p value adjustment</span></span></span>
+<span class="r-in"><span><span class="co"># Pairwise t test with sidak p value adjustment ----</span></span></span>
 <span class="r-in"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"cl.cores"</span>, <span class="va">ncores</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pout1_sidak</span> <span class="op">&lt;-</span> <span class="fu">pairwise.augmentedRCBD</span><span class="op">(</span><span class="va">out1</span>, cl <span class="op">=</span> <span class="va">cl</span>,</span></span>
 <span class="r-in"><span>                                      p.adjust <span class="op">=</span> <span class="st">"sidak"</span><span class="op">)</span></span></span>

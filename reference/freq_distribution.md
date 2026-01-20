@@ -170,14 +170,6 @@ library(agridat)
 library(ggplot2)
 library(patchwork)
 library(dplyr)
-#> 
-#> Attaching package: ‘dplyr’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     filter, lag
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     intersect, setdiff, setequal, union
 
 soydata <- australia.soybean
 soydata$gen <- as.character(soydata$gen)

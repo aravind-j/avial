@@ -242,7 +242,7 @@ renyi_entropy <- function(x, q = 1) {
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
     -sum(p * log(p, base = exp(1))) # use natural log
   } else {
-    log(sum(p ^ q), base = base) / (1 - q)
+    log(sum(p ^ q), base = exp(1)) / (1 - q)
   }
 }
 

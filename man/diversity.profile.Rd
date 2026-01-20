@@ -8,14 +8,13 @@ diversity.profile(
   x,
   group,
   q = seq(0, 3, 0.1),
-  conf = 0.95,
+  ci.conf = 0.95,
   R = 1000,
   parameter = c("hill", "renyi", "tsallis"),
   ci.type = c("perc", "bca"),
   parallel = c("no", "multicore", "snow"),
   ncpus = getOption("boot.ncpus", 1L),
-  cl = NULL,
-  base = exp(1)
+  cl = NULL
 )
 }
 \arguments{
@@ -26,7 +25,7 @@ have the same length as \code{x}.}
 
 \item{q}{The order of the parametric index.}
 
-\item{conf}{Confidence level of the interval. Default is 0.95.}
+\item{ci.conf}{Confidence level of the bootstrap interval. Default is 0.95.}
 
 \item{R}{Integer specifying the number of permutations. Default is 1000.}
 
@@ -52,9 +51,6 @@ intervals required. The options are \code{c("perc", "bca")}.}
     \code{parallel = "snow"}.  If not supplied, a cluster on the
     local machine is created for the duration of the \code{boot} call.
   }
-
-\item{base}{The logarithm base to be used for computation of Rényi and
-Tsallis entropy. Default is \code{exp(1)}.}
 }
 \value{
 A list of data frames with the following columns for each factor

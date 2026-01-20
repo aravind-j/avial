@@ -5,15 +5,13 @@
 #' @param group A factor vector indicating the group of each observation. Must
 #'   have the same length as \code{x}.
 #' @param q The order of the parametric index.
-#' @param conf Confidence level of the interval. Default is 0.95.
 #' @param R Integer specifying the number of permutations. Default is 1000.
 #' @param parameter The parametric index. Options include \code{"hill"},
 #'   \code{"renyi"} and \code{"tsallis"}. Default is \code{"hill"}.
+#' @param ci.conf Confidence level of the bootstrap interval. Default is 0.95.
 #' @param ci.type A vector of character strings representing the type of
 #'   intervals required. The options are \code{c("perc", "bca")}.
 #' @inheritParams boot::boot
-#' @param base The logarithm base to be used for computation of Rényi and
-#'   Tsallis entropy. Default is \code{exp(1)}.
 #'
 #' @returns A list of data frames with the following columns for each factor
 #'   level in \code{group}. \describe{ \item{q}{} \item{observed}{}
@@ -247,12 +245,12 @@
 #'   labs(x = "Order (q)", y = "Hill number") +
 #'   theme_bw()
 diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
-                              conf = 0.95, R = 1000,
+                              ci.conf = 0.95, R = 1000,
                               parameter = c("hill", "renyi", "tsallis"),
                               ci.type = c("perc", "bca"),
                               parallel = c("no", "multicore", "snow"),
                               ncpus = getOption("boot.ncpus", 1L),
-                              cl = NULL, base = exp(1)) {
+                              cl = NULL) {
 
   parallel <- match.arg(parallel)
   ci.type <- match.arg(ci.type)  # only one CI type
@@ -273,18 +271,10 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
     xg <- x[group == g]
 
     # Compute bootstrap CI
-    if (parameter == "hill") {
-      b_res <-
-        bootstrap.ci(xg, fun = param.fun, R = R,
-                     conf = conf, type = ci.type, parallel = parallel,
-                     ncpus = ncpus, cl = cl, q = q)
-    } else {
-      b_res <-
-        bootstrap.ci(xg, fun = param.fun, R = R,
-                     conf = conf, type = ci.type, parallel = parallel,
-                     ncpus = ncpus, cl = cl, q = q, base = base)
-    }
-
+    b_res <-
+      bootstrap.ci(xg, fun = param.fun, R = R,
+                   conf = ci.conf, type = ci.type, parallel = parallel,
+                   ncpus = ncpus, cl = cl, q = q)
     # Convert results to data.frame per group
     ci_mat <- b_res[[ci.type]]  # just the selected CI type
     df <- data.frame(q = q,
@@ -297,7 +287,7 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
   }
 
   attr(results, "R") <- R
-  attr(results, "conf") <- conf
+  attr(results, "conf") <- ci.conf
   attr(results, "parameter") <- parameter
   attr(results, "ci.type") <- ci.type
 
@@ -310,15 +300,15 @@ hill_stat_ci <- function(x, q = c(0, 1, 2)) {
   }, numeric(1))
 }
 
-renyi_stat_ci <- function(x, q = c(0, 1, 2), base = exp(1)) {
+renyi_stat_ci <- function(x, q = c(0, 1, 2)) {
   vapply(q, function(qq) {
-    renyi_entropy(x, qq, base = base)
+    renyi_entropy(x, qq)
   }, numeric(1))
 }
 
-tsallis_stat_ci <- function(x, q = c(0, 1, 2), base = exp(1)) {
+tsallis_stat_ci <- function(x, q = c(0, 1, 2)) {
   vapply(q, function(qq) {
-    tsallis_entropy(x, qq, base = base)
+    tsallis_entropy(x, qq)
   }, numeric(1))
 }
 

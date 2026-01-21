@@ -32,6 +32,8 @@
 #' @name permutation_tests
 #' @rdname permutation_tests
 #'
+#' @importFrom stats p.adjust
+#'
 #' @examples
 #' library(EvaluateCore)
 #'

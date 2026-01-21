@@ -26,6 +26,9 @@
 #' @returns A a named list of confidence intervals, each containing lower and
 #'   upper bounds, with additional attributes storing the observed statistic and
 #'   the mean of the bootstrap replicates.
+#'
+#' @importFrom boot boot boot.ci
+#' @importFrom stats quantile
 #' @export
 #'
 #' @examples
@@ -49,42 +52,16 @@
 #' bootstrap.ci(pdata$NMSR, mean, type = "perc")
 #' bootstrap.ci(pdata$NMSR, mean, type = "bca")
 #'
-#' # Simpson's Index (d)
-#' simpson <- function(x) {
-#'   x <- droplevels(x)
-#'   sum(prop.table(table(x)) ^ 2)
-#' }
-#'
-#' # Shannon-Wiener Diversity Index (H)
-#' shannon <- function(x, base = 2) {
-#'   x <- droplevels(x)
-#'   p <- prop.table(table(x))
-#'   -sum(p * log(p, base = base))
-#' }
-#'
-#' # McIntosh Index
-#' mcintosh_diversity <- function(x) {
-#'   x <- droplevels(x)
-#'   n <- as.vector(table(x))
-#'   N <- sum(n)
-#'   U <- sqrt(sum(n^2))
-#'   (N - U) / (N - sqrt(N))
-#' }
-#'
-#' # McIntosh Evenness
-#' mcintosh_evenness <- function(x) {
-#'   x <- droplevels(x)
-#'   n <- as.vector(table(x))
-#'   N <- sum(n)
-#'   U <- sqrt(sum(n^2))
-#'   S <- length(levels(x))
-#'   (N - U) / (N - (N / sqrt(S)))
-#' }
+#' bootstrap.ci(pdata$NMSR, mean,
+#'              type = c("norm", "basic", "perc", "bca"))
 #'
 #' bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 #' bootstrap.ci(pdata$PTLC, simpson, type = "basic")
 #' bootstrap.ci(pdata$LFRT, mcintosh_evenness, type = "perc")
 #' bootstrap.ci(pdata$LBTEF, mcintosh_diversity, type = "bca")
+#'
+#' bootstrap.ci(pdata$LNGS, shannon,
+#'              type = c("norm", "basic", "perc", "bca"), base = 2)
 #'
 #' # Studentised intervals require a `fun` returning
 #' # variances in addition to an estimate
@@ -126,12 +103,12 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
   parallel <- match.arg(parallel)
 
   # Bootstrap (single statistic only)
-  b <- boot::boot(x,
-                  statistic = function(data, i) fun(data[i], ...),
-                  R = R,
-                  parallel = parallel,
-                  ncpus = ncpus,
-                  cl = cl)
+    b <- boot::boot(x,
+                    statistic = function(data, i) fun(data[i], ...),
+                    R = R,
+                    parallel = parallel,
+                    ncpus = ncpus,
+                    cl = cl)
 
   # Clean NA / NaN from bootstrap replicates
   b$t[is.nan(b$t)] <- NA
@@ -194,77 +171,94 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
         return(perc_ci_scalar())
       }
 
-      ci <-
-        try(suppressWarnings(boot::boot.ci(b, type = "stud",
-                                           conf = conf,
-                                           index = 1)),
-            silent = TRUE)
+      if (p == 2L) {
 
-      if (inherits(ci, "try-error") || is.null(ci$stud)) {
-        warning("Studentized CI failed; falling back to percentile CI.",
-                call. = FALSE)
-        return(perc_ci_scalar())
+        ci <-
+          try(suppressWarnings(boot::boot.ci(b, type = "stud",
+                                             conf = conf,
+                                             # index = 1
+          )),
+          silent = TRUE)
+
+        if (inherits(ci, "try-error") || is.null(ci$stud)) {
+          warning("Studentized CI failed; falling back to percentile CI.",
+                  call. = FALSE)
+          return(perc_ci_scalar())
+        }
+
+        out <- ci$stud[4:5]
+        names(out) <- c("lower", "upper")
+        return(out)
+
+      } else if (p >= 2L) {
+
+        # # Vector-valued -> index loop
+        # out <- matrix(NA_real_, nrow = 2, ncol = p,
+        #               dimnames = list(c("lower", "upper"), NULL))
       }
 
-      out <- ci$stud[4:5]
-      names(out) <- c("lower", "upper")
-      return(out)
     }
 
-    ## OTHER CI TYPES (norm, basic, bca) -----
-    if (p == 1L) {
-      ci <- try(suppressWarnings(boot::boot.ci(b, type = tp, conf = conf)),
+    if (tp != "stud") {
+
+      ## OTHER CI TYPES (norm, basic, bca) -----
+      if (p == 1L) {
+        ci <- try(suppressWarnings(boot::boot.ci(b, type = tp, conf = conf)),
+                  silent = TRUE)
+
+        tp2 <- tp
+        tp2 <- ifelse(tp2 == "norm", "normal", tp2)
+
+        if (inherits(ci, "try-error") || is.null(ci[[tp2]])) {
+          warning(tp, " CI failed; using percentile CI.", call. = FALSE)
+          return(perc_ci())
+        }
+
+        if (tp == "norm") {
+          out <- ci[[tp2]][2:3]
+        } else {
+          out <- ci[[tp2]][4:5]
+        }
+
+        names(out) <- c("lower", "upper")
+        return(out)
+
+      } else {
+
+        # Vector-valued -> index loop
+        out <- matrix(NA_real_, nrow = 2, ncol = p,
+                      dimnames = list(c("lower", "upper"), NULL))
+
+        perc <- perc_ci()
+
+        for (i in seq_len(p)) {
+          ci <-
+            try(suppressWarnings(boot::boot.ci(b, type = tp,
+                                               conf = conf,
+                                               index = i)),
                 silent = TRUE)
 
-      tp2 <- tp
-      tp2 <- ifelse(tp2 == "norm", "normal", tp2)
+          tp2 <- tp
+          tp2 <- ifelse(tp2 == "norm", "normal", tp2)
 
-      if (inherits(ci, "try-error") || is.null(ci[[tp2]])) {
-        warning(tp, " CI failed; using percentile CI.", call. = FALSE)
-        return(perc_ci())
-      }
-
-      if (tp == "norm") {
-        out <- ci[[tp2]][2:3]
-      } else {
-        out <- ci[[tp2]][4:5]
-      }
-
-      names(out) <- c("lower", "upper")
-      return(out)
-    }
-
-    # Vector-valued -> index loop
-    out <- matrix(NA_real_, nrow = 2, ncol = p,
-                  dimnames = list(c("lower", "upper"), NULL))
-
-    perc <- perc_ci()
-
-    for (i in seq_len(p)) {
-      ci <-
-        try(suppressWarnings(boot::boot.ci(b, type = tp,
-                                           conf = conf,
-                                           index = i)),
-            silent = TRUE)
-
-      tp2 <- tp
-      tp2 <- ifelse(tp2 == "norm", "normal", tp2)
-
-      if (!inherits(ci, "try-error") && !is.null(ci[[tp2]])) {
-        if (tp == "norm") {
-          out[, i] <- ci[[tp2]][2:3]
-        } else {
-          out[, i] <- ci[[tp2]][4:5]
+          if (!inherits(ci, "try-error") && !is.null(ci[[tp2]])) {
+            if (tp == "norm") {
+              out[, i] <- ci[[tp2]][2:3]
+            } else {
+              out[, i] <- ci[[tp2]][4:5]
+            }
+          } else {
+            warning(sprintf("%s CI failed for component %d; using percentile CI.",
+                            tp, i),
+                    call. = FALSE)
+            out[, i] <- perc[, i]
+          }
         }
-      } else {
-        warning(sprintf("%s CI failed for component %d; using percentile CI.",
-                        tp, i),
-                call. = FALSE)
-        out[, i] <- perc[, i]
-      }
-    }
 
-    out
+        return(out)
+      }
+
+    }
   })
 
 

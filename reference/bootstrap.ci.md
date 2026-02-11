@@ -198,38 +198,6 @@ bootstrap.ci(pdata$NMSR, mean, type = "bca")
 #> attr(,"conf")
 #> [1] 0.95
 
-# Simpson's Index (d)
-simpson <- function(x) {
-  x <- droplevels(x)
-  sum(prop.table(table(x)) ^ 2)
-}
-
-# Shannon-Wiener Diversity Index (H)
-shannon <- function(x, base = 2) {
-  x <- droplevels(x)
-  p <- prop.table(table(x))
-  -sum(p * log(p, base = base))
-}
-
-# McIntosh Index
-mcintosh_diversity <- function(x) {
-  x <- droplevels(x)
-  n <- as.vector(table(x))
-  N <- sum(n)
-  U <- sqrt(sum(n^2))
-  (N - U) / (N - sqrt(N))
-}
-
-# McIntosh Evenness
-mcintosh_evenness <- function(x) {
-  x <- droplevels(x)
-  n <- as.vector(table(x))
-  N <- sum(n)
-  U <- sqrt(sum(n^2))
-  S <- length(levels(x))
-  (N - U) / (N - (N / sqrt(S)))
-}
-
 bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 #> $norm
 #>    lower    upper 
@@ -308,10 +276,9 @@ stat_fun_mean <- function(x) {
 }
 
 bootstrap.ci(pdata$NMSR, stat_fun_mean, type = "stud")
-#> Warning: Studentized CI failed; falling back to percentile CI.
 #> $stud
 #>     lower     upper 
-#>  9.726339 12.220089 
+#>  9.620784 12.153906 
 #> 
 #> attr(,"observed")
 #> [1] 10.892857  0.631431
@@ -349,10 +316,9 @@ stat_fun_shannon <- function(x, base = 2) {
 }
 
 bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")
-#> Warning: Studentized CI failed; falling back to percentile CI.
 #> $stud
 #>    lower    upper 
-#> 1.769157 2.062549 
+#> 1.832469 2.128101 
 #> 
 #> attr(,"observed")
 #> [1] 1.94652505 0.07067869

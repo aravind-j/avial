@@ -26,7 +26,7 @@ Size](https://img.shields.io/github/languages/code-size/aravind-j/avial.svg)](ht
 [![Project Status:
 WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2025--09--17-yellowgreen.svg)](https://github.com/aravind-j/avial/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2026--02--11-yellowgreen.svg)](https://github.com/aravind-j/avial/)
 [![Website -
 pkgdown](https://img.shields.io/website-up-down-green-red/https/aravind-j.github.io/avial.svg)](https://aravind-j.github.io/avial/)
 [![.](https://pro-pulsar-193905.appspot.com/UA-199996472-2/welcome-page)](https://github.com/aravind-j/google-analytics-beacon)
@@ -72,8 +72,8 @@ citation("avial")
 ``` R
 To cite the R package 'augmentedRCBD' in publications use:
 
-  Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version 0.0.0.9000,
-  https://aravind-j.github.io/avial/.
+  Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version
+  0.0.0.9000, https://aravind-j.github.io/avial/.
 
 A BibTeX entry for LaTeX users is
 
@@ -83,6 +83,7 @@ A BibTeX entry for LaTeX users is
     note = {R package version 0.0.0.9000 https://aravind-j.github.io/avial/},
   }
 
-This free and open-source software implements academic research by the authors and
-co-workers. If you use it, please support the project by citing the package.
+This free and open-source software implements academic research by the
+authors and co-workers. If you use it, please support the project by
+citing the package.
 ```

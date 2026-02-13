@@ -74,7 +74,9 @@ simpson_reciprocal <- function(x) {
 #' @export
 simpson_relative <- function(x) {
   x <- droplevels(x)
-  gini_simpson(x) / simpson_max(x)
+  denom <- simpson_max(x)
+  if (denom == 0) return(NA_real_)
+  gini_simpson(x) / denom
 }
 
 ## Simpson's evenness

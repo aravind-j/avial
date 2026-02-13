@@ -156,7 +156,7 @@ smith_wilson <- function(x) {
   p <- prop.table(table(x))  # relative abundances
 
   if(length(p) < 2) {
-    warning("E_var undefined for single species, returning NA")
+    warning("E_var undefined for single species or class, returning NA.")
     return(NA_real_)
   }
 

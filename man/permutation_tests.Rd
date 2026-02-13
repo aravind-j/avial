@@ -11,6 +11,7 @@ perm.test.global(
   group,
   fun,
   R = 1000,
+  max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
   cl = NULL,
@@ -23,6 +24,7 @@ perm.test.pairwise(
   fun,
   R = 1000,
   p.adjust.method = c("bonferroni", "holm"),
+  max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
   cl = NULL,
@@ -61,6 +63,12 @@ have the same length as \code{x}.}
 \item{p.adjust.method}{(perm.test.pairwise only) Method for adjusting
 p-values for multiple comparisons. Options include \code{"bonferroni"} and
 \code{"holm"}. Default is \code{"bonferroni"}.}
+
+\item{max_invalid}{Numeric between 0 and 1. Maximum allowed proportion of
+invalid permutations (i.e., permutations for which the test statistic is
+non-finite). If the proportion of invalid permutations exceeds this
+threshold, the function stops execution with an error, indicating that the
+statistic function is not permutation-stable.}
 }
 \value{
 \describe{ \item{\code{perm.test.global}}{A list of the following

@@ -88,10 +88,16 @@ bootstrap.ci(pdata$NMSR, mean, type = "basic")
 bootstrap.ci(pdata$NMSR, mean, type = "perc")
 bootstrap.ci(pdata$NMSR, mean, type = "bca")
 
+bootstrap.ci(pdata$NMSR, mean,
+             type = c("norm", "basic", "perc", "bca"))
+
 bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 bootstrap.ci(pdata$PTLC, simpson, type = "basic")
 bootstrap.ci(pdata$LFRT, mcintosh_evenness, type = "perc")
 bootstrap.ci(pdata$LBTEF, mcintosh_diversity, type = "bca")
+
+bootstrap.ci(pdata$LNGS, shannon,
+             type = c("norm", "basic", "perc", "bca"), base = 2)
 
 # Studentised intervals require a `fun` returning
 # variances in addition to an estimate

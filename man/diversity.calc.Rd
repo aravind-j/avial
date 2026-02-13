@@ -18,9 +18,9 @@ ignored and not included as a distinct factor level for computation.
 Default is \code{TRUE}.}
 }
 \value{
-A list of different \describe{ \item{richness}{The number of classes
-  in \code{x} or the richness.} \item{margalef_index}{Margalef's Richness
-  Index (\mjseqn{D_{Margalef}})
+A list of the different diversity measures computed. \describe{
+  \item{richness}{The number of classes in \code{x} or the richness.}
+  \item{margalef_index}{Margalef's Richness Index (\mjseqn{D_{Margalef}})
   \insertCite{margalef_information_1973}{avial}}
   \item{menhinick_index}{Menhinick's Index (\mjseqn{D_{Menhinick}})
   \insertCite{menhinick_comparison_1964}{avial}}

@@ -4,8 +4,29 @@
 #' @inheritParams diversity.calc
 #' @inheritParams permutation_tests
 #' @inheritParams diversity.profile
-#'
-#' @returns
+#' @param global.test logical. If \code{TRUE} performs the global permutation
+#'   tests for the diversity measures. Default is \code{TRUE}.
+#' @param pairwise.test logical. If \code{TRUE} performs the pairwise
+#'   permutation tests for the diversity measures. Default is \code{TRUE}.
+#' @param bootstrap.ci logical. If \code{TRUE} computes the bootstrap confidence
+#'   intervals for the diversity measures. Default is \code{TRUE}.
+#' @param diversity.profile logical. If \code{TRUE} diversity profiles. Default
+#'   is \code{TRUE}.
+#' @returns A list with the following elements. \describe{ \item{Diversity
+#'   Indices}{A data frame of the different diversity indices computed for each
+#'   group.}
+#'   \item{Global Test}{A data frame of results of global permutation test
+#'   including the test statistic (weighted sum of squares between group summary
+#' indices) and the p value for the different diversity indices.}
+#'   \item{Pairwise Test}{A list of the following data frames. \describe{
+#'   \item{p-value}{A data frame of p values for each between
+#'   group comparison for different diversity measures.}
+#'   \item{cld}{A data frame of compact letter displays of significant
+#'   differences among groups for different diversity measures.} } }
+#'   \item{Bootstrap CIs}{A data frame of lower and upper bootstrap confidence
+#'   intervals computed for each group in different diversity measures.}
+#'   \item{Diversity profiles}{A list of data frames of Hill, Renyi and Tsallis
+#'   diversity profiles computed for each group.} }
 #'
 #' @importFrom multcompView multcompLetters
 #' @importFrom tidyr pivot_longer
@@ -34,6 +55,10 @@
 #'
 diversity.compare <- function(x, group, R = 1000, base = exp(1),
                               na.omit = TRUE,
+                              global.test = TRUE,
+                              pairwise.test = TRUE,
+                              bootstrap.ci = TRUE,
+                              diversity.profile = TRUE,
                               p.adjust.method = c("bonferroni", "holm"),
                               ci.conf = 0.95,
                               ci.type = c("perc", "bca"),
@@ -42,9 +67,15 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
                               ncpus = 1L,
                               cl = NULL) {
 
-  p.adjust.method <- match.arg(p.adjust.method)
-  ci.type <- match.arg(ci.type)
-  parallel <- match.arg(parallel)
+  if (pairwise.test) {
+    p.adjust.method <- match.arg(p.adjust.method)
+  }
+  if (bootstrap.ci) {
+    ci.type <- match.arg(ci.type)
+  }
+  if (pairwise.test | bootstrap.ci | diversity.profile) {
+    parallel <- match.arg(parallel)
+  }
 
   stopifnot(length(x) == length(group))
   stopifnot(is.factor(x))
@@ -72,9 +103,7 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
     dplyr::bind_rows(c(Overall = list(div_indices_overall),
                        div_indices_gwise), .id = "group")
 
-  # Global permutation tests ----
-  message("Performing global permutation tests.")
-
+  if (global.test | pairwise.test | bootstrap.ci) {
   fun_list <-
     list(margalef_index = list(fun = margalef_index, args = list()),
          menhinick_index = list(fun = menhinick_index, args = list()),
@@ -95,96 +124,111 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
          mcintosh_evenness = list(fun = mcintosh_evenness, args = list()),
          smith_wilson = list(fun = smith_wilson, args = list()),
          brillouin_index = list(fun = brillouin_index, args = list()))
+  }
 
-  global_perm_results <-
-    lapply(fun_list, function(z) {
-      do.call(perm.test.global,
-              c(list(x = x, group = group, R = R,
-                     fun = z$fun),
-                z$args))
-    })
-  global_perm_results <-
-    lapply(global_perm_results, function(x) {
-      c(x[[1]], x[[3]])
-    })
-  global_perm_results <- data.frame(global_perm_results)
-  global_perm_results <- cbind(Measure = c("Test statistic", "p-value"),
-                               global_perm_results)
+  # Global permutation tests ----
+  if (global.test) {
 
-  # Pairwise permutation tests ----
-  if (length(groups) > 2) {
-    message("Performing pairwise permutation tests.")
+    message("Performing global permutation tests.")
 
-    pairwise_perm_results <-
+    global_perm_results <-
       lapply(fun_list, function(z) {
-        do.call(perm.test.pairwise,
+        do.call(perm.test.global,
                 c(list(x = x, group = group, R = R,
                        fun = z$fun),
-                  z$args, list(p.adjust.method = p.adjust.method),
-                  list(parallel = parallel,
-                       ncpus = ncpus,
-                       cl = cl)))
+                  z$args))
       })
-
-    pairwise_perm_cld <-
-      lapply(pairwise_perm_results, function(x) {
-
-        adj_p <- setNames(x$adj.p.value,
-                          gsub(" vs ", "-", x$Comparison))
-        multcompLetters(adj_p)$Letters
+    global_perm_results <-
+      lapply(global_perm_results, function(x) {
+        c(x[[1]], x[[3]])
       })
-    pairwise_perm_cld <- data.frame(pairwise_perm_cld)
-    pairwise_perm_cld <- cbind(Group = rownames(pairwise_perm_cld),
-                               pairwise_perm_cld)
-    rownames(pairwise_perm_cld) <- NULL
+    global_perm_results <- data.frame(global_perm_results)
+    global_perm_results <- cbind(Measure = c("Test statistic", "p-value"),
+                                 global_perm_results)
 
-    pairwise_perm_results <-
-      lapply(pairwise_perm_results, function(x) {
-        setNames(x$adj.p.value, x$Comparison)
-      })
-    pairwise_perm_results <- data.frame(pairwise_perm_results)
-    pairwise_perm_results <-
-      cbind(Comparison = rownames(pairwise_perm_results),
-            pairwise_perm_results)
-    rownames(pairwise_perm_results) <- NULL
+  }
 
-  } else {
-    message('Skipping pairwise permutation tests as "nlevels(group) = 2".')
+  # Pairwise permutation tests ----
+  if (pairwise.test) {
+
+    if (length(groups) > 2) {
+      message("Performing pairwise permutation tests.")
+
+      pairwise_perm_results <-
+        lapply(fun_list, function(z) {
+          do.call(perm.test.pairwise,
+                  c(list(x = x, group = group, R = R,
+                         fun = z$fun),
+                    z$args, list(p.adjust.method = p.adjust.method),
+                    list(parallel = parallel,
+                         ncpus = ncpus,
+                         cl = cl)))
+        })
+
+      pairwise_perm_cld <-
+        lapply(pairwise_perm_results, function(x) {
+
+          adj_p <- setNames(x$adj.p.value,
+                            gsub(" vs ", "-", x$Comparison))
+          multcompLetters(adj_p)$Letters
+        })
+      pairwise_perm_cld <- data.frame(pairwise_perm_cld)
+      pairwise_perm_cld <- cbind(Group = rownames(pairwise_perm_cld),
+                                 pairwise_perm_cld)
+      rownames(pairwise_perm_cld) <- NULL
+
+      pairwise_perm_results <-
+        lapply(pairwise_perm_results, function(x) {
+          setNames(x$adj.p.value, x$Comparison)
+        })
+      pairwise_perm_results <- data.frame(pairwise_perm_results)
+      pairwise_perm_results <-
+        cbind(Comparison = rownames(pairwise_perm_results),
+              pairwise_perm_results)
+      rownames(pairwise_perm_results) <- NULL
+
+    } else {
+      message('Skipping pairwise permutation tests as "nlevels(group) = 2".')
+    }
   }
 
   # Bootstrap CIs ----
-  message('Computing bootstrap confidence intervals.')
-  bootstrap_ci_results <-
-    lapply(groups, function(g) {
+  if (bootstrap.ci) {
 
-      lapply(fun_list, function(z) {
-        do.call(bootstrap.ci,
-                c(list(x = x[group == g], R = R,
-                       conf = ci.conf, type = ci.type,
-                       fun = z$fun),
-                  z$args,
-                  list(parallel = parallel,
-                       ncpus = ncpus,
-                       cl = cl)))
+    message('Computing bootstrap confidence intervals.')
+    bootstrap_ci_results <-
+      lapply(groups, function(g) {
+
+        lapply(fun_list, function(z) {
+          do.call(avial::bootstrap.ci,
+                  c(list(x = x[group == g], R = R,
+                         conf = ci.conf, type = ci.type,
+                         fun = z$fun),
+                    z$args,
+                    list(parallel = parallel,
+                         ncpus = ncpus,
+                         cl = cl)))
+        })
+
       })
-
-    })
-  names(bootstrap_ci_results) <- groups
-  bootstrap_ci_results <-
-    lapply(bootstrap_ci_results, function(g_boot) {
-      data.frame(lapply(g_boot, function(x) {
-        x[[ci.type]]
-      }))
-    })
-  bootstrap_ci_results <- dplyr::bind_rows(bootstrap_ci_results,
-                                           .id = "Group-CI")
-  bootstrap_ci_results$`Group-CI` <-
-    paste(bootstrap_ci_results$`Group-CI`,
-          gsub("[\\.0-9]+", "", rownames(bootstrap_ci_results)), sep = ": ")
-  rownames(bootstrap_ci_results) <- NULL
-
+    names(bootstrap_ci_results) <- groups
+    bootstrap_ci_results <-
+      lapply(bootstrap_ci_results, function(g_boot) {
+        data.frame(lapply(g_boot, function(x) {
+          x[[ci.type]]
+        }))
+      })
+    bootstrap_ci_results <- dplyr::bind_rows(bootstrap_ci_results,
+                                             .id = "Group-CI")
+    bootstrap_ci_results$`Group-CI` <-
+      paste(bootstrap_ci_results$`Group-CI`,
+            gsub("[\\.0-9]+", "", rownames(bootstrap_ci_results)), sep = ": ")
+    rownames(bootstrap_ci_results) <- NULL
+  }
 
   # Diversity Profiles ----
+  if (diversity.profile) {
+
   message('Generating diversity profiles.')
   diversity_profile_results <- list(
     hill = diversity.profile(x = x, group = group, q = q,
@@ -210,12 +254,31 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
                                 cl = cl)
   )
 
+  }
+
+
   out <- list(`Diversity Indices` = div_indices,
-              `Global Test` = global_perm_results,
-              `Pairwise Test` = list(`p-value` = pairwise_perm_results,
-                                     `cld` = pairwise_perm_cld),
-              `Bootstrap CIs` = bootstrap_ci_results,
-              `Diversity profiles` = diversity_profile_results)
+              `Global Test` = if (global.test) {
+                global_perm_results
+              } else {
+                NULL
+              },
+              `Pairwise Test` = if (pairwise.test) {
+                list(`p-value` = pairwise_perm_results,
+                     `cld` = pairwise_perm_cld)
+              } else {
+                NULL
+              },
+              `Bootstrap CIs` = if (bootstrap.ci) {
+                bootstrap_ci_results
+              } else {
+                NULL
+              },
+              `Diversity profiles` = if (diversity.profile) {
+                diversity_profile_results
+              } else {
+                NULL
+              })
 
   return(out)
 

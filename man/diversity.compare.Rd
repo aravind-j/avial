@@ -10,6 +10,10 @@ diversity.compare(
   R = 1000,
   base = exp(1),
   na.omit = TRUE,
+  global.test = TRUE,
+  pairwise.test = TRUE,
+  bootstrap.ci = TRUE,
+  diversity.profile = TRUE,
   p.adjust.method = c("bonferroni", "holm"),
   ci.conf = 0.95,
   ci.type = c("perc", "bca"),
@@ -34,6 +38,18 @@ of diversity indices. Default is \code{exp(1)}.}
 \item{na.omit}{logical. If \code{TRUE}, missing values (\code{NA}) are
 ignored and not included as a distinct factor level for computation.
 Default is \code{TRUE}.}
+
+\item{global.test}{logical. If \code{TRUE} performs the global permutation
+tests for the diversity measures. Default is \code{TRUE}.}
+
+\item{pairwise.test}{logical. If \code{TRUE} performs the pairwise
+permutation tests for the diversity measures. Default is \code{TRUE}.}
+
+\item{bootstrap.ci}{logical. If \code{TRUE} computes the bootstrap confidence
+intervals for the diversity measures. Default is \code{TRUE}.}
+
+\item{diversity.profile}{logical. If \code{TRUE} diversity profiles. Default
+is \code{TRUE}.}
 
 \item{p.adjust.method}{(perm.test.pairwise only) Method for adjusting
 p-values for multiple comparisons. Options include \code{"bonferroni"} and
@@ -62,6 +78,23 @@ intervals required. The options are \code{c("perc", "bca")}.}
     \code{parallel = "snow"}.  If not supplied, a cluster on the
     local machine is created for the duration of the \code{boot} call.
   }
+}
+\value{
+A list with the following elements. \describe{ \item{Diversity
+  Indices}{A data frame of the different diversity indices computed for each
+  group.}
+  \item{Global Test}{A data frame of results of global permutation test
+  including the test statistic (weighted sum of squares between group summary
+indices) and the p value for the different diversity indices.}
+  \item{Pairwise Test}{A list of the following data frames. \describe{
+  \item{p-value}{A data frame of p values for each between
+  group comparison for different diversity measures.}
+  \item{cld}{A data frame of compact letter displays of significant
+  differences among groups for different diversity measures.} } }
+  \item{Bootstrap CIs}{A data frame of lower and upper bootstrap confidence
+  intervals computed for each group in different diversity measures.}
+  \item{Diversity profiles}{A list of data frames of Hill, Renyi and Tsallis
+  diversity profiles computed for each group.} }
 }
 \description{
 Compare Diversity Measures

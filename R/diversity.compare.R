@@ -31,6 +31,7 @@
 #' @importFrom multcompView multcompLetters
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr bind_rows
+#' @importFrom stats setNames
 #' @export
 #'
 #' @examples

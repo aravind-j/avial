@@ -79,6 +79,11 @@ of each level is treated as the abundance of that category.}
 
 \item{base}{The logarithm base to be used for computation of shannon family
 of diversity indices. Default is \code{exp(1)}.}
+
+\item{warn}{logical. If \code{TRUE} shows the relevant warning. Default is
+\code{TRUE}.}
+
+\item{q}{The order of the parametric index.}
 }
 \value{
 The calculated diversity index value.

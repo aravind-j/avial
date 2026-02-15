@@ -7,6 +7,9 @@
 #'   of each level is treated as the abundance of that category.
 #' @param base The logarithm base to be used for computation of shannon family
 #'   of diversity indices. Default is \code{exp(1)}.
+#' @param warn logical. If \code{TRUE} shows the relevant warning. Default is
+#'   \code{TRUE}.
+#' @param q The order of the parametric index.
 #'
 #' @return The calculated diversity index value.
 #'

@@ -43,6 +43,12 @@ have the same length as \code{x}.}
 
 \item{fun.args}{Named list of additional arguments forwarded to `fun`.}
 
+\item{max.invalid}{Numeric between 0 and 1. Maximum allowed proportion of
+invalid permutations (i.e., permutations for which the test statistic is
+non-finite). If the proportion of invalid permutations exceeds this
+threshold, the function stops execution with an error, indicating that the
+statistic function is not permutation-stable.}
+
 \item{parallel}{
     The type of parallel operation to be used (if any).  If missing, the
     default is taken from the option \code{"boot.parallel"} (and if that
@@ -63,12 +69,6 @@ have the same length as \code{x}.}
 \item{p.adjust.method}{(perm.test.pairwise only) Method for adjusting
 p-values for multiple comparisons. Options include \code{"bonferroni"} and
 \code{"holm"}. Default is \code{"bonferroni"}.}
-
-\item{max_invalid}{Numeric between 0 and 1. Maximum allowed proportion of
-invalid permutations (i.e., permutations for which the test statistic is
-non-finite). If the proportion of invalid permutations exceeds this
-threshold, the function stops execution with an error, indicating that the
-statistic function is not permutation-stable.}
 }
 \value{
 \describe{ \item{\code{perm.test.global}}{A list of the following

@@ -16,7 +16,7 @@
 #' @param fun A function to summarize values within each group.
 #' @param R Integer specifying the number of permutations. Default is 1000.
 #' @param fun.args Named list of additional arguments forwarded to `fun`.
-#' @param max_invalid Numeric between 0 and 1. Maximum allowed proportion of
+#' @param max.invalid Numeric between 0 and 1. Maximum allowed proportion of
 #'   invalid permutations (i.e., permutations for which the test statistic is
 #'   non-finite). If the proportion of invalid permutations exceeds this
 #'   threshold, the function stops execution with an error, indicating that the

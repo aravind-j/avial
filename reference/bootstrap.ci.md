@@ -198,15 +198,42 @@ bootstrap.ci(pdata$NMSR, mean, type = "bca")
 #> attr(,"conf")
 #> [1] 0.95
 
+bootstrap.ci(pdata$NMSR, mean,
+             type = c("norm", "basic", "perc", "bca"))
+#> $norm
+#>     lower     upper 
+#>  9.655774 12.128047 
+#> 
+#> $basic
+#>     lower     upper 
+#>  9.595692 12.123488 
+#> 
+#> $perc
+#>     lower     upper 
+#>  9.662202 12.190030 
+#> 
+#> $bca
+#>    lower    upper 
+#>  9.77241 12.21908 
+#> 
+#> attr(,"observed")
+#> [1] 10.89286
+#> attr(,"mean")
+#> [1] 10.8938
+#> attr(,"R")
+#> [1] 1000
+#> attr(,"conf")
+#> [1] 0.95
+
 bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 #> $norm
 #>    lower    upper 
-#> 1.368283 1.547521 
+#> 1.373543 1.542175 
 #> 
 #> attr(,"observed")
 #> [1] 1.448816
 #> attr(,"mean")
-#> [1] 1.439729
+#> [1] 1.439772
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -214,12 +241,12 @@ bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 bootstrap.ci(pdata$PTLC, simpson, type = "basic")
 #> $basic
 #>     lower     upper 
-#> 0.3457791 0.4766541 
+#> 0.3508416 0.4772534 
 #> 
 #> attr(,"observed")
 #> [1] 0.4213435
 #> attr(,"mean")
-#> [1] 0.4256122
+#> [1] 0.4234458
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -227,12 +254,12 @@ bootstrap.ci(pdata$PTLC, simpson, type = "basic")
 bootstrap.ci(pdata$LFRT, mcintosh_evenness, type = "perc")
 #> $perc
 #>     lower     upper 
-#> 0.6340200 0.8288887 
+#> 0.6245182 0.8228424 
 #> 
 #> attr(,"observed")
 #> [1] 0.693727
 #> attr(,"mean")
-#> [1] 0.7047665
+#> [1] 0.7027273
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -240,12 +267,39 @@ bootstrap.ci(pdata$LFRT, mcintosh_evenness, type = "perc")
 bootstrap.ci(pdata$LBTEF, mcintosh_diversity, type = "bca")
 #> $bca
 #>     lower     upper 
-#> 0.5857378 0.6147432 
+#> 0.5864904 0.6183060 
 #> 
 #> attr(,"observed")
 #> [1] 0.5983483
 #> attr(,"mean")
-#> [1] 0.5928669
+#> [1] 0.5929277
+#> attr(,"R")
+#> [1] 1000
+#> attr(,"conf")
+#> [1] 0.95
+
+bootstrap.ci(pdata$LNGS, shannon,
+             type = c("norm", "basic", "perc", "bca"), base = 2)
+#> $norm
+#>    lower    upper 
+#> 1.374643 1.541060 
+#> 
+#> $basic
+#>    lower    upper 
+#> 1.385777 1.552864 
+#> 
+#> $perc
+#>    lower    upper 
+#> 1.344767 1.511855 
+#> 
+#> $bca
+#>    lower    upper 
+#> 1.359291 1.522518 
+#> 
+#> attr(,"observed")
+#> [1] 1.448816
+#> attr(,"mean")
+#> [1] 1.43978
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -258,12 +312,12 @@ bootstrap.ci(pdata$NMSR, mean, type = "stud")
 #> Warning: Studentized CI requires fun() to return c(estimate, SE); falling back to percentile CI.
 #> $stud
 #>     lower     upper 
-#>  9.762351 12.083333 
+#>  9.696577 12.184524 
 #> 
 #> attr(,"observed")
 #> [1] 10.89286
 #> attr(,"mean")
-#> [1] 10.8994
+#> [1] 10.87743
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -277,13 +331,13 @@ stat_fun_mean <- function(x) {
 
 bootstrap.ci(pdata$NMSR, stat_fun_mean, type = "stud")
 #> $stud
-#>     lower     upper 
-#>  9.620784 12.153906 
+#>    lower    upper 
+#>  9.66284 12.19949 
 #> 
 #> attr(,"observed")
 #> [1] 10.892857  0.631431
 #> attr(,"mean")
-#> [1] 10.9124226  0.6297806
+#> [1] 10.8772083  0.6268455
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -293,12 +347,12 @@ bootstrap.ci(pdata$DSTA, shannon, type = "stud")
 #> Warning: Studentized CI requires fun() to return c(estimate, SE); falling back to percentile CI.
 #> $stud
 #>    lower    upper 
-#> 1.784899 2.066101 
+#> 1.761747 2.058389 
 #> 
 #> attr(,"observed")
 #> [1] 1.946525
 #> attr(,"mean")
-#> [1] 1.930617
+#> [1] 1.923968
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -318,12 +372,12 @@ stat_fun_shannon <- function(x, base = 2) {
 bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")
 #> $stud
 #>    lower    upper 
-#> 1.832469 2.128101 
+#> 1.836476 2.133546 
 #> 
 #> attr(,"observed")
 #> [1] 1.94652505 0.07067869
 #> attr(,"mean")
-#> [1] 1.92825723 0.07030688
+#> [1] 1.93013807 0.07035407
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")

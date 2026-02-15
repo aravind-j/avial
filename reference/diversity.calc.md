@@ -86,7 +86,7 @@ diversity.calc(x, base = exp(1), na.omit = TRUE)
 
 ## Value
 
-A list of different
+A list of the different diversity measures computed.
 
 - richness:
 

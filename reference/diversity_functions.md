@@ -34,7 +34,7 @@ mcintosh_diversity(x)
 
 mcintosh_evenness(x)
 
-smith_wilson(x)
+smith_wilson(x, warn = TRUE)
 
 heip_evenness(x)
 
@@ -64,6 +64,14 @@ hill_evenness(x, q = 1)
 
   The logarithm base to be used for computation of shannon family of
   diversity indices. Default is `exp(1)`.
+
+- warn:
+
+  logical. If `TRUE` shows the relevant warning. Default is `TRUE`.
+
+- q:
+
+  The order of the parametric index.
 
 ## Value
 

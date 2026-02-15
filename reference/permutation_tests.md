@@ -20,10 +20,11 @@ perm.test.global(
   group,
   fun,
   R = 1000,
+  fun.args = list(),
+  max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL,
-  ...
+  cl = NULL
 )
 
 perm.test.pairwise(
@@ -31,11 +32,12 @@ perm.test.pairwise(
   group,
   fun,
   R = 1000,
+  fun.args = list(),
   p.adjust.method = c("bonferroni", "holm"),
+  max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL,
-  ...
+  cl = NULL
 )
 ```
 
@@ -58,6 +60,18 @@ perm.test.pairwise(
 
   Integer specifying the number of permutations. Default is 1000.
 
+- fun.args:
+
+  Named list of additional arguments forwarded to \`fun\`.
+
+- max.invalid:
+
+  Numeric between 0 and 1. Maximum allowed proportion of invalid
+  permutations (i.e., permutations for which the test statistic is
+  non-finite). If the proportion of invalid permutations exceeds this
+  threshold, the function stops execution with an error, indicating that
+  the statistic function is not permutation-stable.
+
 - parallel:
 
   The type of parallel operation to be used (if any). If missing, the
@@ -74,10 +88,6 @@ perm.test.pairwise(
   An optional parallel or snow cluster for use if `parallel = "snow"`.
   If not supplied, a cluster on the local machine is created for the
   duration of the `boot` call.
-
-- ...:
-
-  Additional arguments passed to `fun`.
 
 - p.adjust.method:
 
@@ -207,31 +217,31 @@ perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
 
 perm.test.pairwise(x = pdata$NMSR, group = pdata$CUAL, fun = mean,
                    R = 100)
-#>                    Comparison   p.value adj.p.value
-#> 1  Dark green vs Green purple 0.4059406   1.0000000
-#> 2   Dark green vs Light green 0.2178218   1.0000000
-#> 3        Dark green vs Purple 0.1683168   1.0000000
-#> 4 Green purple vs Light green 0.1386139   0.8316832
-#> 5      Green purple vs Purple 0.6237624   1.0000000
-#> 6       Light green vs Purple 0.1386139   0.8316832
+#>                    Comparison   p.value perm.status perm.message adj.p.value
+#> 1  Dark green vs Green purple 0.4059406     success         <NA>   1.0000000
+#> 2   Dark green vs Light green 0.2178218     success         <NA>   1.0000000
+#> 3        Dark green vs Purple 0.1683168     success         <NA>   1.0000000
+#> 4 Green purple vs Light green 0.1386139     success         <NA>   0.8316832
+#> 5      Green purple vs Purple 0.6237624     success         <NA>   1.0000000
+#> 6       Light green vs Purple 0.1386139     success         <NA>   0.8316832
 
 perm.test.pairwise(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
                    R = 100)
-#>                    Comparison    p.value adj.p.value
-#> 1  Dark green vs Green purple 0.40594059   1.0000000
-#> 2   Dark green vs Light green 0.01980198   0.1188119
-#> 3        Dark green vs Purple 0.06930693   0.4158416
-#> 4 Green purple vs Light green 0.08910891   0.5346535
-#> 5      Green purple vs Purple 0.14851485   0.8910891
-#> 6       Light green vs Purple 0.14851485   0.8910891
+#>                    Comparison    p.value perm.status perm.message adj.p.value
+#> 1  Dark green vs Green purple 0.40594059     success         <NA>   1.0000000
+#> 2   Dark green vs Light green 0.01980198     success         <NA>   0.1188119
+#> 3        Dark green vs Purple 0.06930693     success         <NA>   0.4158416
+#> 4 Green purple vs Light green 0.08910891     success         <NA>   0.5346535
+#> 5      Green purple vs Purple 0.14851485     success         <NA>   0.8910891
+#> 6       Light green vs Purple 0.14851485     success         <NA>   0.8910891
 
 perm.test.pairwise(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
                    R = 100)
-#>                    Comparison    p.value adj.p.value
-#> 1  Dark green vs Green purple 0.11881188   0.7128713
-#> 2   Dark green vs Light green 0.55445545   1.0000000
-#> 3        Dark green vs Purple 0.03960396   0.2376238
-#> 4 Green purple vs Light green 0.81188119   1.0000000
-#> 5      Green purple vs Purple 0.36633663   1.0000000
-#> 6       Light green vs Purple 0.37623762   1.0000000
+#>                    Comparison    p.value perm.status perm.message adj.p.value
+#> 1  Dark green vs Green purple 0.11881188     success         <NA>   0.7128713
+#> 2   Dark green vs Light green 0.55445545     success         <NA>   1.0000000
+#> 3        Dark green vs Purple 0.03960396     success         <NA>   0.2376238
+#> 4 Green purple vs Light green 0.81188119     success         <NA>   1.0000000
+#> 5      Green purple vs Purple 0.36633663     success         <NA>   1.0000000
+#> 6       Light green vs Purple 0.37623762     success         <NA>   1.0000000
 ```

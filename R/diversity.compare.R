@@ -122,7 +122,7 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
          heip_evenness = list(fun = heip_evenness, args = list()),
          mcintosh_diversity = list(fun = mcintosh_diversity, args = list()),
          mcintosh_evenness = list(fun = mcintosh_evenness, args = list()),
-         smith_wilson = list(fun = smith_wilson, args = list()),
+         smith_wilson = list(fun = smith_wilson, args = list(warn = FALSE)),
          brillouin_index = list(fun = brillouin_index, args = list()))
   }
 
@@ -133,11 +133,36 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
 
     global_perm_results <-
       lapply(fun_list, function(z) {
+        tryCatch(
+          {
         do.call(perm.test.global,
-                c(list(x = x, group = group, R = R,
-                       fun = z$fun),
-                  z$args))
+                list(x = x, group = group, R = R,
+                     fun = z$fun,
+                     fun.args = z$args))
+          },
+        error = function(e) {
+          return(list(
+            test_stat = NA_real_,
+            observed_values = NA,
+            p_value = NA_real_,
+            error = conditionMessage(e)
+          ))
+        })
       })
+
+    isgpermerror <- sapply(global_perm_results, length) == 4
+    if (any(isgpermerror)) {
+      global_perm_msgs <-
+        sapply(global_perm_results[which(isgpermerror)], function(x) {
+        x[[4]]
+      })
+    } else {
+      global_perm_msgs <- NULL
+    }
+
+    message(paste(names(global_perm_msgs), global_perm_msgs,
+                  sep = ":\n", collapse = "\n"))
+
     global_perm_results <-
       lapply(global_perm_results, function(x) {
         c(x[[1]], x[[3]])
@@ -145,6 +170,8 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
     global_perm_results <- data.frame(global_perm_results)
     global_perm_results <- cbind(Measure = c("Test statistic", "p-value"),
                                  global_perm_results)
+
+    attr(global_perm_results, "messages") <- global_perm_msgs
 
   }
 
@@ -154,24 +181,65 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
     if (length(groups) > 2) {
       message("Performing pairwise permutation tests.")
 
+      warnings_list <- vector("list", length(fun_list))
+      names(warnings_list) <- names(fun_list)
+
       pairwise_perm_results <-
-        lapply(fun_list, function(z) {
-          do.call(perm.test.pairwise,
+        lapply(seq_along(fun_list), function(i) {
+
+          z <- fun_list[[i]]
+
+          warnings_log <- character()
+
+          # Run pairwise permutation test
+          res <- tryCatch(
+            withCallingHandlers(
+              {
+                do.call(
+                  perm.test.pairwise,
                   c(list(x = x, group = group, R = R,
-                         fun = z$fun),
-                    z$args, list(p.adjust.method = p.adjust.method),
+                         fun = z$fun, fun.args = z$args),
+                    list(p.adjust.method = p.adjust.method),
                     list(parallel = parallel,
                          ncpus = ncpus,
-                         cl = cl)))
+                         cl = cl))
+                )
+              },
+              warning = function(w) {
+                warnings_log <<- c(warnings_log, conditionMessage(w))
+                invokeRestart("muffleWarning")
+              }
+            ),
+            error = function(e) {
+              message("Error: ", conditionMessage(e))
+              return(NULL)
+            }
+          )
+          warnings_list[[i]] <<- warnings_log
+
+          return(res)
+
         })
+
+      names(pairwise_perm_results) <- names(fun_list)
+
+      pairwise_perm_cld <- NA
 
       pairwise_perm_cld <-
         lapply(pairwise_perm_results, function(x) {
 
           adj_p <- setNames(x$adj.p.value,
                             gsub(" vs ", "-", x$Comparison))
+
+          # Assume no significant difference (p = 1) for if p-value is NA
+          # Ensures the groups share a letter and not crash
+          if (any(is.na(adj_p))) {
+            adj_p[is.na(adj_p)] <- 1
+          }
+
           multcompLetters(adj_p)$Letters
         })
+
       pairwise_perm_cld <- data.frame(pairwise_perm_cld)
       pairwise_perm_cld <- cbind(Group = rownames(pairwise_perm_cld),
                                  pairwise_perm_cld)

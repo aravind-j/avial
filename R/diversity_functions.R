@@ -151,12 +151,14 @@ mcintosh_evenness <- function(x) {
 # E_var
 #' @rdname diversity_functions
 #' @export
-smith_wilson <- function(x) {
+smith_wilson <- function(x, warn = TRUE) {
   x <- droplevels(x)
   p <- prop.table(table(x))  # relative abundances
 
   if(length(p) < 2) {
-    warning("E_var undefined for single species or class, returning NA.")
+    if(warn) {
+      warning("E_var undefined for <2 species or classes; returning NA.")
+    }
     return(NA_real_)
   }
 

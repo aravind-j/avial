@@ -55,7 +55,7 @@ mcintosh_diversity(x)
 
 mcintosh_evenness(x)
 
-smith_wilson(x)
+smith_wilson(x, warn = TRUE)
 
 heip_evenness(x)
 

@@ -11,11 +11,11 @@ perm.test.global(
   group,
   fun,
   R = 1000,
+  fun.args = list(),
   max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL,
-  ...
+  cl = NULL
 )
 
 perm.test.pairwise(
@@ -23,12 +23,12 @@ perm.test.pairwise(
   group,
   fun,
   R = 1000,
+  fun.args = list(),
   p.adjust.method = c("bonferroni", "holm"),
   max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL,
-  ...
+  cl = NULL
 )
 }
 \arguments{
@@ -40,6 +40,8 @@ have the same length as \code{x}.}
 \item{fun}{A function to summarize values within each group.}
 
 \item{R}{Integer specifying the number of permutations. Default is 1000.}
+
+\item{fun.args}{Named list of additional arguments forwarded to `fun`.}
 
 \item{parallel}{
     The type of parallel operation to be used (if any).  If missing, the
@@ -57,8 +59,6 @@ have the same length as \code{x}.}
     \code{parallel = "snow"}.  If not supplied, a cluster on the
     local machine is created for the duration of the \code{boot} call.
   }
-
-\item{...}{Additional arguments passed to \code{fun}.}
 
 \item{p.adjust.method}{(perm.test.pairwise only) Method for adjusting
 p-values for multiple comparisons. Options include \code{"bonferroni"} and

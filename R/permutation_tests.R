@@ -15,6 +15,7 @@
 #'   have the same length as \code{x}.
 #' @param fun A function to summarize values within each group.
 #' @param R Integer specifying the number of permutations. Default is 1000.
+#' @param fun.args Named list of additional arguments forwarded to `fun`.
 #' @param max_invalid Numeric between 0 and 1. Maximum allowed proportion of
 #'   invalid permutations (i.e., permutations for which the test statistic is
 #'   non-finite). If the proportion of invalid permutations exceeds this
@@ -24,7 +25,6 @@
 #'   p-values for multiple comparisons. Options include \code{"bonferroni"} and
 #'   \code{"holm"}. Default is \code{"bonferroni"}.
 #' @inheritParams boot::boot
-#' @param ... Additional arguments passed to \code{fun}.
 #'
 #' @returns \describe{ \item{\code{perm.test.global}}{A list of the following
 #'   elements. \describe{ \item{test_stat}{The test statistic value.}
@@ -81,11 +81,11 @@ NULL
 #' @rdname permutation_tests
 #' @export
 perm.test.global <- function(x, group, fun, R = 1000,
+                             fun.args = list(),
                              max.invalid = 0.25,
                              parallel = c("no", "multicore", "snow"),
                              ncpus = 1L,
-                             cl = NULL,
-                             ...) {
+                             cl = NULL) {
 
   parallel <- match.arg(parallel)
 
@@ -101,7 +101,15 @@ perm.test.global <- function(x, group, fun, R = 1000,
   group <- droplevels(group)
 
   # group-wise observed indices
-  obs_indices <- tapply(x, group, fun, ...)
+  # obs_indices <- tapply(x, group, fun, ...)
+  wrapped_fun <- function(xx) {
+    # Safety for empty permutation groups
+    if (length(xx) == 0) {
+      return(NA_real_)
+      }
+    do.call(fun, c(list(xx), fun.args))
+  }
+  obs_indices <- tapply(x, group, wrapped_fun)
 
   # counts
   tab <- table(group)
@@ -124,6 +132,16 @@ perm.test.global <- function(x, group, fun, R = 1000,
   # test_stat <-  sum(obs_indices^2 * counts)
 
   # permutation loop to get null variance
+
+  if (parallel == "snow") {
+    parallel::clusterSetRNGStream(cl, iseed = 123)
+  }
+
+  if (parallel == "multicore") {
+    set.seed(123)
+  }
+
+
   null_stats <- numeric(R)
   n_valid <- 0L
 
@@ -137,7 +155,8 @@ perm.test.global <- function(x, group, fun, R = 1000,
     # permutation loop to get null variance
     batch <- apply_parallel(seq_len(batch_size), function(i) {
       shuffled_group <- sample(group)
-      perm_indices <- tapply(x, shuffled_group, fun, ...)
+      # perm_indices <- tapply(x, shuffled_group, fun, ...)
+      perm_indices <- tapply(x, shuffled_group, wrapped_fun)
 
       perm_tab <- table(shuffled_group)
       perm_counts <- as.vector(perm_tab)
@@ -172,8 +191,7 @@ perm.test.global <- function(x, group, fun, R = 1000,
       if (current_prop_invalid > max.invalid) {
         stop(
           sprintf(
-            "Permutation test aborted: statistic function '%s' is not permutation-stable (%.1f%% invalid permutations, threshold = %.0f%%).",
-            deparse(substitute(fun)),
+            "Permutation test aborted: statistic function 'fun' is not permutation-stable (%.1f%% invalid permutations, threshold = %.0f%%).",
             100 * current_prop_invalid,
             100 * max.invalid
           ),
@@ -199,8 +217,7 @@ perm.test.global <- function(x, group, fun, R = 1000,
 
     if (prop_invalid > 0.02) {
       warning(
-        sprintf("Function '%s' is not permutation-stable (%.1f%% invalid permutations).",
-                deparse(substitute(fun)),
+        sprintf("Function 'fun' is not permutation-stable (%.1f%% invalid permutations).",
                 100 * prop_invalid),
         call. = FALSE
       )
@@ -223,12 +240,12 @@ perm.test.global <- function(x, group, fun, R = 1000,
 #' @rdname permutation_tests
 #' @export
 perm.test.pairwise <- function(x, group, fun, R = 1000,
+                               fun.args = list(),
                                p.adjust.method = c("bonferroni", "holm"),
                                max.invalid = 0.25,
                                parallel = c("no", "multicore", "snow"),
                                ncpus = 1L,
-                               cl = NULL,
-                               ...)  {
+                               cl = NULL)  {
 
   parallel <- match.arg(parallel)
 
@@ -252,6 +269,10 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
     parallel::clusterSetRNGStream(cl, iseed = 123)
   }
 
+  if (parallel == "multicore") {
+    set.seed(123)
+  }
+
   pw_results_list <- vector("list", length(pairs))
   names(pw_results_list) <-
     vapply(pairs, function(p) {
@@ -267,7 +288,15 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
     # Pairwise Permutation
     grp_levels <- levels(sub_g)
-    obs_vals <- tapply(sub_x, sub_g, fun, ...)
+    # obs_vals <- tapply(sub_x, sub_g, fun, ...)
+    wrapped_fun <- function(xx) {
+      # Safety for empty permutation groups
+      if (length(xx) == 0) {
+        return(NA_real_)
+      }
+      do.call(fun, c(list(xx), fun.args))
+    }
+    obs_vals <- tapply(sub_x, sub_g, wrapped_fun)
     obs_vals <- obs_vals[grp_levels]
     obs_diff <- abs(diff(obs_vals))  # two-tailed
 
@@ -276,15 +305,17 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
     n_invalid_total <- 0
     n_generated_total <- 0
+    aborted <- FALSE
 
     while (n_valid < R) {
 
-      batch_size <- R - n_valid
+      batch_size <- min(R, R - n_valid)
 
       batch <- apply_parallel(seq_len(batch_size), function(i) {
 
         perm_g <- sample(sub_g)
-        perm_vals <- tapply(sub_x, perm_g, fun, ...)
+        # perm_vals <- tapply(sub_x, perm_g, fun, ...)
+        perm_vals <- tapply(sub_x, perm_g, wrapped_fun)
         perm_vals <- perm_vals[grp_levels]
 
         if (any(!is.finite(perm_vals))) {
@@ -306,21 +337,14 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
       n_generated_total <- n_generated_total + length(batch)
       n_invalid_total   <- n_invalid_total + sum(!is.finite(batch))
 
-      # EARLY STOP CHECK
+      # Early stop check
       if (n_generated_total > 0) {
         current_prop_invalid <- n_invalid_total / n_generated_total
 
         if (current_prop_invalid > max.invalid) {
-          stop(
-            sprintf(
-              "Permutation test aborted: statistic function '%s' is not permutation-stable for comparison '%s' (%.1f%% invalid permutations, threshold = %.0f%%).",
-              deparse(substitute(fun)),
-              names(pw_results_list)[i],
-              100 * current_prop_invalid,
-              100 * max.invalid
-            ),
-            call. = FALSE
-          )
+          null_diffs <- rep(NA_real_, R)
+          aborted <- TRUE
+          break
         }
       }
 
@@ -337,29 +361,52 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
     # null_diffs <- null_diffs[seq_len(R)]
 
+    # Final invalid proportion
     if (n_generated_total > 0) {
       prop_invalid <- n_invalid_total / n_generated_total
-
-      if (prop_invalid > 0.02) {
-        warning(
-          sprintf(
-            "Function '%s' is not permutation-stable for comparison '%s' (%.1f%% invalid permutations).",
-            deparse(substitute(fun)),
-            names(pw_results_list)[i],
-            100 * prop_invalid
-          ),
-          call. = FALSE
-        )
-      }
+    } else {
+      prop_invalid <- NA_real_
     }
 
-    # phipson_permutation_2010
-    p_val <- # mean(null_diffs >= obs_diff)
-      (sum(null_diffs >= obs_diff) + 1) / (R + 1)
+    # Compute p-value
+    if (all(is.na(null_diffs))) {
+      p_val <- NA_real_
+    } else {
+      # p_val <- mean(null_diffs >= obs_diff)
+      # phipson_permutation_2010
+      p_val <- (sum(null_diffs >= obs_diff, na.rm = TRUE) + 1) / (R + 1)
+    }
+
+    # Status + message columns
+    if (aborted) {
+      perm.status  <- "failed"
+      perm.message <- sprintf(
+        "Aborted: %.1f%% invalid permutations (threshold = %.0f%%).",
+        100 * prop_invalid,
+        100 * max.invalid
+      )
+      # sprintf(
+      #   "Aborted: %.1f%% invalid (%d/%d). Threshold = %.0f%%.",
+      #   100 * prop_invalid,
+      #   n_invalid_total,
+      #   n_generated_total,
+      #   100 * max.invalid
+      # )
+    } else {
+      perm.status  <- "success"
+      perm.message <- ifelse(100 * prop_invalid > 2,
+                             sprintf(
+                               "%.1f%% invalid permutations.",
+                               100 * prop_invalid
+                             ),
+                             NA_character_)
+    }
 
     # data.frame(Comparison = paste(p[1], "vs", p[2]), p.value = p_val)
-    data.frame(p.value = p_val)
-    pw_results_list[[i]] <- data.frame(p.value = p_val)
+    # data.frame(p.value = p_val)
+    pw_results_list[[i]] <-
+      data.frame(p.value = p_val, perm.status = perm.status,
+      perm.message = perm.message, stringsAsFactors = FALSE)
   }
 
   pw_results <- dplyr::bind_rows(pw_results_list, .id = "Comparison")
@@ -374,6 +421,7 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
 
 # parallel lapply switch function ----
+#  ... Additional arguments passed to \code{FUN}.
 apply_parallel <- function(X, FUN,
                            parallel = c("no", "multicore", "snow"),
                            ncpus = 1L,
@@ -396,4 +444,6 @@ apply_parallel <- function(X, FUN,
     parallel::parLapply(cl, X, FUN, ...)
   }
 }
+
+
 

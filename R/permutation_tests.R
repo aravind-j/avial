@@ -99,9 +99,10 @@ perm.test.global <- function(x, group, fun, R = 1000,
   }
 
   group <- droplevels(group)
+  group_ints <- as.integer(group)
+  num_groups <- max(group_ints)
 
   # group-wise observed indices
-  # obs_indices <- tapply(x, group, fun, ...)
   wrapped_fun <- function(xx) {
     # Safety for empty permutation groups
     if (length(xx) == 0) {
@@ -109,18 +110,18 @@ perm.test.global <- function(x, group, fun, R = 1000,
     }
     do.call(fun, c(list(xx), fun.args))
   }
-  obs_indices <- tapply(x, group, wrapped_fun)
 
   # counts
-  tab <- table(group)
+  tab <- table(group_ints)
   counts <- as.vector(tab)
-  names(counts) <- names(tab)
+  total_counts <- sum(counts)
 
-  # enforce order
-  obs_indices <- obs_indices[names(counts)]
+  # Calculate observed statistic
+  obs_indices <- vapply(split(x, group_ints),
+                        wrapped_fun, numeric(1), USE.NAMES = FALSE)
 
   # grand mean
-  grand_mean <- sum(obs_indices * counts) / sum(counts)
+  grand_mean <- sum(obs_indices * counts) / total_counts
 
   # Test statistic
 
@@ -139,7 +140,6 @@ perm.test.global <- function(x, group, fun, R = 1000,
     set.seed(123)
   }
 
-
   null_stats <- numeric(R)
   n_valid <- 0L
 
@@ -152,21 +152,18 @@ perm.test.global <- function(x, group, fun, R = 1000,
 
     # permutation loop to get null variance
     batch <- apply_parallel(seq_len(batch_size), function(i) {
-      shuffled_group <- sample(group)
-      # perm_indices <- tapply(x, shuffled_group, fun, ...)
-      perm_indices <- tapply(x, shuffled_group, wrapped_fun)
 
-      perm_tab <- table(shuffled_group)
-      perm_counts <- as.vector(perm_tab)
-      names(perm_counts) <- names(perm_tab)
+      # Shuffle group labels
+      shuffled_group <- sample(group_ints)
+      perm_indices <- vapply(split(x, shuffled_group),
+                             wrapped_fun, numeric(1), USE.NAMES = FALSE)
 
-      # enforce order
-      perm_indices <- perm_indices[names(perm_counts)]
 
-      perm_grand_mean <- sum(perm_indices * perm_counts) / sum(perm_counts)
+      # Computed test stat
+      perm_grand_mean <- sum(perm_indices * counts) / total_counts
 
       # stat <- var(perm_indices)
-      stat <- sum(perm_counts * ((perm_indices - perm_grand_mean) ^ 2))
+      stat <- sum(counts * ((perm_indices - perm_grand_mean) ^ 2))
       # stat <- sum(perm_indices^2 * perm_counts)
 
       if (!is.finite(stat)) {
@@ -177,19 +174,20 @@ perm.test.global <- function(x, group, fun, R = 1000,
 
     }, parallel = parallel, ncpus = ncpus, cl = cl)
 
+    # Process Batch Results
     batch <- unlist(batch)
 
     n_generated_total <- n_generated_total + length(batch)
     n_invalid_total   <- n_invalid_total + sum(!is.finite(batch))
 
-    # EARLY STOP CHECK
+    # Early Stop Check
     if (n_generated_total > 0) {
       current_prop_invalid <- n_invalid_total / n_generated_total
 
       if (current_prop_invalid > max.invalid) {
         stop(
           sprintf(
-            "Permutation test aborted: statistic function 'fun' is not permutation-stable (%.1f%% invalid permutations, threshold = %.0f%%).",
+            "Aborted: %.1f%% invalid permutations (limit %.0f%%).",
             100 * current_prop_invalid,
             100 * max.invalid
           ),
@@ -198,6 +196,7 @@ perm.test.global <- function(x, group, fun, R = 1000,
       }
     }
 
+    # Store valid results
     batch <- batch[is.finite(batch)] # check if valid
 
     if (length(batch) > 0) {
@@ -208,14 +207,12 @@ perm.test.global <- function(x, group, fun, R = 1000,
     }
   }
 
-  # null_stats <- null_stats[seq_len(R)]
-
   if (n_generated_total > 0) {
     prop_invalid <- n_invalid_total / n_generated_total
-
+    # Warning for stability
     if (prop_invalid > 0.02) {
       warning(
-        sprintf("Function 'fun' is not permutation-stable (%.1f%% invalid permutations).",
+        sprintf("%.1f%% invalid permutations detected.",
                 100 * prop_invalid),
         call. = FALSE
       )
@@ -285,18 +282,17 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
   for (i in seq_along(pairs)) {
     p <- pairs[[i]]
+
     # Filter for pair
     mask <- group %in% p
     sub_x <- x[mask]
     sub_g <- droplevels(group[mask])
+    sub_g_ints <- as.integer(sub_g)
 
     # Pairwise Permutation
-    grp_levels <- levels(sub_g)
-    # obs_vals <- tapply(sub_x, sub_g, fun, ...)
-
-    obs_vals <- tapply(sub_x, sub_g, wrapped_fun)
-    obs_vals <- obs_vals[grp_levels]
-    obs_diff <- abs(diff(obs_vals))  # two-tailed
+    obs_vals <- vapply(split(sub_x, sub_g_ints), wrapped_fun,
+                       numeric(1), USE.NAMES = FALSE)
+    obs_diff <- abs(obs_vals[1] - obs_vals[2]) # two-tailed
 
     null_diffs <- numeric(R)
     n_valid <- 0L
@@ -309,24 +305,22 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
       batch_size <- min(R, R - n_valid)
 
-      batch <- apply_parallel(seq_len(batch_size), function(i) {
+      batch <- apply_parallel(seq_len(batch_size), function(j) {
 
-        perm_g <- sample(sub_g)
-        # perm_vals <- tapply(sub_x, perm_g, fun, ...)
-        perm_vals <- tapply(sub_x, perm_g, wrapped_fun)
-        perm_vals <- perm_vals[grp_levels]
+        # Shuffle group labels
+        perm_g <- sample(sub_g_ints)
 
-        if (any(!is.finite(perm_vals))) {
-          return(NA_real_)
-        } else {
-          d <- abs(diff(perm_vals))
-        }
+        perm_vals <- vapply(split(sub_x, perm_g), wrapped_fun,
+                            numeric(1), USE.NAMES = FALSE)
 
-        if (!is.finite(d)) {
-          return(NA_real_)
-        } else {
+        d <- abs(perm_vals[1] - perm_vals[2])
+
+        return(if(is.finite(d)) {
           d
-        }
+        } else {
+          NA_real_
+        })
+
 
       }, parallel = parallel, ncpus = ncpus, cl = cl)
 
@@ -357,8 +351,6 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
     }
 
-    # null_diffs <- null_diffs[seq_len(R)]
-
     # Final invalid proportion
     if (n_generated_total > 0) {
       prop_invalid <- n_invalid_total / n_generated_total
@@ -383,13 +375,6 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
         100 * prop_invalid,
         100 * max.invalid
       )
-      # sprintf(
-      #   "Aborted: %.1f%% invalid (%d/%d). Threshold = %.0f%%.",
-      #   100 * prop_invalid,
-      #   n_invalid_total,
-      #   n_generated_total,
-      #   100 * max.invalid
-      # )
     } else {
       perm.status  <- "success"
       perm.message <- ifelse(100 * prop_invalid > 2,
@@ -400,8 +385,6 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
                              NA_character_)
     }
 
-    # data.frame(Comparison = paste(p[1], "vs", p[2]), p.value = p_val)
-    # data.frame(p.value = p_val)
     pw_results_list[[i]] <-
       data.frame(p.value = p_val, perm.status = perm.status,
       perm.message = perm.message, stringsAsFactors = FALSE)
@@ -410,7 +393,6 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
   pw_results <- dplyr::bind_rows(pw_results_list, .id = "Comparison")
 
   # P-value correction
-  # pw_results$adj.p.value <- pmin(pw_results$p.value * nrow(pw_results), 1)
   pw_results$adj.p.value <- p.adjust(pw_results$p.value,
                                      method = p.adjust.method)
 

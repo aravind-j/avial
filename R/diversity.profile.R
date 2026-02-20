@@ -256,6 +256,12 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
   ci.type <- match.arg(ci.type)  # only one CI type
   parameter <- match.arg(parameter)
 
+  if (parallel == "snow") {
+    parallel::clusterSetRNGStream(cl, iseed = 123)
+  } else if (parallel %in% c("multicore", "no")) {
+    set.seed(123)
+  }
+
   groups <- levels(group)
   results <- vector("list", length(groups))
   names(results) <- groups

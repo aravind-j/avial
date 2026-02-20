@@ -102,6 +102,12 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
   type <- match.arg(type, several.ok = TRUE)
   parallel <- match.arg(parallel)
 
+  if (parallel == "snow") {
+    parallel::clusterSetRNGStream(cl, iseed = 123)
+  } else if (parallel %in% c("multicore", "no")) {
+    set.seed(123)
+  }
+
   # Bootstrap (single statistic only)
     b <- boot::boot(x,
                     statistic = function(data, i) fun(data[i], ...),

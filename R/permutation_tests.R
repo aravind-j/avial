@@ -106,7 +106,7 @@ perm.test.global <- function(x, group, fun, R = 1000,
     # Safety for empty permutation groups
     if (length(xx) == 0) {
       return(NA_real_)
-      }
+    }
     do.call(fun, c(list(xx), fun.args))
   }
   obs_indices <- tapply(x, group, wrapped_fun)
@@ -135,9 +135,7 @@ perm.test.global <- function(x, group, fun, R = 1000,
 
   if (parallel == "snow") {
     parallel::clusterSetRNGStream(cl, iseed = 123)
-  }
-
-  if (parallel == "multicore") {
+  } else if (parallel %in% c("multicore", "no")) {
     set.seed(123)
   }
 
@@ -267,9 +265,7 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
 
   if (parallel == "snow") {
     parallel::clusterSetRNGStream(cl, iseed = 123)
-  }
-
-  if (parallel == "multicore") {
+  } else if (parallel %in% c("multicore", "no")) {
     set.seed(123)
   }
 
@@ -278,6 +274,14 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
     vapply(pairs, function(p) {
       paste(p[1], "vs", p[2])
     }, character(1))
+
+  wrapped_fun <- function(xx) {
+    # Safety for empty permutation groups
+    if (length(xx) == 0) {
+      return(NA_real_)
+    }
+    do.call(fun, c(list(xx), fun.args))
+  }
 
   for (i in seq_along(pairs)) {
     p <- pairs[[i]]
@@ -289,13 +293,7 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
     # Pairwise Permutation
     grp_levels <- levels(sub_g)
     # obs_vals <- tapply(sub_x, sub_g, fun, ...)
-    wrapped_fun <- function(xx) {
-      # Safety for empty permutation groups
-      if (length(xx) == 0) {
-        return(NA_real_)
-      }
-      do.call(fun, c(list(xx), fun.args))
-    }
+
     obs_vals <- tapply(sub_x, sub_g, wrapped_fun)
     obs_vals <- obs_vals[grp_levels]
     obs_diff <- abs(diff(obs_vals))  # two-tailed

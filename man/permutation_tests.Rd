@@ -15,7 +15,8 @@ perm.test.global(
   max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL
+  cl = NULL,
+  seed = 123
 )
 
 perm.test.pairwise(
@@ -28,7 +29,8 @@ perm.test.pairwise(
   max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL
+  cl = NULL,
+  seed = 123
 )
 }
 \arguments{
@@ -65,6 +67,9 @@ statistic function is not permutation-stable.}
     \code{parallel = "snow"}.  If not supplied, a cluster on the
     local machine is created for the duration of the \code{boot} call.
   }
+
+\item{seed}{Integer. Random seed used to ensure reproducibility of
+permutations. Default is 123.}
 
 \item{p.adjust.method}{(perm.test.pairwise only) Method for adjusting
 p-values for multiple comparisons. Options include \code{"bonferroni"} and

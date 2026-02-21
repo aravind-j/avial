@@ -24,6 +24,8 @@
 #' @param p.adjust.method (perm.test.pairwise only) Method for adjusting
 #'   p-values for multiple comparisons. Options include \code{"bonferroni"} and
 #'   \code{"holm"}. Default is \code{"bonferroni"}.
+#' @param seed Integer. Random seed used to ensure reproducibility of
+#'   permutations. Default is 123.
 #' @inheritParams boot::boot
 #'
 #' @returns \describe{ \item{\code{perm.test.global}}{A list of the following
@@ -85,7 +87,8 @@ perm.test.global <- function(x, group, fun, R = 1000,
                              max.invalid = 0.25,
                              parallel = c("no", "multicore", "snow"),
                              ncpus = 1L,
-                             cl = NULL) {
+                             cl = NULL,
+                             seed = 123) {
 
   parallel <- match.arg(parallel)
 
@@ -132,13 +135,16 @@ perm.test.global <- function(x, group, fun, R = 1000,
   ##[3] Weighted and uncentered SS between groups
   # test_stat <-  sum(obs_indices^2 * counts)
 
-  # permutation loop to get null variance
-
-  if (parallel == "snow") {
-    parallel::clusterSetRNGStream(cl, iseed = 123)
-  } else if (parallel %in% c("multicore", "no")) {
-    set.seed(123)
+  # Seed for reproducibility
+  if (!is.null(seed)) {
+    if (parallel == "snow" && !is.null(cl)) {
+      parallel::clusterSetRNGStream(cl, iseed = seed)
+    } else {
+      set.seed(seed)
+    }
   }
+
+  # permutation loop to get null variance
 
   null_stats <- numeric(R)
   n_valid <- 0L
@@ -240,7 +246,8 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
                                max.invalid = 0.25,
                                parallel = c("no", "multicore", "snow"),
                                ncpus = 1L,
-                               cl = NULL)  {
+                               cl = NULL,
+                               seed = 123)  {
 
   parallel <- match.arg(parallel)
 
@@ -260,10 +267,13 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
   lvls <- levels(group)
   pairs <- combn(lvls, 2, simplify = FALSE)
 
-  if (parallel == "snow") {
-    parallel::clusterSetRNGStream(cl, iseed = 123)
-  } else if (parallel %in% c("multicore", "no")) {
-    set.seed(123)
+  # Seed for reproducibility
+  if (!is.null(seed)) {
+    if (parallel == "snow" && !is.null(cl)) {
+      parallel::clusterSetRNGStream(cl, iseed = seed)
+    } else {
+      set.seed(seed)
+    }
   }
 
   pw_results_list <- vector("list", length(pairs))

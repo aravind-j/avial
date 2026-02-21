@@ -25,6 +25,7 @@ NULL
 #' @export
 berger_parker <- function(x) {
   tab <- tabulate(x)
+  tab <- tab[tab > 0]
   p <- tab / length(x)
   max(p)
 }
@@ -44,6 +45,7 @@ berger_parker_reciprocal <- function(x) {
 #' @export
 simpson <- function(x) {
   tab <- tabulate(x)
+  tab <- tab[tab > 0]
   p <- tab / length(x)
   sum(p ^ 2)
 }
@@ -59,7 +61,9 @@ gini_simpson <- function(x) {
 #' @rdname diversity_functions
 #' @export
 simpson_max <- function(x) {
-  1 - (1 / length(tabulate(x)))
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+  1 - (1 / length(tab))
 }
 
 ## Reciprocal Simpson's Index
@@ -82,7 +86,9 @@ simpson_relative <- function(x) {
 #' @rdname diversity_functions
 #' @export
 simpson_evenness <- function(x) {
-  1 / (gini_simpson(x) * length(tabulate(x)))
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+  1 / (gini_simpson(x) * length(tab))
 }
 
 # Shannon indices ----
@@ -92,6 +98,7 @@ simpson_evenness <- function(x) {
 #' @export
 shannon <- function(x, base = 2) {
   tab <- tabulate(x)
+  tab <- tab[tab > 0]
   p <- tab / length(x)
   -sum(p * log(p, base = base))
 }
@@ -100,7 +107,9 @@ shannon <- function(x, base = 2) {
 #' @rdname diversity_functions
 #' @export
 shannon_max <- function(x, base = 2) {
-  log(length(tabulate(x)), base = base)
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+  log(length(tab), base = base)
 }
 
 ## Relative Shannon-Weaver Diversity Index
@@ -124,6 +133,7 @@ shannon_ens <- function(x, base = 2) {
 #' @export
 mcintosh_diversity <- function(x) {
   n <- tabulate(x)
+  n <- n[n > 0]
   N <- sum(n)
   U <- sqrt(sum(n^2))
   (N - U) / (N - sqrt(N))
@@ -134,6 +144,7 @@ mcintosh_diversity <- function(x) {
 #' @export
 mcintosh_evenness <- function(x) {
   n <- tabulate(x)
+  n <- n[n > 0]
   N <- sum(n)
   U <- sqrt(sum(n^2))
   S <- length(levels(x)) #k
@@ -146,6 +157,7 @@ mcintosh_evenness <- function(x) {
 #' @export
 smith_wilson <- function(x, warn = TRUE) {
   tab <- tabulate(x)
+  tab <- tab[tab > 0]
   p <- tab / length(x) # relative abundances
 
   if(length(p) < 2) {
@@ -165,7 +177,9 @@ smith_wilson <- function(x, warn = TRUE) {
 #' @rdname diversity_functions
 #' @export
 heip_evenness <- function(x) {
-  S <- length(tabulate(x))
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+  S <- length(tab)
   H <- shannon(x)
   if(S <= 1) return(NA_real_)
   (exp(H) - 1) / (S - 1)
@@ -176,7 +190,9 @@ heip_evenness <- function(x) {
 #' @rdname diversity_functions
 #' @export
 margalef_index <- function(x) {
-  S <- length(tabulate(x))
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+  S <- length(tab)
   N <- length(x)
   if(N <= 1) return(NA_real_)
   (S - 1) / log(N)
@@ -186,7 +202,9 @@ margalef_index <- function(x) {
 #' @rdname diversity_functions
 #' @export
 menhinick_index <- function(x) {
-  S <- length(tabulate(x))
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+  S <- length(tab)
   N <- length(x)
   S / sqrt(N)
 }
@@ -197,6 +215,7 @@ menhinick_index <- function(x) {
 #' @export
 brillouin_index <- function(x) {
   n <- tabulate(x)
+  n <- n[n > 0]
   N <- sum(n)
   if (N <= 1) {
     return(NA_real_)
@@ -216,6 +235,7 @@ brillouin_index <- function(x) {
 #' @export
 hill_number <- function(x, q = 1) {
   tab <- tabulate(x)
+  tab <- tab[tab > 0]
   p <- tab / length(x)
   S <- length(p)
 
@@ -231,6 +251,7 @@ hill_number <- function(x, q = 1) {
 #' @export
 renyi_entropy <- function(x, q = 1) {
   tab <- tabulate(x)
+  tab <- tab[tab > 0]
   p <- tab / length(x)
 
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
@@ -245,6 +266,7 @@ renyi_entropy <- function(x, q = 1) {
 #' @export
 tsallis_entropy <- function(x, q = 1) {
   tab <- tabulate(x)
+  tab <- tab[tab > 0]
   p <- tab / length(x)
 
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
@@ -258,7 +280,9 @@ tsallis_entropy <- function(x, q = 1) {
 #' @rdname diversity_functions
 #' @export
 hill_evenness <- function(x, q = 1) {
-  S <- length(tabulate(x))
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+  S <- length(tab)
   D_q <- hill_number(x, q)
   D_q / S
 }

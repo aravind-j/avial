@@ -71,7 +71,10 @@
 #' stat_fun_mean <- function(x) {
 #'   est <- mean(x)
 #'   se  <- sd(x) / sqrt(length(x))
-#'   c(est, se)
+#'   out <- c(est, se)
+#'   # Important : Tells bootstrap.ci to consider second output as SE
+#'   attr(out, "se") <- TRUE
+#'   return(out)
 #' }
 #'
 #' bootstrap.ci(pdata$NMSR, stat_fun_mean, type = "stud")
@@ -79,14 +82,17 @@
 #' bootstrap.ci(pdata$DSTA, shannon, type = "stud")
 #'
 #' stat_fun_shannon <- function(x, base = 2) {
-#'   x <- droplevels(x)          # drop unused factor levels
-#'   p <- prop.table(table(x))
+#'   tab <- tabulate(x)
+#'   p <- tab / length(x)
 #'   # Only keep p > 0 to avoid log(0)
 #'   p <- p[p > 0]
 #'   est <- -sum(p * log(p, base = base))
 #'   # Approximate SE using sqrt(Var(p * log(p)))
 #'   se <- sqrt(sum((p * log(p, base = base))^2) / length(x))
-#'   c(est, se)
+#'   out <- c(est, se)
+#'   # Important : Tells bootstrap.ci to consider second output as SE
+#'   attr(out, "se") <- TRUE
+#'   return(out)
 #' }
 #'
 #' bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")
@@ -95,191 +101,237 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
                          type = c("norm", "basic", "stud", "perc", "bca"),
                          parallel = c("no", "multicore", "snow"),
                          ncpus = getOption("boot.ncpus", 1L),
-                         cl = NULL, ...) {
+                         cl = NULL, seed = 123, ...) {
 
-  stopifnot(is.factor(x) || is.numeric(x))
-
+  # Validate input
+  stopifnot(is.numeric(x) || is.factor(x))
   type <- match.arg(type, several.ok = TRUE)
   parallel <- match.arg(parallel)
 
-  if (parallel == "snow") {
-    parallel::clusterSetRNGStream(cl, iseed = 123)
-  } else if (parallel %in% c("multicore", "no")) {
-    set.seed(123)
-  }
-
-  # Bootstrap (single statistic only)
-    b <- boot::boot(x,
-                    statistic = function(data, i) fun(data[i], ...),
-                    R = R,
-                    parallel = parallel,
-                    ncpus = ncpus,
-                    cl = cl)
-
-  # Clean NA / NaN from bootstrap replicates
-  b$t[is.nan(b$t)] <- NA
-  if (anyNA(b$t)) {
-    warning("Some bootstrap replicates contain NA/NaN values.",
-            call. = FALSE)
-  }
-
-  # Number of statistics
-  p <- if (is.null(dim(b$t))) {
-    1L
-  } else {
-    ncol(b$t)
-  }
-
-  lower.prob <- (1 - conf) / 2
-  upper.prob <- 1 - lower.prob
-
-  # Percentile CI (vector-safe)
-  perc_ci <- function() {
-    if (p == 1L) {
-      q <- quantile(b$t, c(lower.prob, upper.prob),
-                    na.rm = TRUE, names = FALSE, type = 6)
-      c(lower = q[1], upper = q[2])
+  # Seed for reproducibility
+  if (!is.null(seed)) {
+    if (parallel == "snow" && !is.null(cl)) {
+      parallel::clusterSetRNGStream(cl, iseed = seed)
     } else {
-      apply(b$t, 2, function(col) {
-        q <- quantile(col, c(lower.prob, upper.prob),
-                      na.rm = TRUE, names = FALSE, type = 6)
-        names(q) <- c("lower", "upper")
-        q
-      })
+      set.seed(seed)
     }
   }
 
-  # Percentile CI (single value)
-  perc_ci_scalar <- function() {
-    q <- quantile(b$t[, 1],
-                  probs = c(lower.prob, upper.prob),
-                  na.rm = TRUE, names = FALSE, type = 6)
-    names(q) <- c("lower", "upper")
-    q
+  # Convert factor to integer safely
+  if (is.factor(x)) {
+    x <- as.integer(x)
   }
 
-  ci_out <- lapply(type, function(tp) {
+  # Probe statistic once
+  # To see if se is available for "stud"
+  has_se <- FALSE
+  if ("stud" %in% type) {
+    test_out <- fun(x, ...)
+    has_se   <- isTRUE(attr(test_out, "se"))
 
-    # Percentile
+    p0 <- length(test_out)
+
+    if (has_se && p0 != 2L) {
+      stop('If "se" attribute is TRUE, "fun" must return c(estimate, SE).')
+    }
+  }
+
+  # Bootstrap
+  b <- boot::boot(x,
+                  statistic = function(data, i) fun(data[i], ...),
+                  R = R,
+                  parallel = parallel,
+                  ncpus = ncpus,
+                  cl = cl)
+
+  # Clean NaNs
+  b$t[is.nan(b$t)] <- NA_real_
+  tmat <- b$t
+  t0 <- b$t0
+
+  # Ensure matrix structure
+  if (is.null(dim(tmat))) {
+    tmat <- matrix(tmat, ncol = 1)
+  }
+  p <- ncol(tmat)
+  R_eff <- nrow(tmat)
+
+  if ("stud" %in% type && has_se && p != 2L) {
+    stop("Bootstrap output dimension mismatch.")
+  }
+
+  # Confidence probabilities
+  alpha <- (1 - conf) / 2
+  probs <- c(alpha, 1 - alpha)
+
+  # Mean / SD of bootstrap replicates
+  means <- colMeans(tmat, na.rm = TRUE)
+  sds <- apply(tmat, 2, sd, na.rm = TRUE)
+
+  # Helper: drop matrix to vector if scalar
+  drop_if_scalar <- function(mat) {
+    if (ncol(mat) == 1L) {
+      out <- mat[, 1]
+      names(out) <- c("lower", "upper")
+      return(out)
+    }
+    mat
+  }
+
+  # Initialize fallback tracker
+  fallback <- vector("list", length(type))
+  names(fallback) <- type
+
+  ci_out <- vector("list", length(type))
+
+  for (k in seq_along(type)) {
+    fallback[[k]] <- rep(FALSE, p)
+
+    tp <- type[k]
+    out <- matrix(NA_real_, 2, p,
+                  dimnames = list(c("lower", "upper"), NULL))
+
+    ## Percentile ----
     if (tp == "perc") {
-      return(perc_ci())
+      qs <- apply(tmat, 2, quantile, probs = probs, na.rm = TRUE,
+                  names = FALSE, type = 6)
+      out[,] <- qs
+      ci_out[[k]] <- drop_if_scalar(out)
+      next
     }
 
-    ## Studentized CI ----
+    ## Basic ----
+    if (tp == "basic") {
+      qs <- apply(tmat, 2, quantile, probs = rev(probs), na.rm = TRUE,
+                  names = FALSE, type = 6)
+      out[,] <- 2 * t0 - qs
+      ci_out[[k]] <- drop_if_scalar(out)
+      next
+    }
+
+    ## Normal ----
+    if (tp == "norm") {
+      z <- qnorm(1 - alpha)
+      out[1, ] <- t0 - z * sds
+      out[2, ] <- t0 + z * sds
+      ci_out[[k]] <- drop_if_scalar(out)
+      next
+    }
+
+    ## Studentized ----
+    # currently assumes scalar (p=1)
+    # Not optimized for vector output form fun
+    # so it may not mark fallback per component if fun() returns a vector
     if (tp == "stud") {
-
-      # Require estimate + SE
-      # !is.matrix(b$t) || ncol(b$t) != 2
-      if (!(is.matrix(b$t) && ncol(b$t) == 2)) {
-        warning("Studentized CI requires fun() to return c(estimate, SE); ",
-                "falling back to percentile CI.",
+      if (!(p == 2L) || !has_se) {
+        warning("Studentized CI requires fun() to return c(estimate, SE); using percentile instead.",
                 call. = FALSE)
-        return(perc_ci_scalar())
+        # fallback to percentile
+        qs <- apply(tmat[,1, drop=FALSE], 2, quantile,
+                    probs = probs, na.rm = TRUE, type = 6)
+        rownames(qs) <- c("lower", "upper")
+        ci_out[[k]] <- drop_if_scalar(qs)
+        fallback[[k]] <- rep(TRUE, p)
+        next
       }
 
-      if (p == 2L) {
+      # Get studentized CI from boot.ci()
+      ci_try <- try(suppressWarnings(boot::boot.ci(b, type = "stud",
+                                                   conf = conf)),
+                    silent = TRUE)
 
-        ci <-
-          try(suppressWarnings(boot::boot.ci(b, type = "stud",
-                                             conf = conf,
-                                             # index = 1
-          )),
-          silent = TRUE)
-
-        if (inherits(ci, "try-error") || is.null(ci$stud)) {
-          warning("Studentized CI failed; falling back to percentile CI.",
-                  call. = FALSE)
-          return(perc_ci_scalar())
-        }
-
-        out <- ci$stud[4:5]
-        names(out) <- c("lower", "upper")
-        return(out)
-
-      } else if (p >= 2L) {
-
-        # # Vector-valued -> index loop
-        # out <- matrix(NA_real_, nrow = 2, ncol = p,
-        #               dimnames = list(c("lower", "upper"), NULL))
+      if (inherits(ci_try, "try-error") || is.null(ci_try$stud)) {
+        warning("Studentized CI failed; using percentile.", call. = FALSE)
+        qs <- apply(tmat[,1, drop=FALSE], 2, quantile,
+                    probs = probs, na.rm = TRUE, type = 6)
+        rownames(qs) <- c("lower", "upper")
+        ci_out[[k]] <- drop_if_scalar(qs)
+        fallback[[k]] <- rep(TRUE, p)
+        next
       }
 
+      # Build scalar CI matrix
+      out <- matrix(ci_try$stud[4:5], ncol = 1,
+                    dimnames = list(c("lower","upper"), NULL))
+      ci_out[[k]] <- drop_if_scalar(out)
+      next
     }
 
-    if (tp != "stud") {
-
-      ## OTHER CI TYPES (norm, basic, bca) -----
-      if (p == 1L) {
-        ci <- try(suppressWarnings(boot::boot.ci(b, type = tp, conf = conf)),
-                  silent = TRUE)
-
-        tp2 <- tp
-        tp2 <- ifelse(tp2 == "norm", "normal", tp2)
-
-        if (inherits(ci, "try-error") || is.null(ci[[tp2]])) {
-          warning(tp, " CI failed; using percentile CI.", call. = FALSE)
-          return(perc_ci())
-        }
-
-        if (tp == "norm") {
-          out <- ci[[tp2]][2:3]
-        } else {
-          out <- ci[[tp2]][4:5]
-        }
-
-        names(out) <- c("lower", "upper")
-        return(out)
-
-      } else {
-
-        # Vector-valued -> index loop
-        out <- matrix(NA_real_, nrow = 2, ncol = p,
-                      dimnames = list(c("lower", "upper"), NULL))
-
-        perc <- perc_ci()
-
-        for (i in seq_len(p)) {
-          ci <-
-            try(suppressWarnings(boot::boot.ci(b, type = tp,
-                                               conf = conf,
-                                               index = i)),
-                silent = TRUE)
-
-          tp2 <- tp
-          tp2 <- ifelse(tp2 == "norm", "normal", tp2)
-
-          if (!inherits(ci, "try-error") && !is.null(ci[[tp2]])) {
-            if (tp == "norm") {
-              out[, i] <- ci[[tp2]][2:3]
-            } else {
-              out[, i] <- ci[[tp2]][4:5]
-            }
-          } else {
-            warning(sprintf("%s CI failed for component %d; using percentile CI.",
-                            tp, i),
-                    call. = FALSE)
-            out[, i] <- perc[, i]
-          }
-        }
-
-        return(out)
+    ## BCa ----
+    if (tp == "bca") {
+      # Check for bootstrap variation per component
+      zero_var <- apply(tmat, 2, function(v) length(unique(v)) == 1)
+      if (all(zero_var)) {
+        warning("No bootstrap variation; BCa undefined. Using percentile.",
+                call. = FALSE)
+        qs <- apply(tmat, 2, quantile, probs = probs, na.rm = TRUE,
+                    names = FALSE, type = 6)
+        out[,] <- qs
+        ci_out[[k]] <- drop_if_scalar(out)
+        fallback[[k]] <- rep(TRUE, p)  # mark all components as fallback
+        next
       }
 
-    }
-  })
+      # Bias correction
+      z0 <- qnorm(colMeans(tmat < matrix(t0, R_eff, p, byrow = TRUE),
+                           na.rm = TRUE))
 
+      # Jackknife acceleration
+      jack <- try({
+        pdf(NULL)                        # suppress plotting
+        jvals <- boot::jack.after.boot(b, useJ = TRUE)$jack.values
+        dev.off()
+        jvals
+      }, silent = TRUE)
+
+      if (inherits(jack, "try-error") || is.null(jack)) {
+        warning("Jackknife not available; BCa cannot be computed. Using percentile CI.",
+                call. = FALSE)
+        qs <- apply(tmat, 2, quantile, probs = probs, na.rm = TRUE,
+                    names = FALSE, type = 6)
+        out[,] <- qs
+        ci_out[[k]] <- drop_if_scalar(out)
+        fallback[[k]][!zero_var] <- TRUE  # mark only components with nonzero variation as fallback
+        next
+      }
+
+      if (is.null(dim(jack))) jack <- matrix(jack, ncol = 1)
+
+      acc <- apply(jack, 2, function(u) {
+        ubar <- mean(u)
+        num <- sum((ubar - u)^3)
+        den <- 6 * (sum((ubar - u)^2))^(3/2)
+        if (den == 0) 0 else num / den
+      })
+
+      z_alpha <- qnorm(probs)
+      for (j in seq_len(p)) {
+        if (zero_var[j]) {
+          # fallback for components with no variation
+          out[, j] <- quantile(tmat[, j], probs = probs, na.rm = TRUE,
+                               names = FALSE, type = 6)
+          fallback[[k]][j] <- TRUE
+          next
+        }
+
+        # BCa adjustment
+        adj <- z0[j] + (z0[j] + z_alpha) / (1 - acc[j] * (z0[j] + z_alpha))
+        adj_probs <- pnorm(adj)
+        out[, j] <- quantile(tmat[, j], probs = adj_probs,
+                             na.rm = TRUE, names = FALSE, type = 6)
+      }
+
+      ci_out[[k]] <- drop_if_scalar(out)
+    }
+  }
 
   names(ci_out) <- type
-
-  # Attach common summaries
-  attr(ci_out, "observed") <- b$t0
-  # attr(ci_out, "mean") <- mean(b$t)
-  attr(ci_out, "mean") <- if (is.null(dim(b$t))) {
-    mean(b$t, na.rm = TRUE)
-  } else {
-    colMeans(b$t, na.rm = TRUE)
-  }
+  attr(ci_out, "observed") <- t0
+  attr(ci_out, "mean") <- means
+  attr(ci_out, "fallback") <- fallback
   attr(ci_out, "R") <- R
   attr(ci_out, "conf") <- conf
 
   ci_out
 }
+

@@ -13,6 +13,7 @@ bootstrap.ci(
   parallel = c("no", "multicore", "snow"),
   ncpus = getOption("boot.ncpus", 1L),
   cl = NULL,
+  seed = 123,
   ...
 )
 }
@@ -107,7 +108,10 @@ bootstrap.ci(pdata$NMSR, mean, type = "stud")
 stat_fun_mean <- function(x) {
   est <- mean(x)
   se  <- sd(x) / sqrt(length(x))
-  c(est, se)
+  out <- c(est, se)
+  # Important : Tells bootstrap.ci to consider second output as SE
+  attr(out, "se") <- TRUE
+  return(out)
 }
 
 bootstrap.ci(pdata$NMSR, stat_fun_mean, type = "stud")
@@ -115,14 +119,17 @@ bootstrap.ci(pdata$NMSR, stat_fun_mean, type = "stud")
 bootstrap.ci(pdata$DSTA, shannon, type = "stud")
 
 stat_fun_shannon <- function(x, base = 2) {
-  x <- droplevels(x)          # drop unused factor levels
-  p <- prop.table(table(x))
+  tab <- tabulate(x)
+  p <- tab / length(x)
   # Only keep p > 0 to avoid log(0)
   p <- p[p > 0]
   est <- -sum(p * log(p, base = base))
   # Approximate SE using sqrt(Var(p * log(p)))
   se <- sqrt(sum((p * log(p, base = base))^2) / length(x))
-  c(est, se)
+  out <- c(est, se)
+  # Important : Tells bootstrap.ci to consider second output as SE
+  attr(out, "se") <- TRUE
+  return(out)
 }
 
 bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")

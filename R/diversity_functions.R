@@ -24,7 +24,7 @@ NULL
 #' @rdname diversity_functions
 #' @export
 berger_parker <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   p <- prop.table(table(x))
   max(p)
 }
@@ -33,7 +33,7 @@ berger_parker <- function(x) {
 #' @rdname diversity_functions
 #' @export
 berger_parker_reciprocal <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   1 / berger_parker(x)
 }
 
@@ -44,7 +44,7 @@ berger_parker_reciprocal <- function(x) {
 #' @rdname diversity_functions
 #' @export
 simpson <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   sum(prop.table(table(x)) ^ 2)
 }
 
@@ -52,7 +52,7 @@ simpson <- function(x) {
 #' @rdname diversity_functions
 #' @export
 gini_simpson <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   1 - simpson(x)
 }
 
@@ -60,7 +60,7 @@ gini_simpson <- function(x) {
 #' @rdname diversity_functions
 #' @export
 simpson_max <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   1 - (1 / length(levels(x)))
 }
 
@@ -68,7 +68,7 @@ simpson_max <- function(x) {
 #' @rdname diversity_functions
 #' @export
 simpson_reciprocal <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   1 / simpson(x)
 }
 
@@ -76,7 +76,7 @@ simpson_reciprocal <- function(x) {
 #' @rdname diversity_functions
 #' @export
 simpson_relative <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   denom <- simpson_max(x)
   if (denom == 0) return(NA_real_)
   gini_simpson(x) / denom
@@ -86,7 +86,7 @@ simpson_relative <- function(x) {
 #' @rdname diversity_functions
 #' @export
 simpson_evenness <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   1 / (gini_simpson(x) * length(levels(x)))
 }
 
@@ -96,7 +96,7 @@ simpson_evenness <- function(x) {
 #' @rdname diversity_functions
 #' @export
 shannon <- function(x, base = 2) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   p <- prop.table(table(x))
   -sum(p * log(p, base = base))
 }
@@ -105,7 +105,7 @@ shannon <- function(x, base = 2) {
 #' @rdname diversity_functions
 #' @export
 shannon_max <- function(x, base = 2) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   log(length(levels(x)), base = base)
 }
 
@@ -113,7 +113,7 @@ shannon_max <- function(x, base = 2) {
 #' @rdname diversity_functions
 #' @export
 shannon_relative <- function(x, base = 2) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   shannon(x, base) / shannon_max(x, base)
 }
 
@@ -121,7 +121,7 @@ shannon_relative <- function(x, base = 2) {
 #' @rdname diversity_functions
 #' @export
 shannon_ens <- function(x, base = 2) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   exp(shannon(x, base))
 }
 
@@ -131,7 +131,7 @@ shannon_ens <- function(x, base = 2) {
 #' @rdname diversity_functions
 #' @export
 mcintosh_diversity <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   n <- as.vector(table(x))
   N <- sum(n)
   U <- sqrt(sum(n^2))
@@ -142,7 +142,7 @@ mcintosh_diversity <- function(x) {
 #' @rdname diversity_functions
 #' @export
 mcintosh_evenness <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   n <- as.vector(table(x))
   N <- sum(n)
   U <- sqrt(sum(n^2))
@@ -155,7 +155,7 @@ mcintosh_evenness <- function(x) {
 #' @rdname diversity_functions
 #' @export
 smith_wilson <- function(x, warn = TRUE) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   p <- prop.table(table(x))  # relative abundances
 
   if(length(p) < 2) {
@@ -175,7 +175,7 @@ smith_wilson <- function(x, warn = TRUE) {
 #' @rdname diversity_functions
 #' @export
 heip_evenness <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   S <- length(levels(x))
   H <- shannon(x)
   if(S <= 1) return(NA_real_)
@@ -187,7 +187,7 @@ heip_evenness <- function(x) {
 #' @rdname diversity_functions
 #' @export
 margalef_index <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   S <- length(levels(x))
   N <- length(x)
   if(N <= 1) return(NA_real_)
@@ -198,7 +198,7 @@ margalef_index <- function(x) {
 #' @rdname diversity_functions
 #' @export
 menhinick_index <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   S <- length(levels(x))
   N <- length(x)
   S / sqrt(N)
@@ -209,7 +209,7 @@ menhinick_index <- function(x) {
 #' @rdname diversity_functions
 #' @export
 brillouin_index <- function(x) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   n <- as.numeric(table(x))
   N <- sum(n)
   if (N <= 1) {
@@ -229,7 +229,7 @@ brillouin_index <- function(x) {
 #' @rdname diversity_functions
 #' @export
 hill_number <- function(x, q = 1) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   p <- prop.table(table(x))
   S <- length(p)
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
@@ -243,7 +243,7 @@ hill_number <- function(x, q = 1) {
 #' @rdname diversity_functions
 #' @export
 renyi_entropy <- function(x, q = 1) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   p <- prop.table(table(x))
 
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
@@ -257,7 +257,7 @@ renyi_entropy <- function(x, q = 1) {
 #' @rdname diversity_functions
 #' @export
 tsallis_entropy <- function(x, q = 1) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   p <- prop.table(table(x))
 
   if ((abs(q - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
@@ -271,7 +271,7 @@ tsallis_entropy <- function(x, q = 1) {
 #' @rdname diversity_functions
 #' @export
 hill_evenness <- function(x, q = 1) {
-  x <- droplevels(x)
+  x <- if (is.factor(x)) droplevels(x) else x
   S <- length(levels(x))
   D_q <- hill_number(x, q)
   D_q / S

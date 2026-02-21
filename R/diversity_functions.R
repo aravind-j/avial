@@ -123,7 +123,7 @@ shannon_relative <- function(x, base = 2) {
 #' @rdname diversity_functions
 #' @export
 shannon_ens <- function(x, base = 2) {
-  exp(shannon(x, base))
+  base ^ shannon(x, base)
 }
 
 # McIntosh indices ----

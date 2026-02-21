@@ -259,81 +259,79 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
 
     ## BCa ----
     if (tp == "bca") {
-      # Check for bootstrap variation per component
-      zero_var <- apply(tmat, 2, function(v) length(unique(v)) == 1)
+
+      # Check variation
+      zero_var <- apply(tmat, 2, function(v) length(unique(v)) <= 1)
 
       # Component-specific warnings for zero variation
       if (any(zero_var)) {
         for (j in which(zero_var)) {
-          warning(sprintf("No bootstrap variation; BCa undefined for component %d. Using percentile.",
+          warning(sprintf("No bootstrap variation; CI collapses to a point for component %d. Using percentile.",
                           j),
                   call. = FALSE)
         }
       }
 
-      if (all(zero_var)) {
-        # All components have zero variation, fallback entirely
-        qs <- apply(tmat, 2, quantile, probs = probs, na.rm = TRUE,
-                    names = FALSE, type = 6)
-        out[,] <- qs
-        ci_out[[k]] <- drop_if_scalar(out)
-        fallback[[k]] <- rep(TRUE, p)  # mark all components as fallback
-        next
+      # Bias correction (z0)
+      prop_less <- colMeans(tmat < matrix(t0, R_eff, p, byrow = TRUE),
+                            na.rm = TRUE)
+      ## Clamp to avoid Inf
+      eps <- 1 / (2 * R_eff)
+      prop_less <- pmin(pmax(prop_less, eps), 1 - eps)
+      z0 <- qnorm(prop_less)
+
+      # TRUE jackknife (over original data)
+      n <- length(x)
+      jack <- matrix(NA_real_, n, p)
+
+      for (i in seq_len(n)) {
+        jack[i, ] <- fun(x[-i], ...)
       }
 
-      # Bias correction
-      z0 <- qnorm(colMeans(tmat < matrix(t0, R_eff, p, byrow = TRUE),
-                           na.rm = TRUE))
-
-      # Jackknife acceleration (avoid plotting)
-      jack <- try({
-        # Manually compute jackknife-after-bootstrap
-        n_boot <- nrow(b$t)
-        p <- ncol(b$t)
-        jvals <- matrix(NA, nrow = n_boot, ncol = p)
-        for (i in 1:n_boot) {
-          jvals[i, ] <- colMeans(b$t[-i, , drop = FALSE])
-        }
-        jvals
-      }, silent = TRUE)
-
-      if (inherits(jack, "try-error") || is.null(jack)) {
-        warning("Jackknife not available; BCa cannot be computed. Using percentile CI.",
-                call. = FALSE)
-        qs <- apply(tmat, 2, quantile, probs = probs, na.rm = TRUE,
-                    names = FALSE, type = 6)
-        out[,] <- qs
-        ci_out[[k]] <- drop_if_scalar(out)
-        # mark only components with nonzero variation as fallback
-        fallback[[k]][!zero_var] <- TRUE
-        next
-      }
-
-      if (is.null(dim(jack))) jack <- matrix(jack, ncol = 1)
-
-      # Compute acceleration
+      # Acceleration
       acc <- apply(jack, 2, function(u) {
+        u <- u[is.finite(u)]
+        if (length(u) < 2) {
+          return(0)
+        }
+
         ubar <- mean(u)
         num <- sum((ubar - u)^3)
         den <- 6 * (sum((ubar - u)^2))^(3/2)
-        if (den == 0) 0 else num / den
+
+        if (!is.finite(den) || den == 0) {
+          0
+        } else {
+            num / den
+          }
       })
 
       z_alpha <- qnorm(probs)
+
       for (j in seq_len(p)) {
+
         if (zero_var[j]) {
-          # fallback for components with no variation
-          out[, j] <- quantile(tmat[, j], probs = probs, na.rm = TRUE,
-                               names = FALSE, type = 6)
+          out[, j] <- quantile(tmat[, j], probs = probs,
+                               na.rm = TRUE, type = 6)
           fallback[[k]][j] <- TRUE
           next
         }
 
-        # BCa adjustment
-        adj <- z0[j] + (z0[j] + z_alpha) / (1 - acc[j] * (z0[j] + z_alpha))
+        denom <- 1 - acc[j] * (z0[j] + z_alpha)
+
+        if (any(abs(denom) < .Machine$double.eps)) {
+          adj_probs <- probs   # fallback to percentile shape
+        } else {
+          adj <- z0[j] + (z0[j] + z_alpha) / denom
+          adj_probs <- pnorm(adj)
+        }
+
         adj_probs <- pnorm(adj)
-        out[, j] <- quantile(tmat[, j], probs = adj_probs,
-                             na.rm = TRUE, names = FALSE, type = 6)
+
+        out[, j] <- quantile(tmat[, j],
+                             probs = adj_probs,
+                             na.rm = TRUE,
+                             type = 6)
       }
 
       ci_out[[k]] <- drop_if_scalar(out)

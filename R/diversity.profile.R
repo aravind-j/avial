@@ -262,6 +262,9 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
     set.seed(123)
   }
 
+  x <- droplevels(x)
+  group <- droplevels(group)
+
   groups <- levels(group)
   results <- vector("list", length(groups))
   names(results) <- groups
@@ -275,6 +278,7 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
   for (g in groups) {
 
     xg <- x[group == g]
+    xg <- droplevels(x)
 
     # Compute bootstrap CI
     b_res <-
@@ -287,7 +291,9 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
                      observed = attr(b_res, "observed"),
                      mean = attr(b_res, "mean"),
                      lower = ci_mat["lower", ],
-                     upper = ci_mat["upper", ])
+                     upper = ci_mat["upper", ],
+                     ci.type = attr(b_res, "fallback")[[ci.type]])
+    df$ci.type <- ifelse(df$ci.type, "perc", ci.type)
 
     results[[g]] <- df
   }

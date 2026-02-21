@@ -147,7 +147,7 @@ mcintosh_evenness <- function(x) {
   n <- n[n > 0]
   N <- sum(n)
   U <- sqrt(sum(n^2))
-  S <- length(levels(x)) #k
+  S <- length(n) #k
   (N - U) / (N - (N / sqrt(S)))
 }
 

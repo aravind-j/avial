@@ -110,26 +110,26 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
                        div_indices_gwise), .id = "group")
 
   if (global.test | pairwise.test | bootstrap.ci) {
-  fun_list <-
-    list(margalef_index = list(fun = margalef_index, args = list()),
-         menhinick_index = list(fun = menhinick_index, args = list()),
-         berger_parker = list(fun = berger_parker, args = list()),
-         berger_parker_reciprocal = list(fun = berger_parker_reciprocal,
-                                         args = list()),
-         simpson = list(fun = simpson, args = list()),
-         gini_simpson = list(fun = gini_simpson, args = list()),
-         simpson_max = list(fun = simpson_max, args = list()),
-         simpson_relative = list(fun = simpson_relative, args = list()),
-         shannon = list(fun = shannon, args = list(base = 2)),
-         shannon_max = list(fun = shannon_max, args = list(base = 2)),
-         shannon_relative = list(fun = shannon_relative,
-                                 args = list(base = 2)),
-         shannon_ens = list(fun = shannon_ens, args = list(base = 2)),
-         heip_evenness = list(fun = heip_evenness, args = list()),
-         mcintosh_diversity = list(fun = mcintosh_diversity, args = list()),
-         mcintosh_evenness = list(fun = mcintosh_evenness, args = list()),
-         smith_wilson = list(fun = smith_wilson, args = list(warn = FALSE)),
-         brillouin_index = list(fun = brillouin_index, args = list()))
+    fun_list <-
+      list(margalef_index = list(fun = margalef_index, args = list()),
+           menhinick_index = list(fun = menhinick_index, args = list()),
+           berger_parker = list(fun = berger_parker, args = list()),
+           berger_parker_reciprocal = list(fun = berger_parker_reciprocal,
+                                           args = list()),
+           simpson = list(fun = simpson, args = list()),
+           gini_simpson = list(fun = gini_simpson, args = list()),
+           simpson_max = list(fun = simpson_max, args = list()),
+           simpson_relative = list(fun = simpson_relative, args = list()),
+           shannon = list(fun = shannon, args = list(base = 2)),
+           shannon_max = list(fun = shannon_max, args = list(base = 2)),
+           shannon_relative = list(fun = shannon_relative,
+                                   args = list(base = 2)),
+           shannon_ens = list(fun = shannon_ens, args = list(base = 2)),
+           heip_evenness = list(fun = heip_evenness, args = list()),
+           mcintosh_diversity = list(fun = mcintosh_diversity, args = list()),
+           mcintosh_evenness = list(fun = mcintosh_evenness, args = list()),
+           smith_wilson = list(fun = smith_wilson, args = list(warn = FALSE)),
+           brillouin_index = list(fun = brillouin_index, args = list()))
   }
 
   # Global permutation tests ----
@@ -141,27 +141,27 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
       lapply(fun_list, function(z) {
         tryCatch(
           {
-        do.call(perm.test.global,
-                list(x = x, group = group, R = R,
-                     fun = z$fun,
-                     fun.args = z$args))
+            do.call(perm.test.global,
+                    list(x = x, group = group, R = R,
+                         fun = z$fun,
+                         fun.args = z$args))
           },
-        error = function(e) {
-          return(list(
-            test_stat = NA_real_,
-            observed_values = NA,
-            p_value = NA_real_,
-            error = conditionMessage(e)
-          ))
-        })
+          error = function(e) {
+            return(list(
+              test_stat = NA_real_,
+              observed_values = NA,
+              p_value = NA_real_,
+              error = conditionMessage(e)
+            ))
+          })
       })
 
     isgpermerror <- sapply(global_perm_results, length) == 4
     if (any(isgpermerror)) {
       global_perm_msgs <-
         sapply(global_perm_results[which(isgpermerror)], function(x) {
-        x[[4]]
-      })
+          x[[4]]
+        })
     } else {
       global_perm_msgs <- NULL
     }
@@ -274,22 +274,46 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
       lapply(groups, function(g) {
 
         lapply(fun_list, function(z) {
-          do.call(avial::bootstrap.ci,
-                  c(list(x = x[group == g], R = R,
-                         conf = ci.conf, type = ci.type,
-                         fun = z$fun),
-                    z$args,
-                    list(parallel = parallel,
-                         ncpus = ncpus,
-                         cl = cl)))
-        })
 
+          # List to store warnings
+          warnings_list <- character(0)
+
+          result <- withCallingHandlers(
+            {
+              do.call(avial::bootstrap.ci,
+                      c(list(x = x[group == g], R = R,
+                             conf = ci.conf, type = ci.type,
+                             fun = z$fun),
+                        z$args,
+                        list(parallel = parallel,
+                             ncpus = ncpus,
+                             cl = cl)))
+            },
+            warning = function(w) {
+              # Append the warning message
+              warnings_list <<- c(warnings_list, conditionMessage(w))
+              invokeRestart("muffleWarning") # Prevent printing to console
+            }
+          )
+          list(result = result, warnings = warnings_list)
+        })
       })
     names(bootstrap_ci_results) <- groups
+
+    bootstrap_ci_warn <-
+      lapply(bootstrap_ci_results, function(g_boot) {
+        data.frame(lapply(g_boot, function(bout) {
+          bout$warnings
+        }))
+      })
+
+    bootstrap_ci_warn <- dplyr::bind_rows(bootstrap_ci_warn,
+                                          .id = "Group")
+
     bootstrap_ci_results <-
       lapply(bootstrap_ci_results, function(g_boot) {
-        data.frame(lapply(g_boot, function(x) {
-          x[[ci.type]]
+        data.frame(lapply(g_boot, function(bout) {
+          bout$result[[ci.type]]
         }))
       })
     bootstrap_ci_results <- dplyr::bind_rows(bootstrap_ci_results,
@@ -303,30 +327,30 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
   # Diversity Profiles ----
   if (diversity.profile) {
 
-  message('Generating diversity profiles.')
-  diversity_profile_results <- list(
-    hill = diversity.profile(x = x, group = group, q = q,
-                             ci.conf = ci.conf,
-                             R = R, parameter = "hill",
-                             ci.type = ci.type,
-                             parallel = parallel,
-                             ncpus = ncpus,
-                             cl = cl),
-    renyi = diversity.profile(x = x, group = group, q = q,
-                              ci.conf = ci.conf,
-                              R = R, parameter = "renyi",
-                              ci.type = ci.type,
-                              parallel = parallel,
-                              ncpus = ncpus,
-                              cl = cl),
-    tsallis = diversity.profile(x = x, group = group, q = q,
+    message('Generating diversity profiles.')
+    diversity_profile_results <- list(
+      hill = diversity.profile(x = x, group = group, q = q,
+                               ci.conf = ci.conf,
+                               R = R, parameter = "hill",
+                               ci.type = ci.type,
+                               parallel = parallel,
+                               ncpus = ncpus,
+                               cl = cl),
+      renyi = diversity.profile(x = x, group = group, q = q,
                                 ci.conf = ci.conf,
-                                R = R, parameter = "tsallis",
+                                R = R, parameter = "renyi",
                                 ci.type = ci.type,
                                 parallel = parallel,
                                 ncpus = ncpus,
-                                cl = cl)
-  )
+                                cl = cl),
+      tsallis = diversity.profile(x = x, group = group, q = q,
+                                  ci.conf = ci.conf,
+                                  R = R, parameter = "tsallis",
+                                  ci.type = ci.type,
+                                  parallel = parallel,
+                                  ncpus = ncpus,
+                                  cl = cl)
+    )
 
   }
 
@@ -344,7 +368,8 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
                 NULL
               },
               `Bootstrap CIs` = if (bootstrap.ci) {
-                bootstrap_ci_results
+                list(`Bootstrap CIs` = bootstrap_ci_results,
+                     Warnings = bootstrap_ci_warn)
               } else {
                 NULL
               },

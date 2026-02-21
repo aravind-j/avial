@@ -217,19 +217,15 @@ brillouin_index <- function(x) {
   n <- tabulate(x)
   n <- n[n > 0]
   N <- sum(n)
+
   if (N <= 1) {
     return(NA_real_)
   }
-  ln_factorial <- function(k) {
-    if (k == 0) {
-      0
-    } else {
-      sum(log(1:k))
-    }
-  }
-  (ln_factorial(N) - sum(sapply(n, ln_factorial))) / N
+
+  (lgamma(N + 1) - sum(lgamma(n + 1))) / N
 }
-# Parametric indicees ----
+
+# Parametric indices ----
 # Hill number
 #' @rdname diversity_functions
 #' @export

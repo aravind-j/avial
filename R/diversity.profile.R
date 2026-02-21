@@ -300,21 +300,98 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
   return(results)
 }
 
+
 hill_stat_ci <- function(x, q = c(0, 1, 2)) {
-  vapply(q, function(qq) {
-    hill_number(x, qq)
-  }, numeric(1))
+
+  # Convert once
+  if (is.factor(x)) {
+    x <- as.integer(x)
+  }
+
+  k <- max(x)
+  n <- length(x)
+
+  counts <- tabulate(x, nbins = k)
+  p <- counts / n
+
+  out <- numeric(length(q))
+
+  for (j in seq_along(q)) {
+    qq <- q[j]
+
+    if (qq == 0) {
+      out[j] <- sum(counts > 0)
+
+    } else if ((abs(qq - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
+      out[j] <- exp(-sum(p * log(p, base = exp(1)))) # hill numbers are base invariant
+
+    } else {
+      out[j] <- (sum(p^qq))^(1 / (1 - qq))
+    }
+  }
+
+  out
 }
 
 renyi_stat_ci <- function(x, q = c(0, 1, 2)) {
-  vapply(q, function(qq) {
-    renyi_entropy(x, qq)
-  }, numeric(1))
+
+  if (is.factor(x)) {
+    x <- as.integer(x)
+  }
+
+  k <- max(x)
+  n <- length(x)
+
+  counts <- tabulate(x, nbins = k)
+  p <- counts / n
+
+  out <- numeric(length(q))
+
+  for (j in seq_along(q)) {
+    qq <- q[j]
+
+    if (qq == 0) {
+      out[j] <- log(sum(counts > 0))  # log richness
+
+    } else if ((abs(qq - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
+      out[j] <- -sum(p * log(p, base = exp(1)))  # Shannon
+
+    } else {
+      out[j] <- (1 / (1 - qq)) * log(sum(p^qq))
+    }
+  }
+
+  out
 }
 
 tsallis_stat_ci <- function(x, q = c(0, 1, 2)) {
-  vapply(q, function(qq) {
-    tsallis_entropy(x, qq)
-  }, numeric(1))
+
+  if (is.factor(x)) {
+    x <- as.integer(x)
+  }
+
+  k <- max(x)
+  n <- length(x)
+
+  counts <- tabulate(x, nbins = k)
+  p <- counts / n
+
+  out <- numeric(length(q))
+
+  for (j in seq_along(q)) {
+    qq <- q[j]
+
+    if (qq == 0) {
+      out[j] <- sum(counts > 0) - 1  # richness - 1
+
+    } else if ((abs(qq - 1) < 1e-8)) { # (q == 1) floating-point tolerance.
+      out[j] <- -sum(p * log(p, base = exp(1)))  # Shannon
+
+    } else {
+      out[j] <- (1 / (qq - 1)) * (1 - sum(p^qq))
+    }
+  }
+
+  out
 }
 

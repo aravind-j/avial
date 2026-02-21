@@ -88,7 +88,7 @@ simpson_relative <- function(x) {
 simpson_evenness <- function(x) {
   tab <- tabulate(x)
   tab <- tab[tab > 0]
-  1 / (gini_simpson(x) * length(tab))
+  1 / (simpson(x) * length(tab))
 }
 
 # Shannon indices ----

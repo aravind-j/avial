@@ -86,6 +86,11 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
   x <- droplevels(x)
   group <- droplevels(group)
 
+  if (any(grepl(pattern = "-", x = levels(group)))) {
+    levels(group) <- gsub(pattern = "-", replacement = " to ",
+                          x = levels(group))
+  }
+
   groups <- levels(group)
 
   # Diversity indices -----

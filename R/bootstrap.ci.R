@@ -261,9 +261,18 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
     if (tp == "bca") {
       # Check for bootstrap variation per component
       zero_var <- apply(tmat, 2, function(v) length(unique(v)) == 1)
+
+      # Component-specific warnings for zero variation
+      if (any(zero_var)) {
+        for (j in which(zero_var)) {
+          warning(sprintf("No bootstrap variation; BCa undefined for component %d. Using percentile.",
+                          j),
+                  call. = FALSE)
+        }
+      }
+
       if (all(zero_var)) {
-        warning("No bootstrap variation; BCa undefined. Using percentile.",
-                call. = FALSE)
+        # All components have zero variation, fallback entirely
         qs <- apply(tmat, 2, quantile, probs = probs, na.rm = TRUE,
                     names = FALSE, type = 6)
         out[,] <- qs
@@ -276,11 +285,15 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
       z0 <- qnorm(colMeans(tmat < matrix(t0, R_eff, p, byrow = TRUE),
                            na.rm = TRUE))
 
-      # Jackknife acceleration
+      # Jackknife acceleration (avoid plotting)
       jack <- try({
-        pdf(NULL)                        # suppress plotting
-        jvals <- boot::jack.after.boot(b, useJ = TRUE)$jack.values
-        dev.off()
+        # Manually compute jackknife-after-bootstrap
+        n_boot <- nrow(b$t)
+        p <- ncol(b$t)
+        jvals <- matrix(NA, nrow = n_boot, ncol = p)
+        for (i in 1:n_boot) {
+          jvals[i, ] <- colMeans(b$t[-i, , drop = FALSE])
+        }
         jvals
       }, silent = TRUE)
 
@@ -291,12 +304,14 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
                     names = FALSE, type = 6)
         out[,] <- qs
         ci_out[[k]] <- drop_if_scalar(out)
-        fallback[[k]][!zero_var] <- TRUE  # mark only components with nonzero variation as fallback
+        # mark only components with nonzero variation as fallback
+        fallback[[k]][!zero_var] <- TRUE
         next
       }
 
       if (is.null(dim(jack))) jack <- matrix(jack, ncol = 1)
 
+      # Compute acceleration
       acc <- apply(jack, 2, function(u) {
         ubar <- mean(u)
         num <- sum((ubar - u)^3)

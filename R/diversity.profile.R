@@ -281,10 +281,18 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
     xg <- droplevels(x)
 
     # Compute bootstrap CI
-    b_res <-
+    b_res <- withCallingHandlers(
       bootstrap.ci(xg, fun = param.fun, R = R,
-                   conf = ci.conf, type = ci.type, parallel = parallel,
-                   ncpus = ncpus, cl = cl, q = q)
+                   conf = ci.conf, type = ci.type,
+                   parallel = parallel,
+                   ncpus = ncpus, cl = cl, q = q),
+      warning = function(w) {
+        new_msg <- paste0("[Group: ", g, "] ", conditionMessage(w))
+        warning(new_msg, call. = FALSE)
+        invokeRestart("muffleWarning")
+      }
+    )
+
     # Convert results to data.frame per group
     ci_mat <- b_res[[ci.type]]  # just the selected CI type
     df <- data.frame(q = q,

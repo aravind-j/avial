@@ -96,18 +96,65 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
   # Diversity indices -----
   message("Computing diversity indices.")
 
-  div_indices_overall <- diversity.calc(x, base = base, na.omit = na.omit)
-  div_indices_overall <- c(group = "Overall", div_indices_overall)
+  ## Overall
+  overall_env <- new.env(parent = emptyenv())
+  overall_env$warnings <- character(0)
 
-  div_indices_gwise <-
-    lapply(groups, function(g) {
-      diversity.calc(x[group == g], base = base, na.omit = na.omit)
-    })
-  names(div_indices_gwise) <- groups
+  overall_value <- tryCatch(
+    withCallingHandlers(
+      diversity.calc(x, base = base, na.omit = na.omit),
+      warning = function(w) {
+        overall_env$warnings <-
+          c(overall_env$warnings, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    ),
+    error = function(e) {
+      message("Error: [Overall] ", conditionMessage(e))
+      return(NULL)
+    }
+  )
 
+  div_indices_overall <- c(group = "Overall", overall_value)
+
+  ## Group-wise
+  group_results <- lapply(groups, function(g) {
+
+    group_env <- new.env(parent = emptyenv())
+    group_env$warnings <- character(0)
+
+    group_value <- tryCatch(
+      withCallingHandlers(
+        diversity.calc(x[group == g], base = base, na.omit = na.omit),
+        warning = function(w) {
+          group_env$warnings <-
+            c(group_env$warnings, conditionMessage(w))
+          invokeRestart("muffleWarning")
+        }
+      ),
+      error = function(e) {
+        message("Error: [", g, "] ", conditionMessage(e))
+        return(NULL)
+      }
+    )
+
+    list(value = group_value,
+         warnings = group_env$warnings)
+  })
+
+  names(group_results) <- groups
+
+  div_indices_gwise <- lapply(group_results, `[[`, "value")
+
+  ## Combine warnings
+  div_indices_warn <-
+    c(Overall = list(overall_env$warnings),
+      setNames(lapply(group_results, `[[`, "warnings"), groups))
+
+  ## Bind results
   div_indices <-
     dplyr::bind_rows(c(Overall = list(div_indices_overall),
-                       div_indices_gwise), .id = "group")
+        div_indices_gwise), .id = "group")
 
   if (global.test | pairwise.test | bootstrap.ci) {
     fun_list <-
@@ -159,7 +206,8 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
     isgpermerror <- sapply(global_perm_results, length) == 4
     if (any(isgpermerror)) {
       global_perm_msgs <-
-        sapply(global_perm_results[which(isgpermerror)], function(x) {
+        sapply(global_perm_results[which(isgpermerror)],
+               function(x) {
           x[[4]]
         })
     } else {
@@ -353,7 +401,8 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
 
   }
 
-  out <- list(`Diversity Indices` = div_indices,
+  out <- list(`Diversity Indices` = list(Indices = div_indices,
+                                         Warnings = div_indices_warn),
               `Global Test` = if (global.test) {
                 global_perm_results
               } else {

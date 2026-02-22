@@ -5,6 +5,9 @@
 #' @param group A factor vector indicating the group of each observation. Must
 #'   have the same length as \code{x}.
 #' @param q The order of the parametric index.
+#' @param na.omit logical. If \code{TRUE}, missing values (\code{NA}) are
+#'   ignored and not included as a distinct factor level for computation.
+#'   Default is \code{TRUE}.
 #' @param R Integer specifying the number of permutations. Default is 1000.
 #' @param parameter The parametric index. Options include \code{"hill"},
 #'   \code{"renyi"} and \code{"tsallis"}. Default is \code{"hill"}.
@@ -245,6 +248,7 @@
 #'   labs(x = "Order (q)", y = "Hill number") +
 #'   theme_bw()
 diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
+                              na.omit = TRUE,
                               ci.conf = 0.95, R = 1000,
                               parameter = c("hill", "renyi", "tsallis"),
                               ci.type = c("perc", "bca"),
@@ -255,6 +259,14 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
   parallel <- match.arg(parallel)
   ci.type <- match.arg(ci.type)  # only one CI type
   parameter <- match.arg(parameter)
+
+  if (!na.omit) {
+    if (any(is.na(x))) {
+      addNA(x)
+    } else {
+      x
+    }
+  }
 
   if (parallel == "snow") {
     parallel::clusterSetRNGStream(cl, iseed = 123)
@@ -278,7 +290,7 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
   for (g in groups) {
 
     xg <- x[group == g]
-    xg <- droplevels(x)
+    xg <- droplevels(xg)
 
     # Compute bootstrap CI
     b_res <- withCallingHandlers(
@@ -322,6 +334,12 @@ hill_stat_ci <- function(x, q = c(0, 1, 2)) {
     x <- as.integer(x)
   }
 
+  x <- x[!is.na(x)]
+
+  if (length(x) == 0) {
+    return(rep(NA_real_, length(q)))
+  }
+
   k <- max(x)
   n <- length(x)
 
@@ -353,6 +371,12 @@ renyi_stat_ci <- function(x, q = c(0, 1, 2)) {
     x <- as.integer(x)
   }
 
+  x <- x[!is.na(x)]
+
+  if (length(x) == 0) {
+    return(rep(NA_real_, length(q)))
+  }
+
   k <- max(x)
   n <- length(x)
 
@@ -382,6 +406,12 @@ tsallis_stat_ci <- function(x, q = c(0, 1, 2)) {
 
   if (is.factor(x)) {
     x <- as.integer(x)
+  }
+
+  x <- x[!is.na(x)]
+
+  if (length(x) == 0) {
+    return(rep(NA_real_, length(q)))
   }
 
   k <- max(x)

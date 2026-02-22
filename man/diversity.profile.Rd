@@ -8,6 +8,7 @@ diversity.profile(
   x,
   group,
   q = seq(0, 3, 0.1),
+  na.omit = TRUE,
   ci.conf = 0.95,
   R = 1000,
   parameter = c("hill", "renyi", "tsallis"),
@@ -24,6 +25,10 @@ diversity.profile(
 have the same length as \code{x}.}
 
 \item{q}{The order of the parametric index.}
+
+\item{na.omit}{logical. If \code{TRUE}, missing values (\code{NA}) are
+ignored and not included as a distinct factor level for computation.
+Default is \code{TRUE}.}
 
 \item{ci.conf}{Confidence level of the bootstrap interval. Default is 0.95.}
 

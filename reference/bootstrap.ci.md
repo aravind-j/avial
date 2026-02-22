@@ -14,10 +14,12 @@ bootstrap.ci(
   fun,
   R = 1000,
   conf = 0.95,
+  na.omit = TRUE,
   type = c("norm", "basic", "stud", "perc", "bca"),
   parallel = c("no", "multicore", "snow"),
   ncpus = getOption("boot.ncpus", 1L),
   cl = NULL,
+  seed = 123,
   ...
 )
 ```
@@ -39,6 +41,12 @@ bootstrap.ci(
 - conf:
 
   Confidence level of the interval. Default is 0.95.
+
+- na.omit:
+
+  logical. If `TRUE`, when `x` is a factor, missing values (`NA`) are
+  ignored and not included as a distinct factor level for computation.
+  Default is `TRUE`.
 
 - type:
 
@@ -148,25 +156,33 @@ str(pdata)
 bootstrap.ci(pdata$NMSR, mean, type = "norm")
 #> $norm
 #>     lower     upper 
-#>  9.715342 12.056122 
+#>  9.617438 12.168276 
 #> 
 #> attr(,"observed")
 #> [1] 10.89286
 #> attr(,"mean")
-#> [1] 10.89998
+#> [1] 10.90556
+#> attr(,"fallback")
+#> attr(,"fallback")$norm
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
 #> [1] 0.95
 bootstrap.ci(pdata$NMSR, mean, type = "basic")
 #> $basic
-#>     lower     upper 
-#>  9.619048 12.154157 
+#>    lower    upper 
+#>  9.57753 12.20149 
 #> 
 #> attr(,"observed")
 #> [1] 10.89286
 #> attr(,"mean")
-#> [1] 10.85815
+#> [1] 10.90556
+#> attr(,"fallback")
+#> attr(,"fallback")$basic
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -174,25 +190,33 @@ bootstrap.ci(pdata$NMSR, mean, type = "basic")
 bootstrap.ci(pdata$NMSR, mean, type = "perc")
 #> $perc
 #>     lower     upper 
-#>  9.607292 12.011756 
+#>  9.584226 12.208185 
 #> 
 #> attr(,"observed")
 #> [1] 10.89286
 #> attr(,"mean")
-#> [1] 10.82457
+#> [1] 10.90556
+#> attr(,"fallback")
+#> attr(,"fallback")$perc
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
 #> [1] 0.95
 bootstrap.ci(pdata$NMSR, mean, type = "bca")
 #> $bca
-#>    lower    upper 
-#>  9.77381 12.17054 
+#>     lower     upper 
+#>  9.600968 12.213984 
 #> 
 #> attr(,"observed")
 #> [1] 10.89286
 #> attr(,"mean")
-#> [1] 10.8912
+#> [1] 10.90556
+#> attr(,"fallback")
+#> attr(,"fallback")$bca
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -202,24 +226,37 @@ bootstrap.ci(pdata$NMSR, mean,
              type = c("norm", "basic", "perc", "bca"))
 #> $norm
 #>     lower     upper 
-#>  9.655774 12.128047 
+#>  9.617438 12.168276 
 #> 
 #> $basic
-#>     lower     upper 
-#>  9.595692 12.123488 
+#>    lower    upper 
+#>  9.57753 12.20149 
 #> 
 #> $perc
 #>     lower     upper 
-#>  9.662202 12.190030 
+#>  9.584226 12.208185 
 #> 
 #> $bca
-#>    lower    upper 
-#>  9.77241 12.21908 
+#>     lower     upper 
+#>  9.600968 12.213984 
 #> 
 #> attr(,"observed")
 #> [1] 10.89286
 #> attr(,"mean")
-#> [1] 10.8938
+#> [1] 10.90556
+#> attr(,"fallback")
+#> attr(,"fallback")$norm
+#> [1] FALSE
+#> 
+#> attr(,"fallback")$basic
+#> [1] FALSE
+#> 
+#> attr(,"fallback")$perc
+#> [1] FALSE
+#> 
+#> attr(,"fallback")$bca
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -228,12 +265,16 @@ bootstrap.ci(pdata$NMSR, mean,
 bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 #> $norm
 #>    lower    upper 
-#> 1.373543 1.542175 
+#> 1.364427 1.533204 
 #> 
 #> attr(,"observed")
 #> [1] 1.448816
 #> attr(,"mean")
-#> [1] 1.439772
+#> [1] 1.44097
+#> attr(,"fallback")
+#> attr(,"fallback")$norm
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -241,12 +282,16 @@ bootstrap.ci(pdata$LNGS, shannon, type = "norm")
 bootstrap.ci(pdata$PTLC, simpson, type = "basic")
 #> $basic
 #>     lower     upper 
-#> 0.3508416 0.4772534 
+#> 0.3508521 0.4809329 
 #> 
 #> attr(,"observed")
 #> [1] 0.4213435
 #> attr(,"mean")
-#> [1] 0.4234458
+#> [1] 0.4230488
+#> attr(,"fallback")
+#> attr(,"fallback")$basic
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -254,12 +299,16 @@ bootstrap.ci(pdata$PTLC, simpson, type = "basic")
 bootstrap.ci(pdata$LFRT, mcintosh_evenness, type = "perc")
 #> $perc
 #>     lower     upper 
-#> 0.6245182 0.8228424 
+#> 0.6289354 0.8262168 
 #> 
 #> attr(,"observed")
 #> [1] 0.693727
 #> attr(,"mean")
-#> [1] 0.7027273
+#> [1] 0.7067876
+#> attr(,"fallback")
+#> attr(,"fallback")$perc
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -267,12 +316,16 @@ bootstrap.ci(pdata$LFRT, mcintosh_evenness, type = "perc")
 bootstrap.ci(pdata$LBTEF, mcintosh_diversity, type = "bca")
 #> $bca
 #>     lower     upper 
-#> 0.5864904 0.6183060 
+#> 0.5861558 0.6150982 
 #> 
 #> attr(,"observed")
 #> [1] 0.5983483
 #> attr(,"mean")
-#> [1] 0.5929277
+#> [1] 0.5923744
+#> attr(,"fallback")
+#> attr(,"fallback")$bca
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -282,24 +335,37 @@ bootstrap.ci(pdata$LNGS, shannon,
              type = c("norm", "basic", "perc", "bca"), base = 2)
 #> $norm
 #>    lower    upper 
-#> 1.374643 1.541060 
+#> 1.364427 1.533204 
 #> 
 #> $basic
 #>    lower    upper 
-#> 1.385777 1.552864 
+#> 1.380128 1.550485 
 #> 
 #> $perc
 #>    lower    upper 
-#> 1.344767 1.511855 
+#> 1.347146 1.517504 
 #> 
 #> $bca
 #>    lower    upper 
-#> 1.359291 1.522518 
+#> 1.358274 1.528812 
 #> 
 #> attr(,"observed")
 #> [1] 1.448816
 #> attr(,"mean")
-#> [1] 1.43978
+#> [1] 1.44097
+#> attr(,"fallback")
+#> attr(,"fallback")$norm
+#> [1] FALSE
+#> 
+#> attr(,"fallback")$basic
+#> [1] FALSE
+#> 
+#> attr(,"fallback")$perc
+#> [1] FALSE
+#> 
+#> attr(,"fallback")$bca
+#> [1] FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -309,15 +375,19 @@ bootstrap.ci(pdata$LNGS, shannon,
 # variances in addition to an estimate
 
 bootstrap.ci(pdata$NMSR, mean, type = "stud")
-#> Warning: Studentized CI requires fun() to return c(estimate, SE); falling back to percentile CI.
+#> Warning: Studentized CI requires fun() to return c(estimate, SE); using percentile instead.
 #> $stud
 #>     lower     upper 
-#>  9.696577 12.184524 
+#>  9.584226 12.208185 
 #> 
 #> attr(,"observed")
 #> [1] 10.89286
 #> attr(,"mean")
-#> [1] 10.87743
+#> [1] 10.90556
+#> attr(,"fallback")
+#> attr(,"fallback")$stud
+#> [1] TRUE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
@@ -326,58 +396,80 @@ bootstrap.ci(pdata$NMSR, mean, type = "stud")
 stat_fun_mean <- function(x) {
   est <- mean(x)
   se  <- sd(x) / sqrt(length(x))
-  c(est, se)
+  out <- c(est, se)
+  # Important : Tells bootstrap.ci to consider second output as SE
+  attr(out, "se") <- TRUE
+  return(out)
 }
 
 bootstrap.ci(pdata$NMSR, stat_fun_mean, type = "stud")
 #> $stud
-#>    lower    upper 
-#>  9.66284 12.19949 
+#>     lower     upper 
+#>  9.626269 12.268758 
 #> 
 #> attr(,"observed")
 #> [1] 10.892857  0.631431
+#> attr(,"observed")attr(,"se")
+#> [1] TRUE
 #> attr(,"mean")
-#> [1] 10.8772083  0.6268455
+#> [1] 10.9055595  0.6259041
+#> attr(,"fallback")
+#> attr(,"fallback")$stud
+#> [1] FALSE FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
 #> [1] 0.95
 
 bootstrap.ci(pdata$DSTA, shannon, type = "stud")
-#> Warning: Studentized CI requires fun() to return c(estimate, SE); falling back to percentile CI.
+#> Warning: Studentized CI requires fun() to return c(estimate, SE); using percentile instead.
 #> $stud
 #>    lower    upper 
-#> 1.761747 2.058389 
+#> 1.762730 2.059521 
 #> 
 #> attr(,"observed")
 #> [1] 1.946525
 #> attr(,"mean")
-#> [1] 1.923968
+#> [1] 1.92782
+#> attr(,"fallback")
+#> attr(,"fallback")$stud
+#> [1] TRUE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")
 #> [1] 0.95
 
 stat_fun_shannon <- function(x, base = 2) {
-  x <- droplevels(x)          # drop unused factor levels
-  p <- prop.table(table(x))
+  tab <- tabulate(x)
+  p <- tab / length(x)
   # Only keep p > 0 to avoid log(0)
   p <- p[p > 0]
   est <- -sum(p * log(p, base = base))
   # Approximate SE using sqrt(Var(p * log(p)))
   se <- sqrt(sum((p * log(p, base = base))^2) / length(x))
-  c(est, se)
+  out <- c(est, se)
+  # Important : Tells bootstrap.ci to consider second output as SE
+  attr(out, "se") <- TRUE
+  return(out)
 }
 
 bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")
 #> $stud
 #>    lower    upper 
-#> 1.836476 2.133546 
+#> 1.835888 2.136488 
 #> 
 #> attr(,"observed")
 #> [1] 1.94652505 0.07067869
+#> attr(,"observed")attr(,"se")
+#> [1] TRUE
 #> attr(,"mean")
-#> [1] 1.93013807 0.07035407
+#> [1] 1.92781960 0.07034802
+#> attr(,"fallback")
+#> attr(,"fallback")$stud
+#> [1] FALSE FALSE
+#> 
 #> attr(,"R")
 #> [1] 1000
 #> attr(,"conf")

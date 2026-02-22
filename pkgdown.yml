@@ -1,9 +1,9 @@
 pandoc: 3.1.11
 pkgdown: 2.2.0.9000
-pkgdown_sha: c07d935583c90125586821e3b39ed52f16593e42
+pkgdown_sha: f3ec6e2bb122e10436eccda7b221e297ab9d395a
 articles:
   articles/Highlight-Checks: Highlight-Checks.html
-last_built: 2026-02-15T15:33Z
+last_built: 2026-02-22T18:58Z
 urls:
   reference: https://aravind-j.github.io/avial/reference
   article: https://aravind-j.github.io/avial/articles

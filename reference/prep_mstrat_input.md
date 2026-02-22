@@ -169,7 +169,7 @@ prep_mstrat_input(data = data, genotype = "Accession",
                   nclass.quantitative = NULL, always.selected = sel,
                   file.name = "MStrat_input",
                   folder.path = tempdir())
-#> The following MStrat input files created at /var/folders/w0/cd8qgn052r16zsblrrxl1gxw0000gn/T//RtmpvXtd4f:
+#> The following MStrat input files created at /var/folders/9r/xzfp9lgn603578400ms53lr00000gn/T//RtmpK6S3nl:
 #> MStrat_input_data.dat
 #> MStrat_input_variable.var
 #> MStrat_input_kernel.ker

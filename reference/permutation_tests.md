@@ -20,11 +20,13 @@ perm.test.global(
   group,
   fun,
   R = 1000,
+  na.omit = TRUE,
   fun.args = list(),
   max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL
+  cl = NULL,
+  seed = 123
 )
 
 perm.test.pairwise(
@@ -32,12 +34,14 @@ perm.test.pairwise(
   group,
   fun,
   R = 1000,
+  na.omit = TRUE,
   fun.args = list(),
   p.adjust.method = c("bonferroni", "holm"),
   max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL
+  cl = NULL,
+  seed = 123
 )
 ```
 
@@ -59,6 +63,12 @@ perm.test.pairwise(
 - R:
 
   Integer specifying the number of permutations. Default is 1000.
+
+- na.omit:
+
+  logical. If `TRUE`, when `x` is a factor, missing values (`NA`) are
+  ignored and not included as a distinct factor level for computation.
+  Default is `TRUE`.
 
 - fun.args:
 
@@ -88,6 +98,11 @@ perm.test.pairwise(
   An optional parallel or snow cluster for use if `parallel = "snow"`.
   If not supplied, a cluster on the local machine is created for the
   duration of the `boot` call.
+
+- seed:
+
+  Integer. Random seed used to ensure reproducibility of permutations.
+  Default is 123.
 
 - p.adjust.method:
 
@@ -180,11 +195,10 @@ perm.test.global(x = pdata$NMSR, group = pdata$CUAL, fun = mean,
 #> [1] 226.7998
 #> 
 #> $observed_values
-#>   Dark green Green purple  Light green       Purple 
-#>     9.612903    11.157303     6.333333    11.928571 
+#> [1]  9.612903 11.157303  6.333333 11.928571
 #> 
 #> $p_value
-#> [1] 0.3564356
+#> [1] 0.4059406
 #> 
 
 perm.test.global(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
@@ -193,11 +207,10 @@ perm.test.global(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
 #> [1] 4.928841
 #> 
 #> $observed_values
-#>   Dark green Green purple  Light green       Purple 
-#>    1.5143563    1.4143497    0.6500224    1.2130604 
+#> [1] 1.5143563 1.4143497 0.6500224 1.2130604
 #> 
 #> $p_value
-#> [1] 0.05940594
+#> [1] 0.04950495
 #> 
 
 perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
@@ -206,11 +219,10 @@ perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
 #> [1] 0.8980326
 #> 
 #> $observed_values
-#>   Dark green Green purple  Light green       Purple 
-#>    0.3048907    0.4412322    0.3888889    0.5272109 
+#> [1] 0.3048907 0.4412322 0.3888889 0.5272109
 #> 
 #> $p_value
-#> [1] 0.2475248
+#> [1] 0.2079208
 #> 
 
 # Pairwise tests ----
@@ -218,30 +230,30 @@ perm.test.global(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
 perm.test.pairwise(x = pdata$NMSR, group = pdata$CUAL, fun = mean,
                    R = 100)
 #>                    Comparison   p.value perm.status perm.message adj.p.value
-#> 1  Dark green vs Green purple 0.4059406     success         <NA>   1.0000000
-#> 2   Dark green vs Light green 0.2178218     success         <NA>   1.0000000
+#> 1  Dark green vs Green purple 0.3762376     success         <NA>   1.0000000
+#> 2   Dark green vs Light green 0.2871287     success         <NA>   1.0000000
 #> 3        Dark green vs Purple 0.1683168     success         <NA>   1.0000000
-#> 4 Green purple vs Light green 0.1386139     success         <NA>   0.8316832
-#> 5      Green purple vs Purple 0.6237624     success         <NA>   1.0000000
-#> 6       Light green vs Purple 0.1386139     success         <NA>   0.8316832
+#> 4 Green purple vs Light green 0.1287129     success         <NA>   0.7722772
+#> 5      Green purple vs Purple 0.6831683     success         <NA>   1.0000000
+#> 6       Light green vs Purple 0.0990099     success         <NA>   0.5940594
 
 perm.test.pairwise(x = pdata$LNGS, group = pdata$CUAL, fun = shannon,
                    R = 100)
 #>                    Comparison    p.value perm.status perm.message adj.p.value
 #> 1  Dark green vs Green purple 0.40594059     success         <NA>   1.0000000
-#> 2   Dark green vs Light green 0.01980198     success         <NA>   0.1188119
+#> 2   Dark green vs Light green 0.06930693     success         <NA>   0.4158416
 #> 3        Dark green vs Purple 0.06930693     success         <NA>   0.4158416
-#> 4 Green purple vs Light green 0.08910891     success         <NA>   0.5346535
-#> 5      Green purple vs Purple 0.14851485     success         <NA>   0.8910891
-#> 6       Light green vs Purple 0.14851485     success         <NA>   0.8910891
+#> 4 Green purple vs Light green 0.09900990     success         <NA>   0.5940594
+#> 5      Green purple vs Purple 0.08910891     success         <NA>   0.5346535
+#> 6       Light green vs Purple 0.07920792     success         <NA>   0.4752475
 
 perm.test.pairwise(x = pdata$PTLC, group = pdata$CUAL, fun = simpson,
                    R = 100)
 #>                    Comparison    p.value perm.status perm.message adj.p.value
 #> 1  Dark green vs Green purple 0.11881188     success         <NA>   0.7128713
-#> 2   Dark green vs Light green 0.55445545     success         <NA>   1.0000000
-#> 3        Dark green vs Purple 0.03960396     success         <NA>   0.2376238
-#> 4 Green purple vs Light green 0.81188119     success         <NA>   1.0000000
-#> 5      Green purple vs Purple 0.36633663     success         <NA>   1.0000000
-#> 6       Light green vs Purple 0.37623762     success         <NA>   1.0000000
+#> 2   Dark green vs Light green 0.56435644     success         <NA>   1.0000000
+#> 3        Dark green vs Purple 0.01980198     success         <NA>   0.1188119
+#> 4 Green purple vs Light green 0.87128713     success         <NA>   1.0000000
+#> 5      Green purple vs Purple 0.29702970     success         <NA>   1.0000000
+#> 6       Light green vs Purple 0.38613861     success         <NA>   1.0000000
 ```

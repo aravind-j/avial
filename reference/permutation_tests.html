@@ -81,11 +81,13 @@ multiple comparisons.</p></li>
 <span>  <span class="va">group</span>,</span>
 <span>  <span class="va">fun</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  na.omit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  max.invalid <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  parallel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"multicore"</span>, <span class="st">"snow"</span><span class="op">)</span>,</span>
 <span>  ncpus <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  cl <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  cl <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">perm.test.pairwise</span><span class="op">(</span></span>
@@ -93,12 +95,14 @@ multiple comparisons.</p></li>
 <span>  <span class="va">group</span>,</span>
 <span>  <span class="va">fun</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  na.omit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  p.adjust.method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bonferroni"</span>, <span class="st">"holm"</span><span class="op">)</span>,</span>
 <span>  max.invalid <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  parallel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"multicore"</span>, <span class="st">"snow"</span><span class="op">)</span>,</span>
 <span>  ncpus <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  cl <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  cl <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -121,6 +125,12 @@ have the same length as <code>x</code>.</p></dd>
 
 <dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
 <dd><p>Integer specifying the number of permutations. Default is 1000.</p></dd>
+
+
+<dt id="arg-na-omit">na.omit<a class="anchor" aria-label="anchor" href="#arg-na-omit"></a></dt>
+<dd><p>logical. If <code>TRUE</code>, when <code>x</code> is a factor, missing
+values (<code>NA</code>) are ignored and not included as a distinct factor level
+for computation. Default is <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-fun-args">fun.args<a class="anchor" aria-label="anchor" href="#arg-fun-args"></a></dt>
@@ -150,6 +160,11 @@ statistic function is not permutation-stable.</p></dd>
 <dd><p>An optional <span class="pkg">parallel</span> or <span class="pkg">snow</span> cluster for use if
     <code>parallel = "snow"</code>.  If not supplied, a cluster on the
     local machine is created for the duration of the <code>boot</code> call.</p></dd>
+
+
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dd><p>Integer. Random seed used to ensure reproducibility of
+permutations. Default is 123.</p></dd>
 
 
 <dt id="arg-p-adjust-method">p.adjust.method<a class="anchor" aria-label="anchor" href="#arg-p-adjust-method"></a></dt>
@@ -237,11 +252,10 @@ p-values for multiple comparisons. Options include <code>"bonferroni"</code> and
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 226.7998</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $observed_values</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Dark green Green purple  Light green       Purple </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     9.612903    11.157303     6.333333    11.928571 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  9.612903 11.157303  6.333333 11.928571</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3564356</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4059406</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">perm.test.global</span><span class="op">(</span>x <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">LNGS</span>, group <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">CUAL</span>, fun <span class="op">=</span> <span class="va">shannon</span>,</span></span>
@@ -250,11 +264,10 @@ p-values for multiple comparisons. Options include <code>"bonferroni"</code> and
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.928841</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $observed_values</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Dark green Green purple  Light green       Purple </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1.5143563    1.4143497    0.6500224    1.2130604 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.5143563 1.4143497 0.6500224 1.2130604</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05940594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.04950495</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">perm.test.global</span><span class="op">(</span>x <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">PTLC</span>, group <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">CUAL</span>, fun <span class="op">=</span> <span class="va">simpson</span>,</span></span>
@@ -263,11 +276,10 @@ p-values for multiple comparisons. Options include <code>"bonferroni"</code> and
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8980326</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $observed_values</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Dark green Green purple  Light green       Purple </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    0.3048907    0.4412322    0.3888889    0.5272109 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3048907 0.4412322 0.3888889 0.5272109</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2475248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2079208</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Pairwise tests ----</span></span></span>
@@ -275,32 +287,32 @@ p-values for multiple comparisons. Options include <code>"bonferroni"</code> and
 <span class="r-in"><span><span class="fu">perm.test.pairwise</span><span class="op">(</span>x <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">NMSR</span>, group <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">CUAL</span>, fun <span class="op">=</span> <span class="va">mean</span>,</span></span>
 <span class="r-in"><span>                   R <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Comparison   p.value perm.status perm.message adj.p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Dark green vs Green purple 0.4059406     success         &lt;NA&gt;   1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Dark green vs Light green 0.2178218     success         &lt;NA&gt;   1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Dark green vs Green purple 0.3762376     success         &lt;NA&gt;   1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Dark green vs Light green 0.2871287     success         &lt;NA&gt;   1.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        Dark green vs Purple 0.1683168     success         &lt;NA&gt;   1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Green purple vs Light green 0.1386139     success         &lt;NA&gt;   0.8316832</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Green purple vs Purple 0.6237624     success         &lt;NA&gt;   1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Light green vs Purple 0.1386139     success         &lt;NA&gt;   0.8316832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Green purple vs Light green 0.1287129     success         &lt;NA&gt;   0.7722772</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Green purple vs Purple 0.6831683     success         &lt;NA&gt;   1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Light green vs Purple 0.0990099     success         &lt;NA&gt;   0.5940594</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">perm.test.pairwise</span><span class="op">(</span>x <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">LNGS</span>, group <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">CUAL</span>, fun <span class="op">=</span> <span class="va">shannon</span>,</span></span>
 <span class="r-in"><span>                   R <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Comparison    p.value perm.status perm.message adj.p.value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  Dark green vs Green purple 0.40594059     success         &lt;NA&gt;   1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Dark green vs Light green 0.01980198     success         &lt;NA&gt;   0.1188119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Dark green vs Light green 0.06930693     success         &lt;NA&gt;   0.4158416</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        Dark green vs Purple 0.06930693     success         &lt;NA&gt;   0.4158416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Green purple vs Light green 0.08910891     success         &lt;NA&gt;   0.5346535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Green purple vs Purple 0.14851485     success         &lt;NA&gt;   0.8910891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Light green vs Purple 0.14851485     success         &lt;NA&gt;   0.8910891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Green purple vs Light green 0.09900990     success         &lt;NA&gt;   0.5940594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Green purple vs Purple 0.08910891     success         &lt;NA&gt;   0.5346535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Light green vs Purple 0.07920792     success         &lt;NA&gt;   0.4752475</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">perm.test.pairwise</span><span class="op">(</span>x <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">PTLC</span>, group <span class="op">=</span> <span class="va">pdata</span><span class="op">$</span><span class="va">CUAL</span>, fun <span class="op">=</span> <span class="va">simpson</span>,</span></span>
 <span class="r-in"><span>                   R <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    Comparison    p.value perm.status perm.message adj.p.value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  Dark green vs Green purple 0.11881188     success         &lt;NA&gt;   0.7128713</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Dark green vs Light green 0.55445545     success         &lt;NA&gt;   1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        Dark green vs Purple 0.03960396     success         &lt;NA&gt;   0.2376238</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Green purple vs Light green 0.81188119     success         &lt;NA&gt;   1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Green purple vs Purple 0.36633663     success         &lt;NA&gt;   1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Light green vs Purple 0.37623762     success         &lt;NA&gt;   1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Dark green vs Light green 0.56435644     success         &lt;NA&gt;   1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        Dark green vs Purple 0.01980198     success         &lt;NA&gt;   0.1188119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Green purple vs Light green 0.87128713     success         &lt;NA&gt;   1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Green purple vs Purple 0.29702970     success         &lt;NA&gt;   1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Light green vs Purple 0.38613861     success         &lt;NA&gt;   1.0000000</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

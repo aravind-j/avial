@@ -238,6 +238,7 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Computing bootstrap confidence intervals.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating diversity profiles.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Indices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 30</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   group   richness margalef_index menhinick_index berger_parker</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -253,19 +254,34 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   smith_wilson &lt;dbl&gt;, brillouin_index &lt;dbl&gt;, renyi_entropy_0 &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   renyi_entropy_1 &lt;dbl&gt;, renyi_entropy_2 &lt;dbl&gt;, tsallis_entropy_0 &lt;dbl&gt;, …</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Overall</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Global Test`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Measure margalef_index menhinick_index berger_parker</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Test statistic     4.62557535      3.85787925     0.2539683</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        p-value     0.08910891      0.06930693     0.6534653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        p-value     0.06930693      0.06930693     0.6831683</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   berger_parker_reciprocal   simpson gini_simpson simpson_max simpson_relative</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                3.5485816 0.1459742    0.1459742   0.2857143        0.6397893</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                0.5643564 0.5247525    0.4851485   0.0990099        0.2277228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                3.5485816 0.1459742    0.1459742  0.28571429        0.6397893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                0.6039604 0.5544554    0.5544554  0.08910891        0.1782178</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     shannon shannon_max shannon_relative shannon_ens heip_evenness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.1255498   7.0871092       1.15089028  55.1369748    10.2305896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.3069307   0.0990099       0.03960396   0.2673267     0.0990099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.1255498  7.08710918       1.15089028   9.7353113   10.23058958</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.3168317  0.08910891       0.02970297   0.2673267    0.03960396</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mcintosh_diversity mcintosh_evenness smith_wilson brillouin_index</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          0.3514116         1.0809743   3.78072900       0.2103725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.2178218         0.1485149   0.00990099       0.8316832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.2376238         0.1485149   0.01980198       0.7821782</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Pairwise Test`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Pairwise Test`$`p-value`</span>
@@ -274,17 +290,17 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   Long vs Short     0.02970297      0.02970297             1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 Medium vs Short     1.00000000      1.00000000             1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   berger_parker_reciprocal   simpson gini_simpson simpson_max simpson_relative</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                        1 1.0000000     1.000000   1.0000000        1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        1 0.8613861     1.000000   0.8316832        1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        1 1.0000000     0.950495   1.0000000        0.8910891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                1.0000000 1.0000000    1.0000000   1.0000000        0.8019802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                1.0000000 1.0000000    1.0000000   0.6237624        1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                0.8910891 0.8316832    0.8316832   1.0000000        0.8019802</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     shannon shannon_max shannon_relative shannon_ens heip_evenness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.0000000   1.0000000        0.9801980   1.0000000     1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.2970297   0.7128713        1.0000000   0.3267327     1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.6831683   1.0000000        0.4752475   0.5346535     0.5346535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.0000000   1.0000000        0.9504950   1.0000000     0.9504950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.4158416   0.6237624        1.0000000   0.2970297     1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.6237624   1.0000000        0.2970297   0.5643564     0.2970297</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mcintosh_diversity mcintosh_evenness smith_wilson brillouin_index</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1.0000000         0.7425743    1.0000000               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.4455446         1.0000000    1.0000000               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.3564356         0.6237624    0.1188119               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1.0000000         0.8019802   1.00000000               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.2376238         1.0000000   1.00000000               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.2376238         0.7425743   0.05940594               1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Pairwise Test`$cld</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Group margalef_index menhinick_index berger_parker berger_parker_reciprocal</span>
@@ -306,138 +322,144 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Bootstrap CIs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Bootstrap CIs`$`Bootstrap CIs`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        Group-CI margalef_index menhinick_index berger_parker</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Long: lower      0.4676540       0.3535534     0.4027778</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Long: upper      0.4676540       0.3535534     0.6388889</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Medium: lower      0.4676540       0.3535534     0.4451389</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Medium: upper      0.7014810       0.4714045     0.7010417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Long: lower      0.4676540       0.3535534     0.4100694</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Long: upper      0.4676540       0.3535534     0.6454861</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Medium: lower      0.4676540       0.3535534     0.4517361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Medium: upper      0.7014810       0.4714045     0.6871528</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5  Short: lower      0.6293160       0.6123724     0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Short: upper      0.9439739       0.8164966     0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Short: upper      0.9439739       0.8164966     0.7083333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   berger_parker_reciprocal   simpson gini_simpson simpson_max simpson_relative</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 1.619091 0.3573495    0.5207948   0.6666667        0.7727431</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 2.400000 0.4783372    0.6525752   0.6666667        0.9800637</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 1.471500 0.3587674    0.4611304   0.6666667        0.6932999</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 2.284476 0.5274981    0.6519965   0.7500000        0.9377894</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 1.500000 0.2673611    0.4514757   0.6666667        0.6968027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 3.000000 0.4874132    0.7395833   0.7500000        0.9861111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 1.549399 0.3465085    0.5192130   0.6666667        0.7788194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 2.439310 0.4807870    0.6534915   0.6666667        0.9802373</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 1.455429 0.3511767    0.4750965   0.6666667        0.6530478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 2.214205 0.5249035    0.6488233   0.7500000        0.9462674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 1.411765 0.2743056    0.4431424   0.6666667        0.6276765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 3.000000 0.5568576    0.7256944   0.7500000        0.9730903</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    shannon shannon_max shannon_relative shannon_ens heip_evenness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.268182    1.584963        0.8026677    3.651240     1.2834996</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.550426    1.584963        0.9822709    4.723640     1.8458488</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.211598    1.584963        0.6511038    3.348900     0.9269083</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.681684    2.000000        0.9404166    5.256166     1.7534524</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.199287    1.584963        0.6862734    3.586009     0.9742734</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.928964    2.000000        0.9862707    7.085143     2.0408130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.259241    1.584963        0.7944926    2.393756     1.2614621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.556697    1.584963        0.9821663    2.941797     1.8715668</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.212174    1.584963        0.6454440    2.316935     0.8786718</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.648590    2.000000        0.9536829    3.135288     1.7670811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.167107    1.584963        0.6203256    2.246508     0.8199156</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.927082    2.000000        0.9735286    3.802881     1.9565144</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mcintosh_diversity mcintosh_evenness smith_wilson brillouin_index</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0.3468894         0.7185593    0.5133413       0.8075800</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.4663058         0.9768175    0.8094535       1.0112951</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.3182851         0.6125709    0.3527128       0.7626342</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0.4622680         0.9136435    0.7572221       1.0709931</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0.3521915         0.6131844    0.4439441       0.7965172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0.6067909         0.9754167    0.8313911       1.1432544</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0.3475900         0.7254853    0.5004391       0.8172290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.4663058         0.9732672    0.8487120       1.0172578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.3123495         0.5714145    0.3524329       0.7781839</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0.4618275         0.9285291    0.7733972       1.0631896</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0.3188860         0.5461950    0.3987736       0.6618217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0.5984076         0.9616910    0.8140394       1.1398823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Bootstrap CIs`$Warnings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill$Long</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.000000 3.000000 3.000000 3.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.970041 2.964507 2.913407 2.992622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.940750 2.930167 2.830548 2.985350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.912153 2.896998 2.751983 2.978185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 2.884272 2.865008 2.680495 2.971129</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 2.857124 2.834195 2.614262 2.964182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 2.830721 2.804551 2.553018 2.957346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 2.805073 2.776061 2.496473 2.950622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 2.780186 2.748702 2.444321 2.944010</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 2.756060 2.722450 2.396682 2.937511</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 2.732695 2.697274 2.352870 2.931125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 2.710085 2.673144 2.312557 2.924853</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 2.688224 2.650026 2.275449 2.918694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.667101 2.627884 2.241266 2.912648</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.646704 2.606682 2.209749 2.906716</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.627019 2.586383 2.180659 2.900895</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.608031 2.566953 2.153775 2.895187</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.589722 2.548353 2.128895 2.889590</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.572075 2.530549 2.105837 2.884104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.555070 2.513506 2.079712 2.878727</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.538688 2.497189 2.054650 2.873458</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.522908 2.481565 2.031210 2.868297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.507711 2.466602 2.009283 2.863243</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.493075 2.452270 1.988766 2.858293</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.478981 2.438538 1.969563 2.853447</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.465409 2.425378 1.951581 2.848703</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.452337 2.412763 1.934733 2.844060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.439748 2.400666 1.918939 2.839516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.427621 2.389062 1.904123 2.835070</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.415938 2.377927 1.890216 2.830720</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.404680 2.367239 1.877151 2.826465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.000000 3.000000 3.000000 3.000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.970041 2.965527 2.919290 2.994121    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.940750 2.932192 2.842233 2.988250    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.912153 2.900010 2.769187 2.982390    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 2.884272 2.868987 2.700099 2.976541    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 2.857124 2.839120 2.634955 2.970706    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 2.830721 2.810399 2.573706 2.964887    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 2.805073 2.782809 2.516270 2.959084    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 2.780186 2.756329 2.469493 2.953301    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 2.756060 2.730934 2.429612 2.947538    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 2.732695 2.706596 2.393756 2.941797    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 2.710085 2.683284 2.361469 2.936080    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 2.688224 2.660965 2.326622 2.930389    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.667101 2.639605 2.295192 2.924724    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.646704 2.619169 2.264013 2.919089    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.627019 2.599620 2.230264 2.913484    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.608031 2.580922 2.197525 2.907910    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.589722 2.563040 2.166801 2.902370    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.572075 2.545938 2.136294 2.896865    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.555070 2.529581 2.107384 2.891396    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.538688 2.513935 2.080265 2.885964    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.522908 2.498966 2.054843 2.880572    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.507711 2.484642 2.031026 2.875219    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.493075 2.470933 2.008719 2.869908    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.478981 2.457808 1.987832 2.864639    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.465409 2.445239 1.968274 2.859414    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.452337 2.433199 1.949959 2.854234    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.439748 2.421660 1.932804 2.849100    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.427621 2.410598 1.916731 2.844013    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.415938 2.399990 1.901666 2.838973    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.404680 2.389812 1.887538 2.833982    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill$Medium</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 3.720000 3.000000 4.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.775167 3.554848 2.917060 3.878659</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.586424 3.411515 2.838319 3.765974</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.427791 3.286906 2.763841 3.661485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.293906 3.178177 2.693637 3.564688</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.180150 3.082815 2.627668 3.475057</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.082659 2.998661 2.565856 3.392056</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 2.998274 2.923904 2.508087 3.315162</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 2.924454 2.857039 2.454214 3.248289</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 2.859178 2.796834 2.400441 3.186299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 2.800853 2.742283 2.348804 3.126733</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 2.748230 2.692567 2.300256 3.063674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 2.700330 2.647019 2.252135 3.014408</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.656390 2.605094 2.200321 2.976618</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.615811 2.566344 2.152981 2.943430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.578125 2.530400 2.109680 2.922474</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.542961 2.496955 2.070033 2.903089</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.510025 2.465752 2.033698 2.884995</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.479080 2.436571 2.000366 2.867969</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.449934 2.409227 1.969761 2.851665</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.422430 2.383558 1.941635 2.833472</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.396434 2.359423 1.915760 2.816125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.371835 2.336700 1.891934 2.799526</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.348536 2.315280 1.869970 2.783596</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.326451 2.295065 1.849702 2.768270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.305505 2.275967 1.830976 2.753492</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.285629 2.257907 1.813656 2.739219</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.266761 2.240814 1.797617 2.725413</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.248843 2.224623 1.782746 2.712043</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.231821 2.209274 1.768940 2.699083</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.215647 2.194711 1.756108 2.686511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 3.540000 3.000000 4.000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.775167 3.412327 2.913982 3.869732    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.586424 3.299979 2.832172 3.749020    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.427791 3.200860 2.756875 3.638839    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.293906 3.113045 2.687079 3.537879    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.180150 3.034831 2.622537 3.450294    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.082659 2.964754 2.563273 3.373527    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 2.998274 2.901581 2.504153 3.304748    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 2.924454 2.844287 2.445643 3.242893    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 2.859178 2.792026 2.383772 3.186604    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 2.800853 2.847501 2.353253 3.189054    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 2.748230 2.699954 2.256499 3.088438    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 2.700330 2.659105 2.201718 3.045469    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.656390 2.621170 2.151954 3.005878    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.615811 2.585830 2.106659 2.966002    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.578125 2.552814 2.065359 2.937614    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.542961 2.521895 2.027642 2.912390    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.510025 2.492881 1.993147 2.898757    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.479080 2.465605 1.961553 2.883340    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.449934 2.439921 1.932579 2.865014    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.422430 2.415705 1.905974 2.847655    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.396434 2.392844 1.881511 2.831142    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.371835 2.371239 1.858991 2.815373    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.348536 2.350800 1.838233 2.800269    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.326451 2.331447 1.819073 2.785760    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.305505 2.313107 1.801367 2.771792    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.285629 2.295713 1.784984 2.758318    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.266761 2.279205 1.769803 2.745290    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.248843 2.263526 1.755720 2.732512    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.231821 2.248624 1.742637 2.720138    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.215647 2.234452 1.730468 2.708146    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill$Short</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 3.920000 3.000000 4.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.933810 3.834336 2.921506 3.988856</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.870196 3.753673 2.846484 3.977595</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.809136 3.677884 2.775035 3.966257</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.750595 3.606797 2.707211 3.955115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.694521 3.540210 2.643022 3.944035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.640856 3.477895 2.582436 3.933020</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 3.589527 3.419614 2.525386 3.922074</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 3.540459 3.365120 2.471777 3.911201</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 3.493567 3.314170 2.421490 3.900405</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 3.448767 3.266524 2.351508 3.889690</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 3.405970 3.221950 2.282823 3.879059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 3.365087 3.180229 2.220895 3.868516</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 3.326031 3.141152 2.165081 3.858063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 3.288713 3.104524 2.114774 3.847703</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 3.253050 3.070164 2.070403 3.837438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 3.218958 3.037901 2.030373 3.827273</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 3.186359 3.007579 1.994125 3.817208</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 3.155176 2.979054 1.961252 3.807245</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 3.125338 2.952193 1.931386 3.797388</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 3.096774 2.926872 1.904202 3.787636</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 3.069420 2.902980 1.879410 3.777993</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 3.043214 2.880412 1.856755 3.768459</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 3.018098 2.859073 1.836008 3.759036</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.994016 2.838875 1.816971 3.749724</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.970917 2.819739 1.799467 3.740525</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.948751 2.801590 1.783340 3.731439</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.927474 2.784361 1.768452 3.722468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.907041 2.767989 1.754681 3.713611</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.887412 2.752418 1.741920 3.704868</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.868549 2.737593 1.730072 3.696241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 3.850000 3.000000 4.000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.933810 3.757118 2.928167 3.978361    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.870196 3.669992 2.857629 3.957155    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.809136 3.588497 2.788678 3.936381    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.750595 3.512442 2.721584 3.916039    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.694521 3.441585 2.656591 3.896127    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.640856 3.375645 2.593911 3.876641    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 3.589527 3.314320 2.519231 3.857579    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 3.540459 3.257302 2.427858 3.838935    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 3.493567 3.204280 2.340655 3.820704    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 3.448767 3.154954 2.246508 3.802881    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 3.405970 3.109039 2.164395 3.785459    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 3.365087 3.066263 2.092723 3.768432    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 3.326031 3.026377 2.030060 3.751792    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 3.288713 2.989147 1.977788 3.735533    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 3.253050 2.954359 1.938795 3.719648    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 3.218958 2.921817 1.903960 3.704129    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 3.186359 2.891341 1.872727 3.688969    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 3.155176 2.862767 1.844620 3.674161    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 3.125338 2.835945 1.819234 3.659697    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 3.096774 2.810738 1.796226 3.645570    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 3.069420 2.787022 1.775303 3.634102    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 3.043214 2.764682 1.756215 3.623070    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 3.018098 2.743615 1.738748 3.612454    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.994016 2.723726 1.722719 3.602234    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.970917 2.704928 1.707970 3.592392    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.948751 2.687142 1.694365 3.582911    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.927474 2.670296 1.681784 3.573773    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.907041 2.654323 1.670126 3.564963    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.887412 2.639162 1.659300 3.556464    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.868549 2.624758 1.649226 3.548262    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
@@ -448,108 +470,108 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"ci.type")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "perc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi$Long</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.0986123 1.0986123 1.0986123 1.098612</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.0885756 1.0867065 1.0716769 1.096389</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.0786646 1.0749957 1.0450036 1.094156</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.0688928 1.0635027 1.0187053 1.091913</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.0592726 1.0522473 0.9928892 1.089662</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.0498155 1.0412470 0.9676551 1.087404</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.0405315 1.0305164 0.9430928 1.085140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.0314297 1.0200672 0.9192806 1.082870</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.0225177 1.0099086 0.8962842 1.080596</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0138021 1.0000474 0.8741559 1.078319</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0052882 0.9904876 0.8529346 1.076038</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 0.9969801 0.9812315 0.8326461 1.073757</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9888807 0.9722792 0.8135935 1.071474</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9809920 0.9636289 0.7960083 1.069192</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9733151 0.9552777 0.7793783 1.066912</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.9658499 0.9472210 0.7636711 1.064634</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.9585956 0.9394532 0.7488499 1.062359</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.9515507 0.9319679 0.7348751 1.060089</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.9447130 0.9247578 0.7217054 1.057824</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.9380796 0.9178153 0.7092988 1.055565</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.9316472 0.9111322 0.6976128 1.053313</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.9254122 0.9046999 0.6855324 1.051311</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.9193702 0.8985098 0.6741376 1.049335</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.9135169 0.8925532 0.6633944 1.047385</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.9078477 0.8868214 0.6532689 1.045462</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.9023576 0.8813057 0.6437270 1.043564</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.8970416 0.8759974 0.6347355 1.041693</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.8918947 0.8708883 0.6262620 1.039846</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.8869118 0.8659701 0.6182754 1.038026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.8820876 0.8612349 0.6107455 1.036231</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.8774170 0.8566748 0.6036439 1.034460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.0986123 1.0986123 1.0986123 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.0885756 1.0870352 1.0713405 1.096651    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.0786646 1.0756751 1.0445900 1.094688    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.0688928 1.0645524 1.0185534 1.092725    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.0592726 1.0536840 0.9932854 1.090762    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.0498155 1.0430838 0.9688562 1.088800    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.0405315 1.0327627 0.9453233 1.086839    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.0314297 1.0227288 0.9227308 1.084880    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.0225177 1.0129878 0.9039650 1.082923    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0138021 1.0035431 0.8876954 1.080970    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0052882 0.9943962 0.8728393 1.079020    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 0.9969801 0.9855467 0.8592705 1.077075    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9888807 0.9769926 0.8444168 1.075134    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9809920 0.9687308 0.8308097 1.073199    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9733151 0.9607569 0.8171116 1.071270    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.9658499 0.9530654 0.8020777 1.069347    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.9585956 0.9456502 0.7872769 1.067432    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.9515507 0.9385045 0.7731827 1.065525    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.9447130 0.9316209 0.7589977 1.063625    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.9380796 0.9249916 0.7453687 1.061735    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.9316472 0.9186086 0.7324130 1.059854    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.9254122 0.9124637 0.7201144 1.057982    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.9193702 0.9065485 0.7084532 1.056121    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.9135169 0.9008547 0.6974074 1.054271    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.9078477 0.8953740 0.6869526 1.052432    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.9023576 0.8900981 0.6770634 1.050605    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.8970416 0.8850190 0.6677135 1.048790    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.8918947 0.8801286 0.6588763 1.046988    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.8869118 0.8754193 0.6505251 1.045199    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.8820876 0.8708834 0.6426336 1.043423    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.8774170 0.8665138 0.6351764 1.041662    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi$Medium</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.3862944 1.2712215 1.0986123 1.386294</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.3284446 1.2354654 1.0754906 1.356920</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.2771555 1.2023144 1.0524286 1.328999</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.2319160 1.1716614 1.0295155 1.302535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.1920742 1.1433397 1.0068396 1.277477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.1569284 1.1171510 0.9844864 1.253727</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.1257925 1.0928886 0.9625369 1.231286</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.0980367 1.0703514 0.9410657 1.210094</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.0731077 1.0493541 0.9201397 1.190085</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0505342 1.0297308 0.8998173 1.171190</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0299241 1.0113363 0.8801472 1.153339</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0109570 0.9940456 0.8611687 1.136461</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9933740 0.9777519 0.8398910 1.121734</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9769680 0.9623642 0.8183980 1.109621</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9615743 0.9478051 0.7982844 1.098325</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.9470625 0.9340086 0.7796244 1.090874</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.9333293 0.9209177 0.7621082 1.084958</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.9202928 0.9084831 0.7456683 1.077946</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.9078876 0.8966617 0.7302405 1.067209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.8960613 0.8854153 0.7157642 1.057666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.8847711 0.8747096 0.7021816 1.051146</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.8739819 0.8645137 0.6894378 1.044707</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.8636641 0.8547994 0.6774802 1.038548</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.8537922 0.8455406 0.6662590 1.032869</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.8443440 0.8367132 0.6557266 1.028852</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.8352998 0.8282945 0.6458380 1.024978</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.8266413 0.8202633 0.6365508 1.021234</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.8183519 0.8125996 0.6278246 1.017608</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.8104158 0.8052847 0.6196218 1.014093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.8028180 0.7983005 0.6119070 1.010680</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.7955444 0.7916303 0.6046468 1.007362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.3862944 1.2539606 1.0986123 1.3862944    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.3284446 1.2196338 1.0695199 1.3531850    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.2771555 1.1879051 1.0410417 1.3214922    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.2319160 1.1586511 1.0140956 1.2916590    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.1920742 1.1316895 0.9884536 1.2635166    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.1569284 1.1068094 0.9641420 1.2384492    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.1257925 1.0837948 0.9412842 1.2159523    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.0980367 1.0624396 0.9179494 1.1953579    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.0731077 1.0425563 0.8943079 1.1764658    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0505342 1.0239795 0.8686818 1.1589550    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0299241 1.0440692 0.8553457 1.1596702    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0109570 0.9901955 0.8137426 1.1276507    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9933740 0.9747635 0.7891224 1.1136260    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9769680 0.9601836 0.7662219 1.1005218    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9615743 0.9463820 0.7449180 1.0871727    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.9470625 0.9332962 0.7250965 1.0775935    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.9333293 0.9208723 0.7066515 1.0689660    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.9202928 0.9090639 0.6894846 1.0642578    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.9078876 0.8978302 0.6735042 1.0589221    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.8960613 0.8871351 0.6586249 1.0525525    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.8847711 0.8769463 0.6447671 1.0464808    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.8739819 0.8672344 0.6318562 1.0406695    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.8636641 0.8579729 0.6198228 1.0350879    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.8537922 0.8491371 0.6086022 1.0297111    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.8443440 0.8407042 0.5981339 1.0245184    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.8352998 0.8326530 0.5883618 1.0194929    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.8266413 0.8249635 0.5792337 1.0146207    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.8183519 0.8176171 0.5707014 1.0098866    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.8104158 0.8105961 0.5627199 1.0052210    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.8028180 0.8038840 0.5552479 1.0006819    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.7955444 0.7974649 0.5482469 0.9962622    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi$Short</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed      mean     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.386294 1.3517725 1.0986123 1.386294</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.369609 1.3302319 1.0745579 1.380347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.353305 1.3093484 1.0503188 1.374583</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.337402 1.2891692 1.0260126 1.369001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.321914 1.2697285 1.0017614 1.363601</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.306851 1.2510482 0.9776878 1.358383</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.292219 1.2331396 0.9539118 1.353343</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.278021 1.2160045 0.9305471 1.348480</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.264256 1.1996371 0.9076982 1.343791</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.250923 1.1840250 0.8854578 1.339272</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.238017 1.1691507 0.8639052 1.334920</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.225530 1.1549928 0.8431051 1.330730</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.213454 1.1415269 0.8165183 1.326652</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.201780 1.1287264 0.7909496 1.322228</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.190496 1.1165637 0.7671094 1.317886</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.179593 1.1050098 0.7449247 1.313625</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.169058 1.0940359 0.7243118 1.309446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.158879 1.0836130 0.7051809 1.305345</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.149044 1.0737128 0.6874391 1.301324</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.139542 1.0643073 0.6709929 1.297380</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.130361 1.0553696 0.6557503 1.293513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 1.121489 1.0468738 0.6416223 1.290362</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 1.112914 1.0387949 0.6285237 1.287322</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 1.104627 1.0311092 0.6163742 1.284387</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 1.096616 1.0237942 0.6050982 1.281554</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 1.088871 1.0168283 0.5946253 1.278818</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 1.081382 1.0101915 0.5848902 1.276176</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 1.074140 1.0038644 0.5758327 1.273622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 1.067136 0.9978293 0.5673973 1.271154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 1.060361 0.9920691 0.5595332 1.268767</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 1.053806 0.9865680 0.5521937 1.266458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed      mean     lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.386294 1.3431421 1.0986123 1.386294    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.369609 1.3190363 1.0743761 1.380870    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.353305 1.2956683 1.0499905 1.375524    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.337402 1.2731155 1.0255639 1.370259    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.321914 1.2514372 1.0012082 1.365077    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.306851 1.2306731 0.9770358 1.359978    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.292219 1.2108452 0.9531570 1.354963    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.278021 1.1919591 0.9239536 1.350033    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.264256 1.1740066 0.8868933 1.345188    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.250923 1.1569682 0.8500964 1.340427    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.238017 1.1408164 0.8089771 1.335752    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.225530 1.1255173 0.7716779 1.331160    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.213454 1.1110333 0.7379438 1.326652    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.201780 1.0973247 0.7074902 1.322228    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.190496 1.0843509 0.6814069 1.317886    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.179593 1.0720714 0.6616248 1.313625    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.169058 1.0604463 0.6435955 1.309446    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.158879 1.0494374 0.6271330 1.305345    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.149044 1.0390077 0.6120705 1.301324    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.139542 1.0291220 0.5982590 1.297380    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.130361 1.0197471 0.5855667 1.293513    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 1.121489 1.0108515 0.5738773 1.290362    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 1.112914 1.0024057 0.5630882 1.287322    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 1.104627 0.9943817 0.5531090 1.284387    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 1.096616 0.9867537 0.5438602 1.281554    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 1.088871 0.9794972 0.5352717 1.278818    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 1.081382 0.9725895 0.5272815 1.276176    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 1.074140 0.9660093 0.5198349 1.273622    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 1.067136 0.9597367 0.5128832 1.271154    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 1.060361 0.9537532 0.5063832 1.268767    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 1.053806 0.9480415 0.5002964 1.266458    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
@@ -560,108 +582,108 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"ci.type")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "perc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis$Long</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 2.0000000 2.0000000 2.0000000 2.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.8485612 1.8430441 1.7910575 1.8700431</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.7126236 1.7031448 1.6149316 1.7506878</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.5903508 1.5781030 1.4655903 1.6409685</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.4801432 1.4660366 1.3351151 1.5400141</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.3806058 1.3653308 1.2219832 1.4470380</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.2905205 1.2745974 1.1235738 1.3613299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.2088223 1.1926393 1.0375969 1.2822476</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1345790 1.1184225 0.9621552 1.2092105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0669734 1.0510515 0.8958623 1.1416928</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0052882 0.9897487 0.8372554 1.0792184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 0.9488928 0.9338379 0.7851750 1.0213560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.8972324 0.8827291 0.7386987 0.9677144</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.8498176 0.8359070 0.6970527 0.9179385</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.8062167 0.7929199 0.6595853 0.8717060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.7660477 0.7533715 0.6257467 0.8287239</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7289728 0.7169132 0.5950708 0.7887259</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.6946920 0.6832376 0.5671616 0.7514697</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.6629392 0.6520730 0.5416815 0.7167346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6334774 0.6231791 0.5183417 0.6843196</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6060957 0.5963426 0.4968943 0.6540413</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.5806057 0.5713739 0.4771259 0.6257325</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5568392 0.5481041 0.4588522 0.5992404</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5346455 0.5263826 0.4419134 0.5744256</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5138895 0.5060746 0.4262648 0.5511604</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.4944499 0.4870595 0.4120504 0.5293282</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.4762176 0.4692288 0.3987271 0.5088220</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4590941 0.4524852 0.3862123 0.4895440</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4429909 0.4367409 0.3744335 0.4714044</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4278278 0.4219168 0.3633266 0.4543207</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4135320 0.4079413 0.3528350 0.4382174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 2.0000000 2.0000000 2.0000000 2.0000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.8485612 1.8445078 1.8030064 1.8701492    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.7126236 1.7056892 1.6329542 1.7508452    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.5903508 1.5814316 1.4858245 1.6411364    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.4801432 1.4699205 1.3579911 1.5401630    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.3806058 1.3695933 1.2465007 1.4471473    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.2905205 1.2791022 1.1488930 1.3613862    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.2088223 1.1972819 1.0631117 1.2822429    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1345790 1.1231228 0.9908472 1.2091410    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0669734 1.0557484 0.9282917 1.1415579    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0052882 0.9943962 0.8728393 1.0790200    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 0.9488928 0.9384013 0.8233871 1.0210976    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.8972324 0.8871830 0.7769629 0.9674007    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.8498176 0.8402328 0.7353630 0.9175750    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.8062167 0.7971048 0.6970026 0.8712985    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.7660477 0.7574069 0.6607378 0.8282785    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7289728 0.7207937 0.6274374 0.7882486    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.6946920 0.6869605 0.5970673 0.7509663    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.6629392 0.6556377 0.5688731 0.7162107    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6334774 0.6265866 0.5429826 0.6837803    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6060957 0.5995949 0.5192130 0.6534915    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.5806057 0.5744741 0.4973384 0.6251766    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5568392 0.5510560 0.4771604 0.5986823    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5346455 0.5291904 0.4585041 0.5738689    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5138895 0.5087429 0.4412154 0.5506082    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.4944499 0.4895931 0.4251580 0.5287832    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.4762176 0.4716328 0.4102118 0.5082866    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4590941 0.4547646 0.3962702 0.4890202    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4429909 0.4389010 0.3832386 0.4708937    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4278278 0.4239626 0.3710331 0.4538246    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4135320 0.4098779 0.3595792 0.4377369    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis$Medium</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 2.6200000 2.0000000 3.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.5617123 2.3001691 1.8070878 2.6641696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.2224763 2.0400464 1.6383924 2.3820368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.9552854 1.8257399 1.4905924 2.1432938</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.7411443 1.6470172 1.3608427 1.9398361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.5665950 1.4962700 1.2467044 1.7652446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.4220235 1.3677850 1.1460846 1.6144161</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.3004971 1.2572269 1.0571861 1.4810648</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1969637 1.1612703 0.9784642 1.3638935</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.1076994 1.0773365 0.9085899 1.2608095</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0299241 1.0034035 0.8464190 1.1697039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 0.9615347 0.9378685 0.7883323 1.0888291</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9009177 0.8794473 0.7342359 1.0167313</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.8468176 0.8271002 0.6866586 0.9527941</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.7982434 0.7799771 0.6446108 0.8954410</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.7544018 0.7373768 0.6072742 0.8436423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7146493 0.6987154 0.5739693 0.7966894</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.6784574 0.6635031 0.5441299 0.7539833</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.6453869 0.6313260 0.5172818 0.7151080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6150691 0.6018316 0.4930261 0.6798456</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.5871914 0.5747184 0.4710262 0.6474248</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.5614865 0.5497265 0.4509970 0.6175388</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5377246 0.5266314 0.4326958 0.5904820</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5157061 0.5052374 0.4159152 0.5653574</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.4952573 0.4853739 0.4004778 0.5419253</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.4762260 0.4668914 0.3862306 0.5200429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.4584783 0.4496582 0.3730419 0.4996052</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4418959 0.4335582 0.3607975 0.4804871</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4263738 0.4184885 0.3493982 0.4625766</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4118190 0.4043577 0.3387576 0.4457736</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.3981481 0.3910846 0.3288002 0.4299877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 2.5400000 2.0000000 3.0000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.5617123 2.2401074 1.7982365 2.6444109    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.2224763 1.9956664 1.6247863 2.3478584    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.9552854 1.7936491 1.4767470 2.0998091    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.7411443 1.6245227 1.3492331 1.8904114    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.5665950 1.4812411 1.2388496 1.7149840    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.4220235 1.3585393 1.1429892 1.5660527    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.3004971 1.2524382 1.0567918 1.4377834    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1969637 1.1598946 0.9792760 1.3263983    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.1076994 1.0785527 0.9075292 1.2287853    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0299241 1.0440692 0.8553457 1.1596702    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 0.9615347 0.9424719 0.7815072 1.0663936    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9009177 0.8850940 0.7299819 0.9983216    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.8468176 0.8334796 0.6844978 0.9372857    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.7982434 0.7868465 0.6441307 0.8816156    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.7544018 0.7445472 0.6081262 0.8330990    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7146493 0.7060404 0.5758629 0.7890550    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.6784574 0.6708698 0.5468256 0.7503583    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.6453869 0.6386478 0.5205838 0.7141905    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6150691 0.6090432 0.4967760 0.6802287    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.5871914 0.5817708 0.4750965 0.6488233    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.5614865 0.5565842 0.4552853 0.6197165    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5377246 0.5332688 0.4371208 0.5926846    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5157061 0.5116373 0.4204126 0.5675323    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.4952573 0.4915256 0.4049970 0.5440878    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.4762260 0.4727891 0.3907324 0.5221994    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.4584783 0.4553000 0.3774958 0.5017322    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4418959 0.4389452 0.3651804 0.4825654    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4263738 0.4236242 0.3536926 0.4645817    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4118190 0.4092474 0.3429508 0.4476971    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.3981481 0.3957347 0.3328830 0.4318241    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis$Short</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 2.8800000 2.0000000 3.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.7003331 2.5734826 1.8147007 2.7421172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.4405950 2.3124385 1.6541673 2.5116032</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.2146076 2.0888371 1.5145195 2.3052466</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 2.0172417 1.8962276 1.3925377 2.1202369</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.8442276 1.7294050 1.2855441 1.9541124</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.6920012 1.5841507 1.1913073 1.8047151</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.5575795 1.4570295 1.1081597 1.6701513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.4384586 1.3452315 1.0343970 1.5487575</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.3325309 1.2464472 0.9698694 1.4390715</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.2380168 1.1587697 0.9129924 1.3398061</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.1534096 1.0806170 0.8619297 1.2498275</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.0774297 1.0106708 0.8158643 1.1681359</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.0089869 0.9478270 0.7741143 1.0938485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9471496 0.8911572 0.7352384 1.0261854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8911198 0.8398767 0.6960151 0.9644565</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.8402110 0.7933200 0.6608967 0.9080507</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7938317 0.7509197 0.6290807 0.8564263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.7514702 0.7121901 0.5992307 0.8091025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.7126828 0.6767142 0.5701165 0.7656519</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6770833 0.6441319 0.5436632 0.7256944</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6443352 0.6141317 0.5195342 0.6888917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.6141439 0.5864426 0.4974444 0.6549420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5862509 0.5608282 0.4771513 0.6235757</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5604291 0.5370818 0.4584475 0.5945523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5364780 0.5150217 0.4411551 0.5676562</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.5142206 0.4944880 0.4251208 0.5426946</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4934997 0.4753392 0.4102120 0.5194943</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4741760 0.4574500 0.3963135 0.4979000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4561251 0.4407092 0.3833251 0.4777719</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4392361 0.4250174 0.3711589 0.4589844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 2.8500000 2.0000000 3.0000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.7003331 2.5444732 1.8109797 2.7391597    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.4405950 2.2846169 1.6454402 2.5067852    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.2146076 2.0623057 1.5001663 2.2993757    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 2.0172417 1.8710245 1.3724067 2.1138972    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.8442276 1.7055264 1.2598040 1.9477170    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.6920012 1.5615656 1.1603366 1.7985467    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.5575795 1.4356907 1.0647063 1.6643943    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.4384586 1.3250825 0.9704435 1.5435233    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.3325309 1.2274271 0.8873121 1.4344177    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.2380168 1.1408164 0.8089771 1.3357515    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.1534096 1.0636692 0.7426119 1.2463640    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.0774297 0.9946691 0.6859806 1.1652368    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.0089869 0.9327148 0.6373107 1.0914755    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9471496 0.8768810 0.5962613 1.0242931    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8911198 0.8263864 0.5631613 0.9629964    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.8402110 0.7805684 0.5337549 0.9069736    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7938317 0.7388628 0.5074738 0.8556840    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.7514702 0.7007869 0.4838543 0.8086491    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.7126828 0.6659263 0.4625154 0.7654448    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6770833 0.6339236 0.4431424 0.7256944    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6443352 0.6044694 0.4254739 0.6892186    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.6141439 0.5772951 0.4092914 0.6555354    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5862509 0.5521663 0.3944114 0.6243824    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5604291 0.5288780 0.3806785 0.5955254    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5364780 0.5072503 0.3679609 0.5687553    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.5142206 0.4871248 0.3561459 0.5438848    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4934997 0.4683615 0.3451367 0.5207459    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4741760 0.4508366 0.3348497 0.4991881    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4561251 0.4344399 0.3252125 0.4790756    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4392361 0.4190734 0.3161621 0.4602865    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
@@ -671,6 +693,18 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "tsallis"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"ci.type")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "perc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings$hill</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings$renyi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings$tsallis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
@@ -683,6 +717,7 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Computing bootstrap confidence intervals.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Generating diversity profiles.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Indices</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 30</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   group   richness margalef_index menhinick_index berger_parker</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -698,19 +733,34 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   smith_wilson &lt;dbl&gt;, brillouin_index &lt;dbl&gt;, renyi_entropy_0 &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   renyi_entropy_1 &lt;dbl&gt;, renyi_entropy_2 &lt;dbl&gt;, tsallis_entropy_0 &lt;dbl&gt;, …</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Overall</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity Indices`$Warnings$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Global Test`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Measure margalef_index menhinick_index berger_parker</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Test statistic      0.1071317       0.4087945     0.1825397</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        p-value      1.0000000       1.0000000     0.5643564</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        p-value      1.0000000       1.0000000     0.5940594</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   berger_parker_reciprocal    simpson gini_simpson simpson_max simpson_relative</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                3.4727768 0.03859249   0.03859249   0.1428571        0.2681430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                0.6633663 0.76237624   0.65346535   0.2574257        0.2574257</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                0.7524752 0.69306931   0.69306931   0.3861386        0.2376238</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     shannon shannon_max shannon_relative shannon_ens heip_evenness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.6662977   3.5435546        0.3615327  17.6011822     3.0824569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.7029703   0.3168317        0.3069307   0.6534653     0.3663366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.6662977   3.5435546        0.3615327   3.0939334     3.0824569</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.6336634   0.3861386        0.2673267   0.6534653     0.3960396</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mcintosh_diversity mcintosh_evenness smith_wilson brillouin_index</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         0.07321862         0.4906392    1.6496292       0.6374954</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         0.63366337         0.2277228    0.1386139       0.4851485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         0.67326733         0.1881188    0.2277228       0.4752475</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Pairwise Test`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Pairwise Test`$`p-value`</span>
@@ -720,16 +770,16 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 Medium vs Short              1               1             1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   berger_parker_reciprocal simpson gini_simpson simpson_max simpson_relative</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                        1       1            1   1.0000000        1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        1       1            1   1.0000000        0.5346535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        1       1            1   0.8613861        0.5940594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        1       1            1   0.8910891        0.4158416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        1       1            1   1.0000000        0.6534653</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   shannon shannon_max shannon_relative shannon_ens heip_evenness</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       1   1.0000000        1.0000000           1     1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       1   0.9207921        0.2079208           1     0.5643564</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       1   0.9801980        0.6534653           1     0.8019802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       1   0.8910891        0.3861386           1     0.6534653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       1   1.0000000        0.4752475           1     0.6831683</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mcintosh_diversity mcintosh_evenness smith_wilson brillouin_index</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  1         1.0000000    1.0000000       1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  1         0.4158416    0.1485149       1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  1         0.5643564    0.3861386       0.9207921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  1         1.0000000    1.0000000               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  1         0.3267327    0.2079208               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  1         0.5940594    0.2970297               1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Pairwise Test`$cld</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Group margalef_index menhinick_index berger_parker berger_parker_reciprocal</span>
@@ -751,138 +801,144 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Bootstrap CIs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Bootstrap CIs`$`Bootstrap CIs`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        Group-CI margalef_index menhinick_index berger_parker</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Long: lower       0.467654       0.4714045     0.4034722</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Long: upper       0.701481       0.4714045     0.6170139</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Medium: lower       0.467654       0.4154252     0.3611111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Medium: upper       0.701481       0.4714045     0.5687500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Short: lower       0.629316       0.6123724     0.3750000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Short: upper       0.629316       0.6123724     0.6447917</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Long: lower       0.467654       0.3535534     0.4027778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Long: upper       0.701481       0.4714045     0.6454861</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Medium: lower       0.701481       0.4714045     0.3684028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Medium: upper       0.701481       0.4714045     0.5621528</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Short: lower       0.629316       0.6123724     0.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Short: upper       0.629316       0.6123724     0.6645833</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   berger_parker_reciprocal   simpson gini_simpson simpson_max simpson_relative</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 1.516755 0.3092882    0.5582658   0.7500000        0.7493699</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 2.482759 0.4516590    0.6944252   0.7500000        0.9397377</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 1.783516 0.2961323    0.5848476   0.7500000        0.7832176</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 2.821846 0.4153935    0.7056327   0.7500000        0.9402392</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 1.411765 0.3368056    0.4548611   0.6666667        0.7069010</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 2.666667 0.4618056    0.6648437   0.6666667        0.9972656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 1.549399 0.3121142    0.5264757   0.6666667        0.7019676</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 2.482759 0.4735243    0.6878858   0.7500000        0.9171811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 1.779146 0.2924961    0.5859857   0.7500000        0.7813143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 2.715385 0.4140143    0.7075039   0.7500000        0.9433385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 1.510588 0.3333333    0.4850694   0.6666667        0.8023437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 3.000000 0.5149306    0.6666667   0.6666667        1.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    shannon shannon_max shannon_relative shannon_ens heip_evenness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.398932    2.000000        0.6846781    3.849376     0.9445944</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.829966    2.000000        0.9186726    6.089423     1.6918448</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.463025    2.000000        0.7325934    4.475436     1.1927354</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.870477    2.000000        0.9164158    6.326070     1.8351325</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.207261    1.584963        0.7816209    3.320279     1.1066169</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.584963    1.584963        0.9975045    4.879108     1.9212443</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.354753    1.584963        0.6869739    2.557567     0.9837284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.804062    2.000000        0.9055802    3.492233     1.6916805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.502925    2.000000        0.7514626    2.834168     1.1649393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.863664    2.000000        0.9318320    3.639311     1.8157760</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.177499    1.584963        0.8284887    2.270659     1.3590567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.584963    1.584963        1.0000000    3.000000     1.9395542</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mcintosh_diversity mcintosh_evenness smith_wilson brillouin_index</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0.3676601         0.6350560    0.3494951       0.8977944</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.5069574         0.8860126    0.6109161       1.1644251</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.4156116         0.7131378    0.3557487       0.9646353</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0.5215998         0.9381250    0.6856812       1.1923234</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0.3477589         0.6548518    0.4945224       0.6049201</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0.5290714         0.9929037    0.9203697       0.9522141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0.3535337         0.6237387    0.3509058       0.8742184</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0.5002876         0.8826564    0.6482790       1.1651868</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.4042551         0.7132264    0.3537635       0.9685500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0.5205152         0.9183439    0.6828628       1.2057380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0.3558460         0.7524417    0.5050573       0.6959490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0.5310498         1.0000000    1.0000000       0.9571217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Bootstrap CIs`$Warnings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill$Long</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 3.970000 3.000000 4.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.886394 3.844652 2.957442 3.937434</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.779642 3.729528 2.915691 3.876881</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.679590 3.623901 2.874819 3.818355</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.586026 3.527025 2.834893 3.761858</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.498684 3.438169 2.795973 3.708884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.417265 3.356631 2.758112 3.660657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 3.341444 3.281752 2.721355 3.615361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 3.270881 3.212920 2.685739 3.572695</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 3.205233 3.149575 2.651292 3.532420</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 3.144158 3.091204 2.618037 3.491691</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 3.087324 3.037343 2.585987 3.451114</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 3.034412 2.987573 2.535192 3.412174</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.985118 2.941514 2.487798 3.374805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.939157 2.898824 2.444774 3.338766</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.896264 2.859196 2.396583 3.307408</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.856191 2.822354 2.349466 3.281465</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.818711 2.788050 2.309700 3.256929</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.783616 2.756059 2.269781 3.233741</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.750715 2.726183 2.230360 3.211791</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.719832 2.698238 2.196904 3.190979</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.690809 2.672064 2.166077 3.171217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.663500 2.647513 2.137630 3.152423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.637774 2.624452 2.111339 3.134524</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.613511 2.602763 2.087007 3.117454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.590601 2.582338 2.064453 3.101154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.568944 2.563078 2.043518 3.085569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.548450 2.544894 2.024058 3.075441</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.529037 2.527708 2.005945 3.066514</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.510629 2.511444 1.989061 3.058039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.493156 2.496038 1.973303 3.049975</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 3.970000 3.000000 4.000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.886394 3.835631 2.963291 3.941677    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.779642 3.712873 2.927296 3.885117    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.679590 3.600844 2.892063 3.830179    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.586026 3.498640 2.857637 3.776930    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.498684 3.405378 2.824056 3.725376    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.417265 3.320215 2.791353 3.675517    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 3.341444 3.242368 2.759555 3.627346    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 3.270881 3.171114 2.704742 3.580851    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 3.205233 3.105796 2.621324 3.536015    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 3.144158 3.058772 2.588731 3.498018    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 3.087324 2.990658 2.508082 3.448327    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 3.034412 2.939828 2.463912 3.413085    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.985118 2.892905 2.409359 3.381694    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.939157 2.849510 2.357536 3.352060    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.896264 2.809304 2.310613 3.324040    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.856191 2.771986 2.267169 3.297502    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.818711 2.737286 2.224618 3.272327    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.783616 2.704966 2.183378 3.248407    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.750715 2.674812 2.145958 3.225646    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.719832 2.646633 2.111833 3.203956    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.690809 2.620258 2.080616 3.182688    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.663500 2.595534 2.052014 3.162345    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.637774 2.572325 2.025763 3.147379    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.613511 2.550506 2.001630 3.134214    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.590601 2.529967 1.979404 3.121707    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.568944 2.510607 1.958902 3.109793    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.548450 2.492336 1.939956 3.098418    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.529037 2.475072 1.922420 3.087533    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.510629 2.458740 1.906160 3.077094    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.493156 2.443273 1.891061 3.067062    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill$Medium</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 3.990000 4.000000 4.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.902761 3.881627 3.770824 3.961054</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.812649 3.782888 3.577933 3.922901</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.729325 3.692978 3.415458 3.885509</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.652407 3.611096 3.278109 3.848908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.581486 3.536467 3.161307 3.813117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.516139 3.468366 3.061207 3.778147</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 3.455945 3.406127 2.979496 3.744009</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 3.400487 3.349142 2.927379 3.710709</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 3.349367 3.296865 2.879631 3.678250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 3.302206 3.248808 2.835741 3.646633</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 3.258648 3.204534 2.796370 3.616290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 3.218365 3.163658 2.749966 3.591454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 3.181053 3.125836 2.696542 3.567923</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 3.146434 3.090765 2.645859 3.545617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 3.114256 3.058176 2.595767 3.524463</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 3.084291 3.027829 2.549447 3.504388</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 3.056333 2.999515 2.506574 3.485325</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 3.030197 2.973046 2.466851 3.466950</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 3.005715 2.948254 2.430006 3.446189</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.982739 2.924992 2.395793 3.424042</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.961134 2.903126 2.363989 3.402281</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.940781 2.882540 2.334389 3.381138</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.921573 2.863128 2.306810 3.360600</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.903412 2.844794 2.281142 3.340654</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.886214 2.827453 2.257187 3.321290</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.869900 2.811029 2.234779 3.303679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.854401 2.795453 2.213795 3.288901</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.839655 2.780662 2.194123 3.274655</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.825604 2.766599 2.175661 3.260914</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.812200 2.753214 2.158318 3.247653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 4.000000 4.000000 4.000000 4.000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 3.902761 3.888094 3.775588 3.955779    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 3.812649 3.787091 3.588650 3.913503    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 3.729325 3.695911 3.432986 3.873134    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 3.652407 3.613518 3.302012 3.834627    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 3.581486 3.538941 3.191647 3.797927    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 3.516139 3.471298 3.097955 3.762975    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 3.455945 3.409800 3.017710 3.729706    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 3.400487 3.353744 2.948304 3.698053    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 3.349367 3.302513 2.887658 3.667945    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 3.302206 3.255565 2.834168 3.639311    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 3.258648 3.212427 2.786671 3.612079    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 3.218365 3.172683 2.739885 3.586178    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 3.181053 3.135971 2.687069 3.561539    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 3.146434 3.101973 2.638480 3.538091    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 3.114256 3.070411 2.593566 3.515770    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 3.084291 3.041041 2.551966 3.494511    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 3.056333 3.013648 2.513363 3.474252    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 3.030197 2.988043 2.477479 3.454934    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 3.005715 2.964059 2.444069 3.436502    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.982739 2.941549 2.416955 3.418902    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.961134 2.920381 2.393052 3.402084    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.940781 2.900440 2.370505 3.386001    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.921573 2.881622 2.349204 3.370608    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.903412 2.863835 2.329053 3.355864    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.886214 2.846996 2.309966 3.341729    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.869900 2.831031 2.291870 3.328166    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.854401 2.815873 2.274696 3.315142    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.839655 2.801463 2.258386 3.302625    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.825604 2.787747 2.242884 3.290584    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.812200 2.774674 2.228141 3.278992    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$hill$Short</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.000000 3.000000 3.000000 3.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.989707 2.979641 2.941363 2.998426</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.979386 2.959673 2.884567 2.996855</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.969042 2.940115 2.829455 2.995285</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 2.958682 2.920985 2.775177 2.993718</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 2.948312 2.902295 2.722420 2.992154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 2.937939 2.884057 2.671301 2.990593</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 2.927570 2.866281 2.621919 2.989034</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 2.917212 2.848971 2.574355 2.987478</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 2.906871 2.832133 2.528669 2.985925</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 2.896553 2.815769 2.484900 2.984375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 2.886267 2.799877 2.443071 2.982828</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 2.876017 2.784456 2.403187 2.981285</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.865812 2.769503 2.365235 2.979745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.855656 2.755013 2.329338 2.978209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.845557 2.740978 2.299143 2.976676</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.835521 2.727392 2.270752 2.975148</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.825553 2.714246 2.244062 2.973623</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.815659 2.701531 2.218971 2.972102</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.805845 2.689236 2.192123 2.970585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.796117 2.677351 2.165414 2.969072</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.786478 2.665865 2.140197 2.967564</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.776935 2.654766 2.116408 2.966060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.767491 2.644043 2.093980 2.964560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.758150 2.633684 2.072846 2.963065</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.748918 2.623677 2.052936 2.961575</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.739797 2.614010 2.034185 2.960089</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.730792 2.604671 2.016525 2.958608</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.721904 2.595650 1.999892 2.957132</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.713137 2.586933 1.984225 2.955662</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.704494 2.578511 1.969464 2.954196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[1]]$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean    lower upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.000000 2.990000 3.000000     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.989707 2.967931 2.889737     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.979386 2.946561 2.790512     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.969042 2.925888 2.701627     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 2.958682 2.905908 2.622275     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 2.948312 2.886610 2.551599     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 2.937939 2.867981 2.486784     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 2.927570 2.850005 2.425346     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 2.917212 2.832665 2.369193     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 2.906871 2.815943 2.317792     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 2.896553 2.799822 2.270659     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 2.886267 2.784282 2.227362     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 2.876017 2.769305 2.187515     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 2.865812 2.754873 2.150777     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 2.855656 2.740967 2.116848     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 2.845557 2.727569 2.085460     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 2.835521 2.714661 2.056379     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 2.825553 2.702224 2.029395     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 2.815659 2.690241 2.004322     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 2.805845 2.678696 1.980994     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 2.796117 2.667570 1.959264     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 2.786478 2.656847 1.938997     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 2.776935 2.646512 1.920074     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 2.767491 2.636547 1.902387     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 2.758150 2.626940 1.885837     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 2.748918 2.617673 1.870336     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 2.739797 2.608734 1.855802     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 2.730792 2.600108 1.842163     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 2.721904 2.591782 1.829351     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 2.713137 2.583744 1.817304     3    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 2.704494 2.575982 1.805967     3    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
@@ -893,108 +949,108 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"ci.type")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "perc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi$Long</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.3862944 1.3805407 1.2496454 1.386294</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.3574818 1.3467986 1.2037093 1.371691</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.3296293 1.3146439 1.1613260 1.357354</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.3028014 1.2841134 1.1225260 1.343300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.2770445 1.2552064 1.0872061 1.329545</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.2523869 1.2278942 1.0551672 1.316100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.2288406 1.2021287 1.0261530 1.302977</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.2064030 1.1778494 0.9998812 1.290182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1850594 1.1549878 0.9760672 1.277720</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.1647848 1.1334715 0.9545664 1.265595</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.1455462 1.1132264 0.9403713 1.253808</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.1273048 1.0941786 0.9226953 1.242359</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.1100177 1.0762557 0.9051133 1.231246</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.0936393 1.0593875 0.8886494 1.220465</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.0781229 1.0435068 0.8732091 1.210012</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.0634215 1.0285493 0.8538808 1.199883</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.0494889 1.0144543 0.8333266 1.190070</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.0362798 1.0011645 0.8148084 1.180567</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.0237510 0.9886261 0.7984615 1.171367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.0118608 0.9767886 0.7832548 1.162462</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.0005702 0.9656050 0.7690984 1.153844</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.9898419 0.9550314 0.7559092 1.145505</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.9796412 0.9450269 0.7437026 1.137437</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.9699355 0.9355536 0.7324660 1.129631</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.9606945 0.9265763 0.7219631 1.122079</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.9518897 0.9180622 0.7121349 1.114772</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.9434949 0.9099810 0.7029275 1.107077</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.9354855 0.9023045 0.6942916 1.099299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.9278387 0.8950069 0.6861824 1.091765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.9205332 0.8880638 0.6785589 1.084469</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.9135494 0.8814529 0.6713337 1.078713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.3862944 1.3776639 1.0986123 1.386294    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.3574818 1.3433023 1.0863001 1.371606    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.3296293 1.3107059 1.0740771 1.357153    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.3028014 1.2799039 1.0619657 1.342911    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.2770445 1.2508831 1.0499875 1.328911    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.2523869 1.2235985 1.0381628 1.315165    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.2288406 1.1979832 1.0265108 1.301687    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.2064030 1.1739569 1.0150490 1.288487    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1850594 1.1514313 0.9950056 1.275576    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.1647848 1.1303151 0.9636499 1.262960    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.1455462 1.1149993 0.9511355 1.252136    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.1273048 1.0919483 0.9195184 1.237809    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.1100177 1.0745232 0.9017366 1.227542    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.0936393 1.0581608 0.8793530 1.218315    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.0781229 1.0427847 0.8576155 1.209527    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.0634215 1.0283239 0.8375128 1.201146    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.0494889 1.0147122 0.8185308 1.193142    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.0362798 1.0018881 0.7995841 1.185488    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.0237510 0.9897951 0.7808731 1.178159    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.0118608 0.9783810 0.7635855 1.171132    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.0005702 0.9675977 0.7475541 1.164386    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.9898419 0.9574008 0.7326594 1.157725    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.9796412 0.9477497 0.7188135 1.151307    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.9699355 0.9386070 0.7059340 1.146562    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.9606945 0.9299381 0.6939445 1.142370    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.9518897 0.9217114 0.6827739 1.138371    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.9434949 0.9138976 0.6723569 1.134547    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.9354855 0.9064699 0.6626333 1.130883    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.9278387 0.8994033 0.6535476 1.127363    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.9205332 0.8926751 0.6450493 1.123976    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.9135494 0.8862640 0.6370918 1.120710    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi$Medium</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.386294 1.386294 1.3862944 1.386294</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.361684 1.359842 1.3299986 1.375825</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.338324 1.334944 1.2807176 1.365653</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.316227 1.311581 1.2379155 1.355784</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.295386 1.289705 1.2009025 1.346223</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.275778 1.269248 1.1689327 1.336972</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.257364 1.250129 1.1412747 1.328029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.240096 1.232265 1.1172546 1.319393</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.223919 1.215567 1.0910379 1.311061</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.208771 1.199951 1.0662838 1.303028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.194591 1.185335 1.0436300 1.295288</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.181312 1.171640 1.0228489 1.287833</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.168873 1.158795 1.0035584 1.280657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.157212 1.146732 0.9888917 1.273751</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.146270 1.135389 0.9760726 1.267107</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.135990 1.124710 0.9642301 1.260714</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.126322 1.114641 0.9532340 1.254565</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.117216 1.105137 0.9429775 1.248649</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.108628 1.096153 0.9324885 1.242920</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.100516 1.087649 0.9212869 1.237397</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.092842 1.079591 0.9107415 1.232078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 1.085572 1.071946 0.9007980 1.226955</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 1.078675 1.064683 0.8914080 1.222018</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 1.072122 1.057777 0.8825283 1.217260</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 1.065887 1.051201 0.8741204 1.212672</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 1.059945 1.044934 0.8663092 1.208248</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 1.054277 1.038955 0.8589023 1.204347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 1.048862 1.033245 0.8518644 1.201467</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 1.043682 1.027787 0.8451700 1.198726</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 1.038722 1.022565 0.8387959 1.196113</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 1.033967 1.017565 0.8327210 1.193618</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q observed     mean     lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.386294 1.386294 1.3862944 1.386294    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.361684 1.357851 1.3285561 1.375177    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.338324 1.331364 1.2777756 1.364433    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.316227 1.306777 1.2334292 1.354064    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.295386 1.283997 1.1945304 1.344072    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.275778 1.262908 1.1605352 1.334455    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.257364 1.243384 1.1307406 1.325210    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.240096 1.225298 1.1044969 1.316329    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.223919 1.208527 1.0812295 1.307806    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.208771 1.192953 1.0604456 1.299631    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.194591 1.178469 1.0417483 1.291793    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.181312 1.164976 1.0248472 1.284282    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.168873 1.152382 1.0079160 1.277086    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.157212 1.140607 0.9884436 1.270191    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.146270 1.129578 0.9701708 1.263585    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.135990 1.119228 0.9529624 1.257255    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.126322 1.109499 0.9367422 1.251190    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.117216 1.100338 0.9214417 1.245374    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.108628 1.091697 0.9069985 1.239798    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.100516 1.083533 0.8933557 1.234447    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.092842 1.075809 0.8821819 1.229312    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 1.085572 1.068490 0.8722459 1.224379    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 1.078675 1.061544 0.8627841 1.219639    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 1.072122 1.054943 0.8537632 1.215081    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 1.065887 1.048663 0.8451546 1.210695    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 1.059945 1.042681 0.8369330 1.206473    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 1.054277 1.036975 0.8290757 1.202404    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 1.048862 1.031526 0.8215624 1.198481    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 1.043682 1.026318 0.8143745 1.194695    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 1.038722 1.021335 0.8074950 1.191040    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 1.033967 1.016563 0.8009082 1.187509    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$renyi$Short</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower    upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.0986123 1.0986123 1.0986123 1.098612</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.0951755 1.0910644 1.0710416 1.098337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.0917172 1.0835984 1.0437308 1.098062</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.0882393 1.0762277 1.0167984 1.097787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.0847438 1.0689647 0.9903557 1.097512</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.0812328 1.0618204 0.9645046 1.097237</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.0777084 1.0548045 0.9393357 1.096963</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.0741728 1.0479256 0.9149275 1.096690</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.0706283 1.0411906 0.8913451 1.096416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0670771 1.0346054 0.8686402 1.096143</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0635215 1.0281744 0.8468513 1.095871</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0599638 1.0219012 0.8260045 1.095599</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.0564064 1.0157878 0.8061137 1.095327</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.0528516 1.0098357 0.7871823 1.095056</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.0493016 1.0040451 0.7692042 1.094785</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.0457588 0.9984157 0.7521650 1.094515</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.0422255 0.9929463 0.7360433 1.094245</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.0387040 0.9876354 0.7208122 1.093976</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.0351963 0.9824806 0.7064402 1.093707</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.0317048 0.9774794 0.6928927 1.093439</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.0282315 0.9726288 0.6801327 1.093172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 1.0247784 0.9679256 0.6681218 1.092905</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 1.0213476 0.9633662 0.6568209 1.092639</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 1.0179410 0.9589470 0.6461911 1.092373</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 1.0145603 0.9546643 0.6361937 1.092109</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 1.0112074 0.9505141 0.6267911 1.091844</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 1.0078840 0.9464927 0.6179467 1.091581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 1.0045915 0.9425961 0.6096255 1.091318</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 1.0013316 0.9388203 0.6017940 1.091056</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.9981055 0.9351616 0.5944204 1.090795</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.9949147 0.9316160 0.5874745 1.090535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[2]]$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower    upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 1.0986123 1.0945576 1.0986123 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.0951755 1.0871140 1.0610676 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.0917172 1.0798005 1.0258577 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.0882393 1.0726291 0.9930830 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.0847438 1.0656097 0.9627695 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.0812328 1.0587495 0.9348800 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.0777084 1.0520537 0.9085928 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.0741728 1.0455256 0.8831146 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.0706283 1.0391672 0.8592836 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.0670771 1.0329794 0.8370055 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0635215 1.0269620 0.8161803 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0599638 1.0211142 0.7967077 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.0564064 1.0154346 0.7784902 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 1.0528516 1.0099211 0.7614357 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 1.0493016 1.0045715 0.7454577 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 1.0457588 0.9993831 0.7304765 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 1.0422255 0.9943529 0.7164188 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 1.0387040 0.9894777 0.7032173 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 1.0351963 0.9847540 0.6908104 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 1.0317048 0.9801782 0.6791418 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 1.0282315 0.9757466 0.6681599 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 1.0247784 0.9714553 0.6578173 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 1.0213476 0.9673003 0.6480705 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 1.0179410 0.9632777 0.6388793 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 1.0145603 0.9593834 0.6302068 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 1.0112074 0.9556132 0.6220186 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 1.0078840 0.9519633 0.6142832 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 1.0045915 0.9484296 0.6069710 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 1.0013316 0.9450081 0.6000549 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.9981055 0.9416949 0.5935094 1.098612    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.9949147 0.9384863 0.5873111 1.098612    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
@@ -1005,108 +1061,108 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"ci.type")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "perc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis$Long</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 2.9900000 3.0000000 3.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.6589612 2.6378910 2.4996223 2.7161679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.3713503 2.3447960 2.1181515 2.4676103</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.1274272 2.0988213 1.8235216 2.2492716</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.9193870 1.8907700 1.5928772 2.0568872</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.7409539 1.7134770 1.4098232 1.8868521</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.5870644 1.5613196 1.2625179 1.7361131</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.4536179 1.4298533 1.1567171 1.6020787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.3372809 1.3155399 1.0650894 1.4825443</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.2353333 1.2155430 0.9801273 1.3756306</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.1455462 1.1275734 0.9078287 1.2797376</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0660859 1.0497713 0.8455749 1.1934717</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9954373 0.9806158 0.7914366 1.1156705</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9323437 0.9188559 0.7416317 1.0453117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.8757575 0.8634558 0.6948633 0.9815190</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8248023 0.8135534 0.6534720 0.9235343</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7787414 0.7684270 0.6166461 0.8707008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7369530 0.7274689 0.5837189 0.8224474</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.6989100 0.6901654 0.5541388 0.7782770</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6641637 0.6560795 0.5274471 0.7377551</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6323302 0.6248380 0.5032600 0.7005015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6030805 0.5961205 0.4812547 0.6661827</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5761307 0.5696510 0.4611581 0.6345670</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5512352 0.5451907 0.4427386 0.6054311</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5281808 0.5225320 0.4257981 0.5784096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5067815 0.5014938 0.4101673 0.5533067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.4868749 0.4819176 0.3957002 0.5299479</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4683181 0.4636643 0.3822711 0.5081781</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4509853 0.4466111 0.3697706 0.4878587</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4347655 0.4306495 0.3581038 0.4688654</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4195602 0.4156832 0.3471879 0.4510869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]$Long</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 2.9700000 2.0000000 3.0000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.6589612 2.6142899 1.8425073 2.7071922    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.3713503 2.3194816 1.7017745 2.4519732    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.1274272 2.0730801 1.5757541 2.2286838    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.9193870 1.8654543 1.4626693 2.0327394    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.7409539 1.6891293 1.3609760 1.8602439    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.5870644 1.5382632 1.2693311 1.7079121    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.4536179 1.4082595 1.1865643 1.5729674    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.3372809 1.2954757 1.1009168 1.4530572    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.2353333 1.1970062 1.0116123 1.3461839    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.1455462 1.1149993 0.9511355 1.2521362    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0660859 1.0341214 0.8785092 1.1642592    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9954373 0.9662830 0.8250970 1.0884547    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9323437 0.9057441 0.7729228 1.0204759    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.8757575 0.8514676 0.7259860 0.9589139    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8248023 0.8025936 0.6842711 0.9029960    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7787414 0.7584049 0.6467636 0.8520611    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7369530 0.7182997 0.6123204 0.8055410    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.6989100 0.6817704 0.5807215 0.7629456    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6641637 0.6483867 0.5522566 0.7238502    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6323302 0.6177816 0.5264757 0.6878858    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6030805 0.5896411 0.5030209 0.6546802    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5761307 0.5636949 0.4816013 0.6240113    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5512352 0.5397094 0.4619696 0.5959568    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5281808 0.5174818 0.4439149 0.5699732    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5067815 0.4968355 0.4272563 0.5457922    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.4868749 0.4776160 0.4118385 0.5232521    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4683181 0.4596876 0.3975273 0.5022090    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4509853 0.4429309 0.3842065 0.4825347    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4347655 0.4272400 0.3717750 0.4641141    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4195602 0.4125215 0.3601446 0.4468443    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis$Medium</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 3.0000000 3.0000000 3.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.6732473 2.6523415 2.5743673 2.7140085</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.3966283 2.3636721 2.2412466 2.4639346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.1610045 2.1217618 1.9751598 2.2445591</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.9590700 1.9172331 1.7635515 2.0518492</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.7849628 1.7428433 1.5832919 1.8820998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.6339616 1.5929579 1.4319269 1.7318509</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.5022489 1.4631610 1.3068920 1.5984064</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.3867251 1.3499657 1.1989887 1.4794915</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.2848625 1.2505983 1.1022878 1.3731815</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.1945906 1.1628361 1.0177378 1.2778429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.1142058 1.0848843 0.9445421 1.1920851</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.0422993 1.0152838 0.8805382 1.1147205</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9777011 0.9528392 0.8225672 1.0447279</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9194342 0.8965647 0.7698358 0.9812134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8666793 0.8456416 0.7229659 0.9237489</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.8187454 0.7993857 0.6811250 0.8713677</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7750476 0.7572214 0.6436161 0.8234740</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.7350876 0.7186616 0.6098537 0.7795816</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6984396 0.6832915 0.5793439 0.7392671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6647377 0.6507562 0.5516686 0.7021605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6336659 0.6207502 0.5264728 0.6679337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.6049505 0.5930093 0.5034538 0.6363063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5783532 0.5673040 0.4823529 0.6070271</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5536656 0.5434338 0.4629479 0.5798739</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5307051 0.5212231 0.4450475 0.5546499</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.5093107 0.5005173 0.4284866 0.5311799</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4893400 0.4811798 0.4131220 0.5093080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4706669 0.4630896 0.3988293 0.4888948</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4531792 0.4461389 0.3854999 0.4698155</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4367766 0.4302317 0.3730390 0.4519579</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]$Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 3.0000000 3.0000000 3.0000000 3.0000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 2.6732473 2.6604222 2.5620810 2.7194843    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 2.3966283 2.3769233 2.2242003 2.4735957    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 2.1610045 2.1381256 1.9588736 2.2573471    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.9590700 1.9352680 1.7461723 2.0665450    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.7849628 1.7615529 1.5730345 1.8976542    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.6339616 1.6116660 1.4297949 1.7476872    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.5022489 1.4814204 1.3094869 1.6141132    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.3867251 1.3674921 1.2070382 1.4947823    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.2848625 1.2672226 1.1187143 1.3878635    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.1945906 1.1784694 1.0417483 1.2917934    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.1142058 1.0994932 0.9740806 1.2052331    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 1.0422993 1.0288720 0.9128221 1.1270330    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9777011 0.9654350 0.8553616 1.0562035    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.9194342 0.9082117 0.8040763 0.9918900    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8666793 0.8563926 0.7580486 0.9333528    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.8187454 0.8092977 0.7165551 0.8799497    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7750476 0.7663530 0.6789942 0.8311216    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.7350876 0.7270707 0.6448624 0.7863805    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6984396 0.6910342 0.6137352 0.7452995    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6647377 0.6578858 0.5859857 0.7075039    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6336659 0.6273167 0.5606855 0.6726640    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.6049505 0.5990594 0.5372760 0.6404892    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5783532 0.5728809 0.5155619 0.6107226    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5536656 0.5485772 0.4953738 0.5831364    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5307051 0.5259695 0.4765636 0.5575283    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.5093107 0.5049002 0.4590013 0.5337183    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4893400 0.4852297 0.4425726 0.5115456    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4706669 0.4668343 0.4271761 0.4908667    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4531792 0.4496039 0.4127220 0.4715529    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4367766 0.4334401 0.3991301 0.4534885    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$tsallis$Short</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 2.0000000 2.0000000 2.0000000 2.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.8661938 1.8539385 1.7787768 1.8740070</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.7437218 1.7223719 1.5950475 1.7577557</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.6315129 1.6035690 1.4413061 1.6504216</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.5286044 1.4960382 1.3116710 1.5512539</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.4341299 1.3984902 1.2015178 1.4595689</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.3473096 1.3098066 1.1071974 1.3747430</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.2674411 1.2290140 1.0258192 1.2962082</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1938915 1.1552627 0.9550842 1.2234462</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.1260900 1.0878088 0.8931564 1.1559841</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0635215 1.0259993 0.8368996 1.0933903</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0057210 0.9692595 0.7867645 1.0352708</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9522684 0.9170824 0.7419856 0.9812656</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9027839 0.8690195 0.7017921 0.9310457</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.8569240 0.8246732 0.6655454 0.8843104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8143777 0.7836906 0.6327139 0.8407845</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7748634 0.7457574 0.6057917 0.8002164</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7381257 0.7105933 0.5810880 0.7623757</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.7039330 0.6779480 0.5582623 0.7270513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6720751 0.6475973 0.5370839 0.6940500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6423611 0.6193403 0.5173611 0.6631944</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6146175 0.5929964 0.4980090 0.6343222</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5886863 0.5684033 0.4799675 0.6072842</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5644238 0.5454146 0.4631037 0.5819435</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5416992 0.5238983 0.4473029 0.5581744</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5203930 0.5037350 0.4324653 0.5358616</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.5003964 0.4848167 0.4179304 0.5148987</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4816099 0.4670456 0.4040632 0.4951883</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4639427 0.4503326 0.3910486 0.4766405</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4473116 0.4345971 0.3788115 0.4591725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4316406 0.4197656 0.3672852 0.4427083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$`Diversity profiles`[[3]]$Short</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      q  observed      mean     lower     upper ci.type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0 2.0000000 1.9900000 2.0000000 2.0000000    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.1 1.8661938 1.8464914 1.7764163 1.8754171    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.2 1.7437218 1.7169440 1.5907408 1.7602809    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3 1.6315129 1.5997386 1.4354050 1.6538133    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.4 1.5286044 1.4934713 1.3044741 1.5553034    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5 1.4341299 1.3969210 1.1932777 1.4641016    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6 1.3473096 1.3090229 1.0970435 1.3796139    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7 1.2674411 1.2288460 1.0122727 1.3012972    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.8 1.1938915 1.1555741 0.9383166 1.2286547    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.9 1.1260900 1.0884900 0.8734265 1.1612317    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.0 1.0635215 1.0269620 0.8161803 1.0986123    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.1 1.0057210 0.9704325 0.7654155 1.0404154    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.2 0.9522684 0.9184080 0.7201765 0.9862922    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.3 0.9027839 0.8704514 0.6796737 0.9359230    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.4 0.8569240 0.8261741 0.6432513 0.8890150    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.5 0.8143777 0.7852303 0.6103613 0.8452995    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.6 0.7748634 0.7473119 0.5805439 0.8045302    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.7 0.7381257 0.7121434 0.5534114 0.7664813    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.8 0.7039330 0.6794785 0.5286348 0.7309454    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1.9 0.6720751 0.6490963 0.5059340 0.6977322    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.0 0.6423611 0.6207986 0.4850694 0.6666667    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.1 0.6146175 0.5944071 0.4658352 0.6375883    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.2 0.5886863 0.5697612 0.4480536 0.6103496    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.3 0.5644238 0.5467162 0.4315706 0.5848146    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.4 0.5416992 0.5251411 0.4162523 0.5608586    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.5 0.5203930 0.5049177 0.4019819 0.5383666    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.6 0.5003964 0.4859388 0.3886570 0.5172329    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.7 0.4816099 0.4681071 0.3761876 0.4973602    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.8 0.4639427 0.4513343 0.3644944 0.4786586    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.9 0.4473116 0.4355400 0.3535073 0.4610454    perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 3.0 0.4316406 0.4206510 0.3431641 0.4444444    perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
@@ -1116,6 +1172,18 @@ indices) and the p value for the different diversity indices.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "tsallis"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"ci.type")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "perc"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings$hill</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings$renyi</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`Diversity profiles`$Warnings$tsallis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>

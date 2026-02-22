@@ -63,10 +63,12 @@ handled internally.</p>
 <span>  <span class="va">fun</span>,</span>
 <span>  R <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  conf <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  na.omit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"norm"</span>, <span class="st">"basic"</span>, <span class="st">"stud"</span>, <span class="st">"perc"</span>, <span class="st">"bca"</span><span class="op">)</span>,</span>
 <span>  parallel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"multicore"</span>, <span class="st">"snow"</span><span class="op">)</span>,</span>
 <span>  ncpus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"boot.ncpus"</span>, <span class="fl">1L</span><span class="op">)</span>,</span>
 <span>  cl <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -89,6 +91,12 @@ handled internally.</p>
 
 <dt id="arg-conf">conf<a class="anchor" aria-label="anchor" href="#arg-conf"></a></dt>
 <dd><p>Confidence level of the interval. Default is 0.95.</p></dd>
+
+
+<dt id="arg-na-omit">na.omit<a class="anchor" aria-label="anchor" href="#arg-na-omit"></a></dt>
+<dd><p>logical. If <code>TRUE</code>, when <code>x</code> is a factor, missing
+values (<code>NA</code>) are ignored and not included as a distinct factor level
+for computation. Default is <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
@@ -199,25 +207,33 @@ intervals.</p>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">NMSR</span>, <span class="va">mean</span>, type <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $norm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.715342 12.056122 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.617438 12.168276 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.89286</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.89998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.90556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$norm</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.95</span>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">NMSR</span>, <span class="va">mean</span>, type <span class="op">=</span> <span class="st">"basic"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $basic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.619048 12.154157 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.57753 12.20149 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.89286</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.85815</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.90556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$basic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -225,25 +241,33 @@ intervals.</p>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">NMSR</span>, <span class="va">mean</span>, type <span class="op">=</span> <span class="st">"perc"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.607292 12.011756 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.584226 12.208185 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.89286</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.82457</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.90556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.95</span>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">NMSR</span>, <span class="va">mean</span>, type <span class="op">=</span> <span class="st">"bca"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $bca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.77381 12.17054 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.600968 12.213984 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.89286</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.8912</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.90556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$bca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -253,24 +277,37 @@ intervals.</p>
 <span class="r-in"><span>             type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"norm"</span>, <span class="st">"basic"</span>, <span class="st">"perc"</span>, <span class="st">"bca"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $norm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.655774 12.128047 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.617438 12.168276 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $basic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.595692 12.123488 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.57753 12.20149 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.662202 12.190030 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.584226 12.208185 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $bca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.77241 12.21908 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.600968 12.213984 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.89286</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.8938</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.90556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$norm</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$basic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$bca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -279,12 +316,16 @@ intervals.</p>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">LNGS</span>, <span class="va">shannon</span>, type <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $norm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.373543 1.542175 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.364427 1.533204 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.448816</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.439772</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.44097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$norm</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -292,12 +333,16 @@ intervals.</p>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">PTLC</span>, <span class="va">simpson</span>, type <span class="op">=</span> <span class="st">"basic"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $basic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3508416 0.4772534 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3508521 0.4809329 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4213435</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4234458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4230488</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$basic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -305,12 +350,16 @@ intervals.</p>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">LFRT</span>, <span class="va">mcintosh_evenness</span>, type <span class="op">=</span> <span class="st">"perc"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6245182 0.8228424 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6289354 0.8262168 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.693727</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7027273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7067876</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -318,12 +367,16 @@ intervals.</p>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">LBTEF</span>, <span class="va">mcintosh_diversity</span>, type <span class="op">=</span> <span class="st">"bca"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $bca</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5864904 0.6183060 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5861558 0.6150982 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5983483</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5929277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5923744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$bca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -333,24 +386,37 @@ intervals.</p>
 <span class="r-in"><span>             type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"norm"</span>, <span class="st">"basic"</span>, <span class="st">"perc"</span>, <span class="st">"bca"</span><span class="op">)</span>, base <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $norm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.374643 1.541060 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.364427 1.533204 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $basic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.385777 1.552864 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.380128 1.550485 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $perc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.344767 1.511855 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.347146 1.517504 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $bca</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.359291 1.522518 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.358274 1.528812 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.448816</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.43978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.44097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$norm</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$basic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$perc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$bca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -360,15 +426,19 @@ intervals.</p>
 <span class="r-in"><span><span class="co"># variances in addition to an estimate</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">NMSR</span>, <span class="va">mean</span>, type <span class="op">=</span> <span class="st">"stud"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Studentized CI requires fun() to return c(estimate, SE); falling back to percentile CI.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Studentized CI requires fun() to return c(estimate, SE); using percentile instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $stud</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.696577 12.184524 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.584226 12.208185 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.89286</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.87743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.90556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$stud</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
@@ -377,58 +447,80 @@ intervals.</p>
 <span class="r-in"><span><span class="va">stat_fun_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">se</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">est</span>, <span class="va">se</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">est</span>, <span class="va">se</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># Important : Tells bootstrap.ci to consider second output as SE</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">out</span>, <span class="st">"se"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">NMSR</span>, <span class="va">stat_fun_mean</span>, type <span class="op">=</span> <span class="st">"stud"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $stud</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9.66284 12.19949 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lower     upper </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9.626269 12.268758 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.892857  0.631431</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")attr(,"se")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.8772083  0.6268455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.9055595  0.6259041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$stud</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.95</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">DSTA</span>, <span class="va">shannon</span>, type <span class="op">=</span> <span class="st">"stud"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Studentized CI requires fun() to return c(estimate, SE); falling back to percentile CI.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Studentized CI requires fun() to return c(estimate, SE); using percentile instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $stud</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.761747 2.058389 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.762730 2.059521 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.946525</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.923968</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.92782</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$stud</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.95</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">stat_fun_shannon</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">base</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/droplevels.html" class="external-link">droplevels</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>          <span class="co"># drop unused factor levels</span></span></span>
-<span class="r-in"><span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/proportions.html" class="external-link">prop.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tabulate.html" class="external-link">tabulate</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">tab</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="co"># Only keep p &gt; 0 to avoid log(0)</span></span></span>
 <span class="r-in"><span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">p</span><span class="op">[</span><span class="va">p</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">]</span></span></span>
 <span class="r-in"><span>  <span class="va">est</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">p</span>, base <span class="op">=</span> <span class="va">base</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="co"># Approximate SE using sqrt(Var(p * log(p)))</span></span></span>
 <span class="r-in"><span>  <span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">p</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">p</span>, base <span class="op">=</span> <span class="va">base</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">est</span>, <span class="va">se</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">est</span>, <span class="va">se</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># Important : Tells bootstrap.ci to consider second output as SE</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">out</span>, <span class="st">"se"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">bootstrap.ci</span><span class="op">(</span><span class="va">pdata</span><span class="op">$</span><span class="va">DSTA</span>, <span class="va">stat_fun_shannon</span>, type <span class="op">=</span> <span class="st">"stud"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $stud</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lower    upper </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.836476 2.133546 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.835888 2.136488 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.94652505 0.07067869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"observed")attr(,"se")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"mean")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.93013807 0.07035407</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.92781960 0.07034802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"fallback")$stud</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"R")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf")</span>

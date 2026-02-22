@@ -13,6 +13,9 @@
 #' @param x A numeric or factor vector of observations.
 #' @param group A factor vector indicating the group of each observation. Must
 #'   have the same length as \code{x}.
+#' @param na.omit logical. If \code{TRUE}, when \code{x} is a factor, missing
+#'   values (\code{NA}) are ignored and not included as a distinct factor level
+#'   for computation. Default is \code{TRUE}.
 #' @param fun A function to summarize values within each group.
 #' @param R Integer specifying the number of permutations. Default is 1000.
 #' @param fun.args Named list of additional arguments forwarded to `fun`.
@@ -83,6 +86,7 @@ NULL
 #' @rdname permutation_tests
 #' @export
 perm.test.global <- function(x, group, fun, R = 1000,
+                             na.omit = TRUE,
                              fun.args = list(),
                              max.invalid = 0.25,
                              parallel = c("no", "multicore", "snow"),
@@ -99,6 +103,18 @@ perm.test.global <- function(x, group, fun, R = 1000,
   if (!is.numeric(max.invalid) || length(max.invalid) != 1L ||
       max.invalid <= 0 || max.invalid >= 1) {
     stop("'max.invalid' must be a single number between 0 and 1.", call. = FALSE)
+  }
+
+  if (is.factor(x)) {
+
+    if (!na.omit) {
+      if (any(is.na(x))) {
+        addNA(x)
+      } else {
+        x
+      }
+    }
+
   }
 
   group <- droplevels(group)
@@ -241,6 +257,7 @@ perm.test.global <- function(x, group, fun, R = 1000,
 #' @rdname permutation_tests
 #' @export
 perm.test.pairwise <- function(x, group, fun, R = 1000,
+                               na.omit = TRUE,
                                fun.args = list(),
                                p.adjust.method = c("bonferroni", "holm"),
                                max.invalid = 0.25,
@@ -260,6 +277,18 @@ perm.test.pairwise <- function(x, group, fun, R = 1000,
   if (!is.numeric(max.invalid) || length(max.invalid) != 1L ||
       max.invalid <= 0 || max.invalid >= 1) {
     stop("'max.invalid' must be a single number between 0 and 1.", call. = FALSE)
+  }
+
+  if (is.factor(x)) {
+
+    if (!na.omit) {
+      if (any(is.na(x))) {
+        addNA(x)
+      } else {
+        x
+      }
+    }
+
   }
 
   group <- droplevels(group)

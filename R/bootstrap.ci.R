@@ -13,6 +13,9 @@
 #' intervals.
 #'
 #' @param x A numeric or factor vector of observations.
+#' @param na.omit logical. If \code{TRUE}, when \code{x} is a factor, missing
+#'   values (\code{NA}) are ignored and not included as a distinct factor level
+#'   for computation. Default is \code{TRUE}.
 #' @param fun A function to summarize the observations.
 #' @param R Integer specifying the number of permutations. Default is 1000.
 #' @param conf Confidence level of the interval. Default is 0.95.
@@ -98,6 +101,7 @@
 #' bootstrap.ci(pdata$DSTA, stat_fun_shannon, type = "stud")
 #'
 bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
+                         na.omit = TRUE,
                          type = c("norm", "basic", "stud", "perc", "bca"),
                          parallel = c("no", "multicore", "snow"),
                          ncpus = getOption("boot.ncpus", 1L),
@@ -119,6 +123,15 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
 
   # Convert factor to integer safely
   if (is.factor(x)) {
+
+    if (!na.omit) {
+      if (any(is.na(x))) {
+        addNA(x)
+      } else {
+        x
+      }
+    }
+
     x <- as.integer(x)
   }
 

@@ -11,6 +11,7 @@ perm.test.global(
   group,
   fun,
   R = 1000,
+  na.omit = TRUE,
   fun.args = list(),
   max.invalid = 0.25,
   parallel = c("no", "multicore", "snow"),
@@ -24,6 +25,7 @@ perm.test.pairwise(
   group,
   fun,
   R = 1000,
+  na.omit = TRUE,
   fun.args = list(),
   p.adjust.method = c("bonferroni", "holm"),
   max.invalid = 0.25,
@@ -42,6 +44,10 @@ have the same length as \code{x}.}
 \item{fun}{A function to summarize values within each group.}
 
 \item{R}{Integer specifying the number of permutations. Default is 1000.}
+
+\item{na.omit}{logical. If \code{TRUE}, when \code{x} is a factor, missing
+values (\code{NA}) are ignored and not included as a distinct factor level
+for computation. Default is \code{TRUE}.}
 
 \item{fun.args}{Named list of additional arguments forwarded to `fun`.}
 

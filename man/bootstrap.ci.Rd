@@ -9,6 +9,7 @@ bootstrap.ci(
   fun,
   R = 1000,
   conf = 0.95,
+  na.omit = TRUE,
   type = c("norm", "basic", "stud", "perc", "bca"),
   parallel = c("no", "multicore", "snow"),
   ncpus = getOption("boot.ncpus", 1L),
@@ -25,6 +26,10 @@ bootstrap.ci(
 \item{R}{Integer specifying the number of permutations. Default is 1000.}
 
 \item{conf}{Confidence level of the interval. Default is 0.95.}
+
+\item{na.omit}{logical. If \code{TRUE}, when \code{x} is a factor, missing
+values (\code{NA}) are ignored and not included as a distinct factor level
+for computation. Default is \code{TRUE}.}
 
 \item{type}{A vector of character strings representing the type of intervals
 required. The value should be any subset of the values \code{c("norm",

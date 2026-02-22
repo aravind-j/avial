@@ -302,9 +302,7 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
 
     bootstrap_ci_warn <-
       lapply(bootstrap_ci_results, function(g_boot) {
-        data.frame(lapply(g_boot, function(bout) {
-          bout$warnings
-        }))
+        g_boot$warnings
       })
 
     bootstrap_ci_warn <- dplyr::bind_rows(bootstrap_ci_warn,
@@ -326,34 +324,34 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
 
   # Diversity Profiles ----
   if (diversity.profile) {
-
     message('Generating diversity profiles.')
-    diversity_profile_results <- list(
-      hill = diversity.profile(x = x, group = group, q = q,
-                               ci.conf = ci.conf,
-                               R = R, parameter = "hill",
-                               ci.type = ci.type,
-                               parallel = parallel,
-                               ncpus = ncpus,
-                               cl = cl),
-      renyi = diversity.profile(x = x, group = group, q = q,
-                                ci.conf = ci.conf,
-                                R = R, parameter = "renyi",
-                                ci.type = ci.type,
-                                parallel = parallel,
-                                ncpus = ncpus,
-                                cl = cl),
-      tsallis = diversity.profile(x = x, group = group, q = q,
-                                  ci.conf = ci.conf,
-                                  R = R, parameter = "tsallis",
-                                  ci.type = ci.type,
-                                  parallel = parallel,
-                                  ncpus = ncpus,
-                                  cl = cl)
-    )
+
+    parameters <- c("hill", "renyi", "tsallis")
+
+    diversity_profile_warnings <- vector("list", length(parameters))
+    names(diversity_profile_warnings) <- parameters
+
+    diversity_profile_results <-
+      lapply(parameters,
+             function(param) {
+               withCallingHandlers(
+                 diversity.profile(x = x, group = group, q = q,
+                                   ci.conf = ci.conf,
+                                   R = R, parameter = param,
+                                   ci.type = ci.type,
+                                   parallel = parallel,
+                                   ncpus = ncpus,
+                                   cl = cl),
+                 warning = function(w) {
+                   diversity_profile_warnings[[param]] <<-
+                     c(diversity_profile_warnings[[param]],
+                       conditionMessage(w))
+                   invokeRestart("muffleWarning")
+                 }
+               )
+             })
 
   }
-
 
   out <- list(`Diversity Indices` = div_indices,
               `Global Test` = if (global.test) {
@@ -374,7 +372,8 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
                 NULL
               },
               `Diversity profiles` = if (diversity.profile) {
-                diversity_profile_results
+                list(`Diversity profiles` = diversity_profile_results,
+                     Warnings = diversity_profile_warnings)
               } else {
                 NULL
               })
@@ -382,8 +381,3 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
   return(out)
 
 }
-
-
-
-
-

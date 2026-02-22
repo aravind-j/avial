@@ -86,6 +86,14 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
   x <- droplevels(x)
   group <- droplevels(group)
 
+  if (!na.omit) {
+    if (any(is.na(x))) {
+      addNA(x)
+    } else {
+      x
+    }
+  }
+
   if (any(grepl(pattern = "-", x = levels(group)))) {
     levels(group) <- gsub(pattern = "-", replacement = " to ",
                           x = levels(group))

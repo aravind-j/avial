@@ -256,6 +256,9 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
                               ncpus = getOption("boot.ncpus", 1L),
                               cl = NULL) {
 
+  # Validate input
+  stopifnot(is.factor(x))
+  stopifnot(is.factor(group))
   parallel <- match.arg(parallel)
   ci.type <- match.arg(ci.type)  # only one CI type
   parameter <- match.arg(parameter)

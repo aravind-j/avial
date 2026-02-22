@@ -162,6 +162,40 @@ bootstrap.ci <- function(x, fun, R = 1000, conf = 0.95,
   tmat <- b$t
   t0 <- b$t0
 
+  if (any(is.na(t0))) {
+
+    warning("Statistic is NA for original data; CI cannot be computed.",
+            call. = FALSE)
+
+    # Determine number of components
+    p <- length(t0)
+
+    # Build CI template
+    na_ci <- if (p == 1L) {
+      c(lower = NA_real_, upper = NA_real_)
+    } else {
+      matrix(NA_real_, 2, p,
+             dimnames = list(c("lower","upper"), NULL))
+    }
+
+    ci_out <- setNames(vector("list", length(type)), type)
+
+    for (k in seq_along(type)) {
+      ci_out[[k]] <- na_ci
+    }
+
+    attr(ci_out, "observed") <- t0
+    attr(ci_out, "mean") <- rep(NA_real_, p)
+    attr(ci_out, "fallback") <- lapply(setNames(type, type),
+                                       function(x) {
+                                         rep(NA, p)
+                                         })
+    attr(ci_out, "R") <- R
+    attr(ci_out, "conf") <- conf
+
+    return(ci_out)
+  }
+
   # Ensure matrix structure
   if (is.null(dim(tmat))) {
     tmat <- matrix(tmat, ncol = 1)

@@ -266,7 +266,7 @@ hill_points1_df <- hill_profile1_df %>%
   mutate(order_label = factor(q, levels = important_q,
                               labels = important_labels))
 
-ggplot(hill_profile1_df, aes(x = q, y = mean,
+ggplot(hill_profile1_df, aes(x = q, y = observed,
                              color = group, fill = group)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
   geom_line(linewidth = 1) +
@@ -274,13 +274,13 @@ ggplot(hill_profile1_df, aes(x = q, y = mean,
              color = "grey60") +
   geom_point(data = hill_points1_df, aes(shape = order_label),
     size = 3, stroke = 1, inherit.aes = TRUE) +
-  scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+  scale_shape_manual(values = c(17, 19, 15), name = "Important q")  +
   labs(x = "Order (q)", y = "Hill number",
     color = "Group", fill = "Group") +
   theme_bw()
 
 
-ggplot(hill_profile1_df, aes(x = q, y = mean)) +
+ggplot(hill_profile1_df, aes(x = q, y = observed)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
   geom_line(color = "black", linewidth = 1) +
   facet_wrap(~ group, scales = "free_y") +
@@ -412,7 +412,7 @@ renyi_points1_df <- renyi_profile1_df %>%
   mutate(order_label = factor(q, levels = important_q,
                               labels = important_labels))
 
-ggplot(renyi_profile1_df, aes(x = q, y = mean,
+ggplot(renyi_profile1_df, aes(x = q, y = observed,
                               color = group, fill = group)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
   geom_line(linewidth = 1) +
@@ -420,13 +420,13 @@ ggplot(renyi_profile1_df, aes(x = q, y = mean,
              color = "grey60") +
   geom_point(data = renyi_points1_df, aes(shape = order_label),
              size = 3, stroke = 1, inherit.aes = TRUE) +
-  scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+  scale_shape_manual(values = c(17, 19, 15), name = "Important q")  +
   labs(x = "Order (q)", y = "Hill number",
        color = "Group", fill = "Group") +
   theme_bw()
 
 
-ggplot(renyi_profile1_df, aes(x = q, y = mean)) +
+ggplot(renyi_profile1_df, aes(x = q, y = observed)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
   geom_line(color = "black", linewidth = 1) +
   facet_wrap(~ group, scales = "free_y") +
@@ -561,7 +561,7 @@ tsallis_points1_df <- tsallis_profile1_df %>%
   mutate(order_label = factor(q, levels = important_q,
                               labels = important_labels))
 
-ggplot(tsallis_profile1_df, aes(x = q, y = mean,
+ggplot(tsallis_profile1_df, aes(x = q, y = observed,
                                 color = group, fill = group)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
   geom_line(linewidth = 1) +
@@ -569,13 +569,13 @@ ggplot(tsallis_profile1_df, aes(x = q, y = mean,
              color = "grey60") +
   geom_point(data = tsallis_points1_df, aes(shape = order_label),
              size = 3, stroke = 1, inherit.aes = TRUE) +
-  scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+  scale_shape_manual(values = c(17, 19, 15), name = "Important q")  +
   labs(x = "Order (q)", y = "Hill number",
        color = "Group", fill = "Group") +
   theme_bw()
 
 
-ggplot(tsallis_profile1_df, aes(x = q, y = mean)) +
+ggplot(tsallis_profile1_df, aes(x = q, y = observed)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
   geom_line(color = "black", linewidth = 1) +
   facet_wrap(~ group, scales = "free_y") +
@@ -708,7 +708,7 @@ hill_points2_df <- hill_profile2_df %>%
   mutate(order_label = factor(q, levels = important_q,
                               labels = important_labels))
 
-ggplot(hill_profile2_df, aes(x = q, y = mean,
+ggplot(hill_profile2_df, aes(x = q, y = observed,
                              color = group, fill = group)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
   geom_line(linewidth = 1) +
@@ -716,13 +716,13 @@ ggplot(hill_profile2_df, aes(x = q, y = mean,
              color = "grey60") +
   geom_point(data = hill_points2_df, aes(shape = order_label),
              size = 3, stroke = 1, inherit.aes = TRUE) +
-  scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+  scale_shape_manual(values = c(17, 19, 15), name = "Important q")  +
   labs(x = "Order (q)", y = "Hill number",
        color = "Group", fill = "Group") +
   theme_bw()
 
 
-ggplot(hill_profile2_df, aes(x = q, y = mean)) +
+ggplot(hill_profile2_df, aes(x = q, y = observed)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
   geom_line(color = "black", linewidth = 1) +
   facet_wrap(~ group, scales = "free_y") +
@@ -855,7 +855,7 @@ renyi_points2_df <- renyi_profile2_df %>%
   mutate(order_label = factor(q, levels = important_q,
                               labels = important_labels))
 
-ggplot(renyi_profile2_df, aes(x = q, y = mean,
+ggplot(renyi_profile2_df, aes(x = q, y = observed,
                               color = group, fill = group)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
   geom_line(linewidth = 1) +
@@ -863,13 +863,13 @@ ggplot(renyi_profile2_df, aes(x = q, y = mean,
              color = "grey60") +
   geom_point(data = renyi_points2_df, aes(shape = order_label),
              size = 3, stroke = 1, inherit.aes = TRUE) +
-  scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+  scale_shape_manual(values = c(17, 19, 15), name = "Important q")  +
   labs(x = "Order (q)", y = "Hill number",
        color = "Group", fill = "Group") +
   theme_bw()
 
 
-ggplot(renyi_profile2_df, aes(x = q, y = mean)) +
+ggplot(renyi_profile2_df, aes(x = q, y = observed)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
   geom_line(color = "black", linewidth = 1) +
   facet_wrap(~ group, scales = "free_y") +
@@ -1002,7 +1002,7 @@ tsallis_points2_df <- tsallis_profile2_df %>%
   mutate(order_label = factor(q, levels = important_q,
                               labels = important_labels))
 
-ggplot(tsallis_profile2_df, aes(x = q, y = mean,
+ggplot(tsallis_profile2_df, aes(x = q, y = observed,
                                 color = group, fill = group)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2, color = NA) +
   geom_line(linewidth = 1) +
@@ -1010,13 +1010,13 @@ ggplot(tsallis_profile2_df, aes(x = q, y = mean,
              color = "grey60") +
   geom_point(data = tsallis_points2_df, aes(shape = order_label),
              size = 3, stroke = 1, inherit.aes = TRUE) +
-  scale_shape_manual(values = c(17, 18, 15), name = "Important q")  +
+  scale_shape_manual(values = c(17, 19, 15), name = "Important q")  +
   labs(x = "Order (q)", y = "Hill number",
        color = "Group", fill = "Group") +
   theme_bw()
 
 
-ggplot(tsallis_profile2_df, aes(x = q, y = mean)) +
+ggplot(tsallis_profile2_df, aes(x = q, y = observed)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80") +
   geom_line(color = "black", linewidth = 1) +
   facet_wrap(~ group, scales = "free_y") +

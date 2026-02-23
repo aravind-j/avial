@@ -88,6 +88,13 @@ simpson_relative <- function(x) {
 simpson_evenness <- function(x) {
   tab <- tabulate(x)
   tab <- tab[tab > 0]
+
+  S <- length(tab)
+
+  if (S <= 1) {
+    return(0) # no evenness for 1 species
+    }
+
   1 / (simpson(x) * length(tab))
 }
 
@@ -116,6 +123,15 @@ shannon_max <- function(x, base = 2) {
 #' @rdname diversity_functions
 #' @export
 shannon_relative <- function(x, base = 2) {
+  tab <- tabulate(x)
+  tab <- tab[tab > 0]
+
+  S <- length(tab)
+
+  if (S <= 1) {
+    return(NA_real_) # Undefined for single class/species
+  }
+
   shannon(x, base) / shannon_max(x, base)
 }
 
@@ -194,7 +210,9 @@ margalef_index <- function(x) {
   tab <- tab[tab > 0]
   S <- length(tab)
   N <- length(x)
-  if(N <= 1) return(NA_real_)
+  if(N <= 1) {
+    return(NA_real_)
+  }
   (S - 1) / log(N)
 }
 

@@ -1,6 +1,15 @@
 # Compare Diversity Measures
 
-Compare Diversity Measures
+The function `diversity.compare` compares diversity indices between
+different groups using the following approaches.
+
+- Global permutation test across all groups simultaneously.
+
+- Pairwise tests between all combinations of groups.
+
+- Bootstrap confidence intervals (CI) for each group.
+
+- Diversity profiles (Hill, Renyi and Tsallis) for each group.
 
 ## Usage
 
@@ -21,7 +30,8 @@ diversity.compare(
   q = seq(0, 3, 0.1),
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL
+  cl = NULL,
+  seed = 123
 )
 ```
 
@@ -106,6 +116,11 @@ diversity.compare(
   If not supplied, a cluster on the local machine is created for the
   duration of the `boot` call.
 
+- seed:
+
+  Integer. Random seed used to ensure reproducibility of permutations
+  and bootstrap. Default is 123.
+
 ## Value
 
 A list with the following elements.
@@ -144,6 +159,21 @@ A list with the following elements.
 
   A list of data frames of Hill, Renyi and Tsallis diversity profiles
   computed for each group.
+
+## Note
+
+- In small samples with bounded statistics like Shannon Diversity Index
+  and Menhinick index, the bootstrap upper CI can equal the observed
+  value because resamples cannot exceed the theoretical maximum.
+
+- Similarly in small samples, the lower confidence bound can be zero
+  because bootstrap resamples occasionally can contain only a single
+  category (class or species), due to sampling uncertainty and the
+  natural lower bound of the diversity index like Shannon Diversity
+  Index.
+
+- The BCa bootstrap can produce negative lower confidence limits due to
+  boundary effects and skewness in the resampled distribution.
 
 ## Examples
 

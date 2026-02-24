@@ -60,7 +60,8 @@
 <span>  ci.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"perc"</span>, <span class="st">"bca"</span><span class="op">)</span>,</span>
 <span>  parallel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"multicore"</span>, <span class="st">"snow"</span><span class="op">)</span>,</span>
 <span>  ncpus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"boot.ncpus"</span>, <span class="fl">1L</span><span class="op">)</span>,</span>
-<span>  cl <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  cl <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -120,6 +121,11 @@ intervals required. The options are <code>c("perc", "bca")</code>.</p></dd>
 <dd><p>An optional <span class="pkg">parallel</span> or <span class="pkg">snow</span> cluster for use if
     <code>parallel = "snow"</code>.  If not supplied, a cluster on the
     local machine is created for the duration of the <code>boot</code> call.</p></dd>
+
+
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dd><p>Integer. Random seed used to ensure reproducibility of
+bootstrap. Default is 123.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -14,6 +14,8 @@
 #' @param ci.conf Confidence level of the bootstrap interval. Default is 0.95.
 #' @param ci.type A vector of character strings representing the type of
 #'   intervals required. The options are \code{c("perc", "bca")}.
+#' @param seed Integer. Random seed used to ensure reproducibility of
+#'   permutations and bootstrap. Default is 123.
 #' @inheritParams boot::boot
 #'
 #' @returns A list of data frames with the following columns for each factor
@@ -254,7 +256,8 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
                               ci.type = c("perc", "bca"),
                               parallel = c("no", "multicore", "snow"),
                               ncpus = getOption("boot.ncpus", 1L),
-                              cl = NULL) {
+                              cl = NULL,
+                              seed = 123) {
 
   # Validate input
   stopifnot(is.factor(x))
@@ -271,10 +274,13 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
     }
   }
 
-  if (parallel == "snow") {
-    parallel::clusterSetRNGStream(cl, iseed = 123)
-  } else if (parallel %in% c("multicore", "no")) {
-    set.seed(123)
+  # Seed for reproducibility
+  if (!is.null(seed)) {
+    if (parallel == "snow" && !is.null(cl)) {
+      parallel::clusterSetRNGStream(cl, iseed = seed)
+    } else {
+      set.seed(seed)
+    }
   }
 
   x <- droplevels(x)
@@ -300,7 +306,7 @@ diversity.profile <- function(x, group, q = seq(0, 3, 0.1),
       bootstrap.ci(xg, fun = param.fun, R = R,
                    conf = ci.conf, type = ci.type,
                    parallel = parallel,
-                   ncpus = ncpus, cl = cl, q = q),
+                   ncpus = ncpus, cl = cl, q = q, seed = seed),
       warning = function(w) {
         new_msg <- paste0("[Group: ", g, "] ", conditionMessage(w))
         warning(new_msg, call. = FALSE)

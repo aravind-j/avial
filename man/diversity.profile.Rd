@@ -15,7 +15,8 @@ diversity.profile(
   ci.type = c("perc", "bca"),
   parallel = c("no", "multicore", "snow"),
   ncpus = getOption("boot.ncpus", 1L),
-  cl = NULL
+  cl = NULL,
+  seed = 123
 )
 }
 \arguments{
@@ -56,6 +57,9 @@ intervals required. The options are \code{c("perc", "bca")}.}
     \code{parallel = "snow"}.  If not supplied, a cluster on the
     local machine is created for the duration of the \code{boot} call.
   }
+
+\item{seed}{Integer. Random seed used to ensure reproducibility of
+permutations and bootstrap. Default is 123.}
 }
 \value{
 A list of data frames with the following columns for each factor

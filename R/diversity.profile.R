@@ -15,7 +15,7 @@
 #' @param ci.type A vector of character strings representing the type of
 #'   intervals required. The options are \code{c("perc", "bca")}.
 #' @param seed Integer. Random seed used to ensure reproducibility of
-#'   permutations and bootstrap. Default is 123.
+#'   bootstrap. Default is 123.
 #' @inheritParams boot::boot
 #'
 #' @returns A list of data frames with the following columns for each factor

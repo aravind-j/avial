@@ -59,7 +59,7 @@ intervals required. The options are \code{c("perc", "bca")}.}
   }
 
 \item{seed}{Integer. Random seed used to ensure reproducibility of
-permutations and bootstrap. Default is 123.}
+bootstrap. Default is 123.}
 }
 \value{
 A list of data frames with the following columns for each factor

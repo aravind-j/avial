@@ -21,6 +21,8 @@
 #' @inheritParams diversity.calc
 #' @inheritParams permutation_tests
 #' @inheritParams diversity.profile
+#' @param seed Integer. Random seed used to ensure reproducibility of
+#'   permutations and bootstrap. Default is 123.
 #' @param global.test logical. If \code{TRUE} performs the global permutation
 #'   tests for the diversity measures. Default is \code{TRUE}.
 #' @param pairwise.test logical. If \code{TRUE} performs the pairwise
@@ -83,7 +85,7 @@ diversity.compare <- function(x, group, R = 1000, base = exp(1),
                               q = seq(0, 3, 0.1),
                               parallel = c("no", "multicore", "snow"),
                               ncpus = 1L,
-                              cl = NULL) {
+                              cl = NULL, seed = 123) {
 
   if (pairwise.test) {
     p.adjust.method <- match.arg(p.adjust.method)

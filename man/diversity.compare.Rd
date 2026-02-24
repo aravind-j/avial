@@ -20,7 +20,8 @@ diversity.compare(
   q = seq(0, 3, 0.1),
   parallel = c("no", "multicore", "snow"),
   ncpus = 1L,
-  cl = NULL
+  cl = NULL,
+  seed = 123
 )
 }
 \arguments{
@@ -78,6 +79,9 @@ intervals required. The options are \code{c("perc", "bca")}.}
     \code{parallel = "snow"}.  If not supplied, a cluster on the
     local machine is created for the duration of the \code{boot} call.
   }
+
+\item{seed}{Integer. Random seed used to ensure reproducibility of
+permutations and bootstrap. Default is 123.}
 }
 \value{
 A list with the following elements. \describe{ \item{Diversity

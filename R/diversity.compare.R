@@ -1,6 +1,23 @@
 
 #' Compare Diversity Measures
 #'
+#' The function \code{diversity.compare} compares diversity indices between
+#' different groups using the following approaches. \itemize{ \item{Global
+#' permutation test across all groups simultaneously.} \item{Pairwise tests
+#' between all combinations of groups.} \item{Bootstrap confidence intervals
+#' (CI) for each group.} \item{Diversity profiles (Hill, Renyi and Tsallis) for
+#' each group.}}
+#'
+#' @note \itemize{ \item{In small samples with bounded statistics like Shannon
+#'   Diversity Index and Menhinick index, the  bootstrap upper CI can equal the
+#'   observed value because resamples cannot exceed the theoretical maximum.}
+#'   \item{Similarly in small samples, the lower confidence bound can be zero
+#'   because bootstrap resamples occasionally can contain only a single category
+#'   (class or species), due to sampling uncertainty and the natural lower bound
+#'   of the diversity index like Shannon Diversity Index.} \item{The BCa
+#'   bootstrap can produce negative lower confidence limits due to boundary
+#'   effects and skewness in the resampled distribution.} }
+#'
 #' @inheritParams diversity.calc
 #' @inheritParams permutation_tests
 #' @inheritParams diversity.profile

@@ -23,6 +23,8 @@
 #'   required. The value should be any subset of the values \code{c("norm",
 #'   "basic", "stud", "perc", "bca")} or simply \code{"all"} which will compute
 #'   all five types of intervals.
+#' @param seed Integer. Random seed used to ensure reproducibility of
+#'   bootstrap. Default is 123.
 #' @inheritParams boot::boot
 #' @param ... Additional arguments passed to \code{fun}.
 #'
@@ -31,7 +33,7 @@
 #'   the mean of the bootstrap replicates.
 #'
 #' @importFrom boot boot boot.ci
-#' @importFrom stats quantile
+#' @importFrom stats pnorm qnorm quantile
 #' @export
 #'
 #' @examples

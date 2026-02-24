@@ -53,6 +53,9 @@ all five types of intervals.}
     local machine is created for the duration of the \code{boot} call.
   }
 
+\item{seed}{Integer. Random seed used to ensure reproducibility of
+bootstrap. Default is 123.}
+
 \item{...}{Additional arguments passed to \code{fun}.}
 }
 \value{

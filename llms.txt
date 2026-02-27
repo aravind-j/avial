@@ -26,7 +26,7 @@ Size](https://img.shields.io/github/languages/code-size/aravind-j/avial.svg)](ht
 [![Project Status:
 WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2026--02--24-yellowgreen.svg)](https://github.com/aravind-j/avial/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2025--09--17-yellowgreen.svg)](https://github.com/aravind-j/avial/)
 [![Website -
 pkgdown](https://img.shields.io/website-up-down-green-red/https/aravind-j.github.io/avial.svg)](https://aravind-j.github.io/avial/)
 [![.](https://pro-pulsar-193905.appspot.com/UA-199996472-2/welcome-page)](https://github.com/aravind-j/google-analytics-beacon)
@@ -72,8 +72,8 @@ citation("avial")
 ``` R
 To cite the R package 'augmentedRCBD' in publications use:
 
-  Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version
-  0.0.0.9000, https://aravind-j.github.io/avial/.
+  Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version 0.0.0.9000,
+  https://aravind-j.github.io/avial/.
 
 A BibTeX entry for LaTeX users is
 
@@ -83,9 +83,8 @@ A BibTeX entry for LaTeX users is
     note = {R package version 0.0.0.9000 https://aravind-j.github.io/avial/},
   }
 
-This free and open-source software implements academic research by the
-authors and co-workers. If you use it, please support the project by
-citing the package.
+This free and open-source software implements academic research by the authors and
+co-workers. If you use it, please support the project by citing the package.
 ```
 
 # Package index
@@ -106,44 +105,6 @@ citing the package.
   : Ordering by keeping defined groups together
 - [`reorder_dend_by_groups()`](https://aravind-j.github.io/avial/reference/reorder_dend_by_groups.md)
   : Reorder a dendrogram to keep specified groups of tips adjacent
-
-## Diversity functions
-
-- [`diversity.calc()`](https://aravind-j.github.io/avial/reference/diversity.calc.md)
-  : Compute Diversity Measures
-- [`diversity.compare()`](https://aravind-j.github.io/avial/reference/diversity.compare.md)
-  : Compare Diversity Measures
-- [`berger_parker()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`berger_parker_reciprocal()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`simpson()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`gini_simpson()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`simpson_max()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`simpson_reciprocal()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`simpson_relative()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`simpson_evenness()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`shannon()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`shannon_max()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`shannon_relative()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`shannon_ens()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`mcintosh_diversity()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`mcintosh_evenness()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`smith_wilson()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`heip_evenness()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`margalef_index()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`menhinick_index()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`brillouin_index()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`hill_number()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`renyi_entropy()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`tsallis_entropy()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  [`hill_evenness()`](https://aravind-j.github.io/avial/reference/diversity_functions.md)
-  : Diversity Index Functions
-- [`perm.test.global()`](https://aravind-j.github.io/avial/reference/permutation_tests.md)
-  [`perm.test.pairwise()`](https://aravind-j.github.io/avial/reference/permutation_tests.md)
-  : Permutation Tests
-- [`bootstrap.ci()`](https://aravind-j.github.io/avial/reference/bootstrap.ci.md)
-  : Bootstrap Confidence Intervals
-- [`diversity.profile()`](https://aravind-j.github.io/avial/reference/diversity.profile.md)
-  : Generate Diversity Profiles for Parametric Indices
 
 ## Wrappers and helpers for `ggplot2`
 

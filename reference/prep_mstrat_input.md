@@ -125,6 +125,24 @@ of the National Academy of Sciences*, **90**(22), 10623–10627.
 
 ``` r
 library(EvaluateCore)
+#> Registered S3 method overwritten by 'vegan':
+#>   method     from      
+#>   rev.hclust dendextend
+#> 
+#> --------------------------------------------------------------------------------
+#> Welcome to EvaluateCore version 0.1.4
+#> 
+#> 
+#> # To know whats new in this version type:
+#>   news(package='EvaluateCore')
+#>   for the NEWS file.
+#> 
+#> # To cite the methods in the package type:
+#>   citation(package='EvaluateCore')
+#> 
+#> # To suppress this message use:
+#>   suppressPackageStartupMessages(library(EvaluateCore))
+#> --------------------------------------------------------------------------------
 
 data(cassava_EC)
 data <- cassava_EC
@@ -169,7 +187,7 @@ prep_mstrat_input(data = data, genotype = "Accession",
                   nclass.quantitative = NULL, always.selected = sel,
                   file.name = "MStrat_input",
                   folder.path = tempdir())
-#> The following MStrat input files created at /var/folders/9r/xzfp9lgn603578400ms53lr00000gn/T//RtmpdDeojH:
+#> The following MStrat input files created at /var/folders/q_/pk8v8g4n3qq2gcnsvqjc3sd40000gn/T//RtmpVW71TE:
 #> MStrat_input_data.dat
 #> MStrat_input_variable.var
 #> MStrat_input_kernel.ker

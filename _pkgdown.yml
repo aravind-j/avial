@@ -56,15 +56,6 @@ reference:
          - '`group_constrained_order`'
          - '`reorder_dend_by_groups`'
 
-    - title: Diversity functions
-      contents:
-         - '`diversity.calc`'
-         - '`diversity.compare`'
-         - '`diversity_functions`'
-         - '`perm.test.global`'
-         - '`bootstrap.ci`'
-         - '`diversity.profile`'
-
     - title: Wrappers and helpers for `ggplot2`
       contents:
          - '`freq_distribution`'

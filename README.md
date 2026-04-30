@@ -1,6 +1,6 @@
 
 <!-- 
-<img src="https://raw.githubusercontent.com/aravind-j/avial/master/inst/extdata/avial.png" width="20%" />
+<img src="https://raw.githubusercontent.com/aravind-j/avial/master/inst/extdata/avial.png" alt="" width="20%" />
 -->
 
 ## `avial`: A Mixed Bag of R Functions
@@ -31,11 +31,12 @@ Size](https://img.shields.io/github/languages/code-size/aravind-j/avial.svg)](ht
 [![Project Status:
 WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2025--09--17-yellowgreen.svg)](https://github.com/aravind-j/avial/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2026--05--01-yellowgreen.svg)](https://github.com/aravind-j/avial/)
 <!-- [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxxxxxx.svg)](https://doi.org/10.5281/zenodo.xxxxxxxx) -->
 [![Website -
 pkgdown](https://img.shields.io/website-up-down-green-red/https/aravind-j.github.io/avial.svg)](https://aravind-j.github.io/avial/)
-[![.](https://pro-pulsar-193905.appspot.com/UA-199996472-2/welcome-page)](https://github.com/aravind-j/google-analytics-beacon)
+<!-- [![.](https://pro-pulsar-193905.appspot.com/UA-XXXXXXXX-X/welcome-page)](https://github.com/aravind-j/google-analytics-beacon) -->
+[![GoatCounter](https://avial-gh.goatcounter.com/count?p=/test)](https://avial-gh.goatcounter.com/)
 <!-- [![packageversion](https://img.shields.io/badge/Package%20version-0.2.3.3-orange.svg)](https://github.com/aravind-j/avial) -->
 <!-- [![GitHub Download Count](https://github-basic-badges.herokuapp.com/downloads/aravind-j/avial/total.svg)] -->
 <!-- [![Rdoc](http://www.rdocumentation.org/badges/version/avial)](http://www.rdocumentation.org/packages/avial) -->
@@ -44,9 +45,9 @@ pkgdown](https://img.shields.io/website-up-down-green-red/https/aravind-j.github
 
 ## Description
 
-<!-- A bunch of miscellaneous R functions primarly for personal use. These functions may be migrated to other packages in the future as required. -->
+<!-- A bunch of miscellaneous R functions primarly for personal use.      These functions may be migrated to other packages in the future as required. -->
 
-A bunch of miscellaneous R functions primarly for personal use.These
+A bunch of miscellaneous R functions primarly for personal use. These
 functions may be migrated to other packages in the future as required.
 
 ## Installation
@@ -111,5 +112,5 @@ citation("avial")
         note = {R package version 0.0.0.9000 https://aravind-j.github.io/avial/},
       }
 
-    This free and open-source software implements academic research by the authors and
-    co-workers. If you use it, please support the project by citing the package.
+    This free and open-source software implements academic research by the authors and co-workers. If you
+    use it, please support the project by citing the package.

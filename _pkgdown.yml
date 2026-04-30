@@ -5,6 +5,21 @@ template:
   bslib:
     bootswatch: minty
     pkgdown-nav-height: 100px
+  includes:
+    in_header: |
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+       <script async src="https://www.googletagmanager.com/gtag/js?id=G-LYPTX890W0" ></script>
+       <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+
+         gtag('config', 'G-LYPTX890W0');
+       </script>
+       <!-- Google tag (gtag.js) -->
+    after_body: >
+      <script data-goatcounter="https://avial.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 
 deploy:
   install_metadata: yes

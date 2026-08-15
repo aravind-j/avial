@@ -1,7 +1,7 @@
-# --------------------------------------------
-# CITATION file created with {cffr} R package
+# ------------------------------------------------
+# CITATION.cff file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# --------------------------------------------
+# ------------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "avial" in publications use:'
@@ -16,13 +16,22 @@ abstract: A bunch of miscellaneous R functions primarly for personal use. These 
 authors:
 - family-names: Aravind
   given-names: J.
-  email: j.aravind@icar.gov.in
+  email: j.aravind@icar.org.in
   orcid: https://orcid.org/0000-0002-4791-442X
+preferred-citation:
+  type: manual
+  title: 'avial: A Mixed Bag of R Functionss'
+  authors:
+  - family-names: Aravind
+    given-names: J.
+    email: j.aravind@icar.org.in
+    orcid: https://orcid.org/0000-0002-4791-442X
+  notes: R package version 0.0.0.9000 https://aravind-j.github.io/avial/
 repository-code: https://github.com/aravind-j/avial
 url: https://aravind-j.github.io/avial/
 contact:
 - family-names: Aravind
   given-names: J.
-  email: j.aravind@icar.gov.in
+  email: j.aravind@icar.org.in
   orcid: https://orcid.org/0000-0002-4791-442X
 

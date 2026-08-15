@@ -96,3 +96,9 @@ reference:
     - title: Prepare output files
       contents:
          - '`parse_mstrat_out`'
+
+    - title: Development helpers
+      contents:
+         - '`avial_custom_style`'
+         - '`generate_zenodo_json`'
+         - '`zenodo_gha_update`'

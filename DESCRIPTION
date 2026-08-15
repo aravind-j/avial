@@ -11,10 +11,14 @@ Description: A bunch of miscellaneous R functions primarly for personal use.
 License: GPL-2 | GPL-3
 Encoding: UTF-8
 Imports: augmentedRCBD,
+    cli,
     data.table,
     dendextend,
+    desc,
     dplyr,
     ggplot2,
+    httr2,
+    jsonlite,
     magrittr,
     mathjaxr,
     moments,
@@ -23,18 +27,21 @@ Imports: augmentedRCBD,
     Rdpack,
     readr,
     stringi,
+    styler,
     scales,
-    tidyr
+    tidyr,
+    yaml
 Suggests: agridat,
     colorspace,
-    EvaluateCore
+    EvaluateCore,
+    prettycode 
 RdMacros: mathjaxr,
     Rdpack
 LazyData: true
 Depends:
     R (>= 3.5.0)
 Language: en-GB
-RoxygenNote: 7.3.3
 Config/Needs/website: rmarkdown
 URL: https://github.com/aravind-j/avial, https://aravind-j.github.io/avial/
 BugReports: https://github.com/aravind-j/avial/issues
+Config/roxygen2/version: 8.1.0

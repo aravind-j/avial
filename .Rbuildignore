@@ -24,3 +24,6 @@
 ^desktop\.ini$
 ^cran-comments\.md$
 ^README\.html$
+^\.positai$
+^\.claude$
+^\.zenodo\.json$

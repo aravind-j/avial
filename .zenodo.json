@@ -1,0 +1,27 @@
+{
+  "title": "A Mixed Bag of R Functions",
+  "upload_type": "software",
+  "description": "A bunch of miscellaneous R functions primarly for personal use. \n    These functions may be migrated to other packages in the future as required.",
+  "creators": [
+    {
+      "name": "Aravind, J.",
+      "orcid": "0000-0002-4791-442X"
+    }
+  ],
+  "access_right": "open",
+  "license": "GPL-2.0-or-later",
+  "version": "0.0.0.9000",
+  "keywords": "avial",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/aravind-j/avial",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://aravind-j.github.io/avial/",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ]
+}

@@ -26,16 +26,16 @@ Size](https://img.shields.io/github/languages/code-size/aravind-j/avial.svg)](ht
 [![Project Status:
 WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://lifecycle.r-lib.org/articles/stages.html#maturing)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2025--09--17-yellowgreen.svg)](https://github.com/aravind-j/avial/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2026--08--15-yellowgreen.svg)](https://github.com/aravind-j/avial/)
 [![Website -
 pkgdown](https://img.shields.io/website-up-down-green-red/https/aravind-j.github.io/avial.svg)](https://aravind-j.github.io/avial/)
-[![.](https://pro-pulsar-193905.appspot.com/UA-199996472-2/welcome-page)](https://github.com/aravind-j/google-analytics-beacon)
+[![GoatCounter](https://avial-gh.goatcounter.com/count?p=/test)](https://avial-gh.goatcounter.com/)
 
 ------------------------------------------------------------------------
 
 ## Description
 
-A bunch of miscellaneous R functions primarly for personal use.These
+A bunch of miscellaneous R functions primarly for personal use. These
 functions may be migrated to other packages in the future as required.
 
 ## Installation
@@ -43,6 +43,7 @@ functions may be migrated to other packages in the future as required.
 The development version can be installed from github as follows:
 
 ``` r
+
 # Install development version from Github
 devtools::install_github("aravind-j/avial")
 ```
@@ -52,6 +53,7 @@ devtools::install_github("aravind-j/avial")
 To know whats new in this version type:
 
 ``` r
+
 news(package='avial')
 ```
 
@@ -66,14 +68,15 @@ news(package='avial')
 To cite the methods in the package use:
 
 ``` r
+
 citation("avial")
 ```
 
 ``` R
 To cite the R package 'augmentedRCBD' in publications use:
 
-  Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version 0.0.0.9000,
-  https://aravind-j.github.io/avial/.
+  Aravind, J. ().  avial: A Mixed Bag of R Functions. R package version
+  0.0.0.9000, https://aravind-j.github.io/avial/.
 
 A BibTeX entry for LaTeX users is
 
@@ -83,8 +86,9 @@ A BibTeX entry for LaTeX users is
     note = {R package version 0.0.0.9000 https://aravind-j.github.io/avial/},
   }
 
-This free and open-source software implements academic research by the authors and
-co-workers. If you use it, please support the project by citing the package.
+This free and open-source software implements academic research by the
+authors and co-workers. If you use it, please support the project by
+citing the package.
 ```
 
 # Package index
@@ -170,6 +174,19 @@ co-workers. If you use it, please support the project by citing the package.
   :
 
   Parse Output Files from `MStrat`
+
+## Development helpers
+
+- [`avial_custom_style()`](https://aravind-j.github.io/avial/reference/avial_custom_style.md)
+  : Custom tidyverse style guide
+
+- [`generate_zenodo_json()`](https://aravind-j.github.io/avial/reference/generate_zenodo_json.md)
+  : Generate Zenodo metadata
+
+- [`zenodo_gha_update()`](https://aravind-j.github.io/avial/reference/zenodo_gha_update.md)
+  :
+
+  Install a GitHub Actions workflow to create a `.zenodo.json` file
 
 # Articles
 

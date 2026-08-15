@@ -81,3 +81,16 @@
   :
 
   Parse Output Files from `MStrat`
+
+## Development helpers
+
+- [`avial_custom_style()`](https://aravind-j.github.io/avial/reference/avial_custom_style.md)
+  : Custom tidyverse style guide
+
+- [`generate_zenodo_json()`](https://aravind-j.github.io/avial/reference/generate_zenodo_json.md)
+  : Generate Zenodo metadata
+
+- [`zenodo_gha_update()`](https://aravind-j.github.io/avial/reference/zenodo_gha_update.md)
+  :
+
+  Install a GitHub Actions workflow to create a `.zenodo.json` file

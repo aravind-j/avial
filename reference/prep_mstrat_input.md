@@ -124,13 +124,17 @@ of the National Academy of Sciences*, **90**(22), 10623–10627.
 ## Examples
 
 ``` r
+
 library(EvaluateCore)
+#> Registered S3 method overwritten by 'car':
+#>   method           from
+#>   na.action.merMod lme4
 #> Registered S3 method overwritten by 'vegan':
 #>   method     from      
 #>   rev.hclust dendextend
 #> 
 #> --------------------------------------------------------------------------------
-#> Welcome to EvaluateCore version 0.1.4
+#> Welcome to EvaluateCore version 0.1.5
 #> 
 #> 
 #> # To know whats new in this version type:
@@ -187,7 +191,7 @@ prep_mstrat_input(data = data, genotype = "Accession",
                   nclass.quantitative = NULL, always.selected = sel,
                   file.name = "MStrat_input",
                   folder.path = tempdir())
-#> The following MStrat input files created at /var/folders/q_/pk8v8g4n3qq2gcnsvqjc3sd40000gn/T//RtmpVW71TE:
+#> The following MStrat input files created at /var/folders/df/djsxfhc17x95674wsm_g8s980000gn/T//RtmpdeiVsR:
 #> MStrat_input_data.dat
 #> MStrat_input_variable.var
 #> MStrat_input_kernel.ker

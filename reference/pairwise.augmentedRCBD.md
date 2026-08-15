@@ -61,7 +61,7 @@ attempts to do the same faster with parallel computing with the package
 library(augmentedRCBD)
 #> 
 #> --------------------------------------------------------------------------------
-#> Welcome to augmentedRCBD version 0.1.7
+#> Welcome to augmentedRCBD version 0.1.7.9000
 #> 
 #> 
 #> # To know how to use this package type:
@@ -223,7 +223,7 @@ out1 <- augmentedRCBD(data$blk, data$trt, data$y1, method.comp = "lsd",
 #>   treatment8 - treatment10    -4.00 7.34  6  -0.545   0.606    
 #>   treatment8 - treatment11   -13.25 8.21  6  -1.614   0.158    
 #>   treatment8 - treatment12    -6.25 8.21  6  -0.761   0.475    
-#>   treatment9 - treatment10     0.00 8.21  6   0.000   1.000    
+#>   treatment9 - treatment10    -0.00 8.21  6  -0.000   1.000    
 #>   treatment9 - treatment11    -9.25 8.21  6  -1.126   0.303    
 #>   treatment9 - treatment12    -2.25 8.21  6  -0.274   0.793    
 #>  treatment10 - treatment11    -9.25 8.21  6  -1.126   0.303    
@@ -382,7 +382,7 @@ out2 <- augmentedRCBD(data$blk, data$trt, data$y1, method.comp = "lsd",
 #>   treatment8 - treatment10    -4.00 7.34  6  -0.545   0.606    
 #>   treatment8 - treatment11   -13.25 8.21  6  -1.614   0.158    
 #>   treatment8 - treatment12    -6.25 8.21  6  -0.761   0.475    
-#>   treatment9 - treatment10     0.00 8.21  6   0.000   1.000    
+#>   treatment9 - treatment10    -0.00 8.21  6  -0.000   1.000    
 #>   treatment9 - treatment11    -9.25 8.21  6  -1.126   0.303    
 #>   treatment9 - treatment12    -2.25 8.21  6  -0.274   0.793    
 #>  treatment10 - treatment11    -9.25 8.21  6  -1.126   0.303    

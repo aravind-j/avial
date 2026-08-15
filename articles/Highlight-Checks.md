@@ -3,6 +3,7 @@
 Load the required packages.
 
 ``` r
+
 library(avial)
 library(agridat)
 library(ggplot2)
@@ -12,6 +13,7 @@ library(patchwork)
 Prepare the example data from `agridat`.
 
 ``` r
+
 soydata <- australia.soybean
 
 clrs <- c("#B2182B", "#2166AC", "#009E53", "#E69F00")
@@ -24,6 +26,7 @@ checkdata <- soydata[soydata$gen %in% checks, ]
 Plot the basic group-wise histogram
 
 ``` r
+
 outg_hist_list <-
   groupwise_histogram(data = soydata, group = "loc", trait = "lodging",
                       background.hist = FALSE,
@@ -40,6 +43,7 @@ Plot the genotypes to highlight as a group-wise point and error bar
 plots.
 
 ``` r
+
 outg_list <-
   groupwise_dumbell(data = checkdata, group = "loc",
                     trait = "lodging", genotype = "gen",
@@ -52,6 +56,7 @@ wrap_plots(outg_list, nrow = 2, guides = "collect")
 Stack the two plots together using `patchwork`.
 
 ``` r
+
 
 gps <- levels(soydata$loc)
 

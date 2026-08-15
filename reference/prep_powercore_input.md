@@ -84,6 +84,7 @@ Agricultural Biotechnology (NIAB), Rural Development Administration
 ## Examples
 
 ``` r
+
 library(EvaluateCore)
 
 data(cassava_EC)
@@ -118,5 +119,5 @@ prep_powercore_input(data = data, genotype = "Accession",
                      always.selected = sel,
                      file.name = "PowerCore_input",
                      folder.path = tempdir())
-#> PowerCore output file created at /var/folders/q_/pk8v8g4n3qq2gcnsvqjc3sd40000gn/T//RtmpVW71TE/PowerCore_input.csv
+#> PowerCore output file created at /var/folders/df/djsxfhc17x95674wsm_g8s980000gn/T//RtmpdeiVsR/PowerCore_input.csv
 ```

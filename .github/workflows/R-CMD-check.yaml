@@ -51,6 +51,7 @@ jobs:
         with:
           extra-packages: |
             any::rcmdcheck
+            github::aravind-j/augmentedRCBD?reinstall
           needs: check
 
       - name: Check

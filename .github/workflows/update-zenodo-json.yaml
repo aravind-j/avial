@@ -34,6 +34,7 @@ jobs:
         extra-packages: |
           github::aravind-j/avial
           any::V8
+          github::aravind-j/augmentedRCBD?reinstall
 
     - name: Update .zenodo.json
       run: |

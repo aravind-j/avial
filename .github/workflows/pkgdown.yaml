@@ -24,6 +24,7 @@ jobs:
           extra-packages: |
             local::.
             github::r-lib/pkgdown?reinstall
+            github::aravind-j/augmentedRCBD?reinstall
 
       - name: Deploy package
         run: |

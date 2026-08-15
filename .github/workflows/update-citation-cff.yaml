@@ -34,6 +34,7 @@ jobs:
         extra-packages: |
           any::cffr
           any::V8
+          github::aravind-j/augmentedRCBD?reinstall
 
     - name: Update CITATION.cff
       run: |

@@ -4,9 +4,13 @@ This function installs a [GitHub
 Actions](https://github.com/features/actions) workflow in your
 repository. The workflow updates your
 [`.zenodo.json`](https://help.zenodo.org/docs/github/describe-software/zenodo-json/)
-file from the package `DESCRIPTION` when any of these events occur: -
-You publish a new release of the package. - Your `DESCRIPTION` or
-`inst/CITATION` file is modified. - The action can be run manually.
+file from the package `DESCRIPTION` when any of these events occur:
+
+- You publish a new release of the package.
+
+- Your `DESCRIPTION` or `inst/CITATION` file is modified.
+
+- The action can be run manually.
 
 ## Usage
 

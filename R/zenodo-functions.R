@@ -423,9 +423,11 @@ file_exist_abort <-  function(x, abort = FALSE) {
 #'   repository. The workflow updates your
 #'   \href{https://help.zenodo.org/docs/github/describe-software/zenodo-json/}{\code{.zenodo.json}}
 #'   file from the package \code{DESCRIPTION} when any of these events occur:
-#' - You publish a new release of the package.
-#' - Your \code{DESCRIPTION} or \code{inst/CITATION} file is modified.
-#' - The action can be run manually.
+#'   \itemize{
+#'     \item You publish a new release of the package.
+#'     \item Your \code{DESCRIPTION} or \code{inst/CITATION} file is modified.
+#'     \item The action can be run manually.
+#'   }
 #'
 #' @param path Project root directory.
 #' @param overwrite A logical value. If \code{TRUE}, overwrite an existing

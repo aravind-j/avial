@@ -44,6 +44,7 @@ importFrom(dplyr,
   lead,
   mutate,
   n,
+  n_distinct,
   row_number,
   summarise
 )

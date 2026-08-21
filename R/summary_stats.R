@@ -10,7 +10,8 @@
 #'
 #' @returns A \code{tibble} data.frame with the summary statistics.
 #'
-#' @importFrom dplyr across all_of everything group_by mutate summarise
+#' @importFrom dplyr across all_of everything group_by mutate
+#' @importFrom dplyr summarise n_distinct
 #' @importFrom tidyr pivot_longer
 #' @importFrom moments agostino.test anscombe.test
 #' @export

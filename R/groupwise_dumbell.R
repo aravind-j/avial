@@ -171,17 +171,51 @@ groupwise_dumbell <- function(data, group, trait, genotype,
                 sqrt(length(.data[[trait]]
                             [!is.na(.data[[trait]])])))
 
-  if (subset == "none" & diff.sort != "none") {
+  # Calculate genotype-wise difference across groups
+
+  # if (subset == "none" & diff.sort != "none") {
+  #   summ_diffrange <-
+  #     summarise(.data = data_summ,
+  #               .by = all_of(c(genotype)),
+  #               diff = diff(range(mean)))
+  #
+  #   data_summ <- merge.data.frame(data_summ, summ_diffrange,
+  #                                 by = genotype, all.x = TRUE)
+  # }
+
+  if (diff.sort != "none") {
+
     summ_diffrange <-
-      summarise(.data = data_summ,
-                .by = all_of(c(genotype)),
+      summarise(.data = data_summ, .by = all_of(genotype),
                 diff = diff(range(mean)))
 
-    data_summ <- merge.data.frame(data_summ, summ_diffrange,
-                                  by = genotype, all.x = TRUE)
+    # data_summ <-
+    #   merge.data.frame(data_summ, summ_diffrange,
+    #                    by = genotype, all.x = TRUE)
+
+    data_summ <-
+      dplyr::left_join(data_summ, summ_diffrange, by = genotype)
+
   }
 
+  # Establish global genotype order
+  if (diff.sort == "ascending") {
 
+    genotype_order <-
+      reorder(data_summ[[genotype]], data_summ$diff)
+
+  } else if (diff.sort == "descending") {
+
+    genotype_order <-
+      reorder(data_summ[[genotype]], -data_summ$diff)
+
+  }
+
+  if (diff.sort != "none") {
+    data_summ[[genotype]] <-
+      factor(data_summ[[genotype]],
+             levels = levels(genotype_order))
+  }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Single plot or facet ----
@@ -191,31 +225,32 @@ groupwise_dumbell <- function(data, group, trait, genotype,
 
     if (subset == "none") {
 
-      if (diff.sort != "none") {
-
-        if (diff.sort == "ascending") {
-          outg <-
-            ggplot(data = data_summ,
-                   aes(y = reorder(.data[[genotype]], diff)))
-        }
-
-        if (diff.sort == "descending") {
-          outg <-
-            ggplot(data = data_summ,
-                   aes(y = reorder(.data[[genotype]], rev(diff))))
-        }
-
-      } else {
+      # if (diff.sort != "none") {
+      #
+      #   if (diff.sort == "ascending") {
+      #     outg <-
+      #       ggplot(data = data_summ,
+      #              aes(y = reorder(.data[[genotype]], diff)))
+      #   }
+      #
+      #   if (diff.sort == "descending") {
+      #     outg <-
+      #       ggplot(data = data_summ,
+      #              aes(y = reorder(.data[[genotype]], rev(diff))))
+      #   }
+      #
+      # } else {
 
         outg <-
           ggplot(data = data_summ, aes(y = .data[[genotype]]))
 
-      }
+      # }
 
       ## Dumbell segment ----
       if (segment == TRUE) {
         outg <- outg +
-          geom_line(aes(x = mean, y = .data[[genotype]],
+          geom_line(aes(x = mean,
+                        # y = .data[[genotype]],
                         group = .data[[genotype]]),
                     colour = segment.colour, linewidth = segment.size,
                     alpha = segment.alpha)
@@ -299,9 +334,10 @@ groupwise_dumbell <- function(data, group, trait, genotype,
     xrange <- unlist(lapply(outg_list, function(x) {
       layer_scales(x)$x$range$range
     }))
-    yrange <- unlist(lapply(outg_list, function(x) {
-      layer_scales(x)$y$range$range
-    }))
+    # yrange <- unlist(lapply(outg_list, function(x) {
+    #   layer_scales(x)$y$range$range
+    # }))
+    yrange <- levels(data_summ[[genotype]])
 
     xrange <- setdiff(xrange, c(Inf, -Inf))
     yrange <- setdiff(yrange, c(Inf, -Inf))
@@ -309,7 +345,8 @@ groupwise_dumbell <- function(data, group, trait, genotype,
     outg_list <- lapply(seq_along(p), function(i) {
       outg_list[[i]] <- outg_list[[i]] +
         xlim(c(min(xrange), max(xrange))) +
-        ylim(c(min(yrange), max(yrange)))
+        # ylim(c(min(yrange), max(yrange)))
+        scale_y_discrete(limits = yrange)
     })
 
     ## Final theme ----

@@ -14,13 +14,13 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R Under development (unstable) (2024-07-20 r86909 ucrt)",
+  "runtimePlatform": "R Under development (unstable) (2026-07-18 r90277 ucrt)",
   "author": [
     {
       "@type": "Person",
       "givenName": "J.",
       "familyName": "Aravind",
-      "email": "j.aravind@icar.gov.in",
+      "email": "j.aravind@icar.org.in",
       "@id": "https://orcid.org/0000-0002-4791-442X"
     }
   ],
@@ -29,98 +29,114 @@
       "@type": "Person",
       "givenName": "J.",
       "familyName": "Aravind",
-      "email": "j.aravind@icar.gov.in",
+      "email": "j.aravind@icar.org.in",
       "@id": "https://orcid.org/0000-0002-4791-442X"
     }
   ],
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "colorspace",
-      "name": "colorspace",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=colorspace"
+      "identifier": "agridat",
+      "name": "agridat"
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "patchwork",
-      "name": "patchwork",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=patchwork"
+      "identifier": "colorspace",
+      "name": "colorspace"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "EvaluateCore",
+      "name": "EvaluateCore"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "prettycode",
+      "name": "prettycode"
     }
   ],
   "softwareRequirements": {
     "1": {
       "@type": "SoftwareApplication",
-      "identifier": "agridat",
-      "name": "agridat",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=agridat"
+      "identifier": "augmentedRCBD",
+      "name": "augmentedRCBD"
     },
     "2": {
       "@type": "SoftwareApplication",
-      "identifier": "dplyr",
-      "name": "dplyr",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=dplyr"
+      "identifier": "data.table",
+      "name": "data.table"
     },
     "3": {
       "@type": "SoftwareApplication",
-      "identifier": "EvaluateCore",
-      "name": "EvaluateCore",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=EvaluateCore"
+      "identifier": "dendextend",
+      "name": "dendextend"
     },
     "4": {
       "@type": "SoftwareApplication",
-      "identifier": "ggplot2",
-      "name": "ggplot2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+      "identifier": "dplyr",
+      "name": "dplyr"
     },
     "5": {
       "@type": "SoftwareApplication",
-      "identifier": "readr",
-      "name": "readr",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=readr"
+      "identifier": "ggplot2",
+      "name": "ggplot2"
     },
     "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "magrittr",
+      "name": "magrittr"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "mathjaxr",
+      "name": "mathjaxr"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "moments",
+      "name": "moments"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "parallel",
+      "name": "parallel"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "patchwork",
+      "name": "patchwork"
+    },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "Rdpack",
+      "name": "Rdpack"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "readr",
+      "name": "readr"
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "stringi",
+      "name": "stringi"
+    },
+    "14": {
+      "@type": "SoftwareApplication",
+      "identifier": "styler",
+      "name": "styler"
+    },
+    "15": {
+      "@type": "SoftwareApplication",
+      "identifier": "scales",
+      "name": "scales"
+    },
+    "16": {
+      "@type": "SoftwareApplication",
+      "identifier": "tidyr",
+      "name": "tidyr"
+    },
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
@@ -128,5 +144,24 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "131.44KB"
+  "fileSize": "1409.131KB",
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "J.",
+          "familyName": "Aravind",
+          "email": "j.aravind@icar.org.in",
+          "@id": "https://orcid.org/0000-0002-4791-442X"
+        }
+      ],
+      "name": "avial: A Mixed Bag of R Functionss",
+      "description": "R package version 0.0.0.9000 https://aravind-j.github.io/avial/"
+    }
+  ],
+  "releaseNotes": "https://github.com/aravind-j/avial/blob/main/NEWS.md",
+  "contIntegration": "https://github.com/aravind-j/avial/actions",
+  "developmentStatus": ["https://www.repostatus.org/#wip", "https://lifecycle.r-lib.org/articles/stages.html#maturing"]
 }

@@ -52,7 +52,11 @@
 #' summary_qual(data = soydata, group = c("loc", "year"), trait = qual_traits)
 #'
 summary_quant <- function(data, group = NULL, trait,
-                          out.format = c("long", "wide")) {
+                          out.format = c("long", "wide"),
+                          min.n.skew = 8,
+                          min.unique.skew = 8,
+                          min.n.kurt = 8,
+                          min.unique.kurt = 5) {
 
   # Check if data.frame
   if (!is.data.frame(data)) {
@@ -73,7 +77,7 @@ summary_quant <- function(data, group = NULL, trait,
 
   # check if trait columns are of type numeric/integer
   inttrtcols <- unlist(lapply(data[, trait],
-                                function(x) FALSE %in% (is.vector(x, mode = "integer") | is.vector(x, mode = "numeric"))))
+                              function(x) FALSE %in% (is.vector(x, mode = "integer") | is.vector(x, mode = "numeric"))))
   if (TRUE %in% inttrtcols) {
     stop(paste('The following trait column(s) in "data" are not of type numeric:\n',
                paste(names(inttrtcols[inttrtcols]), collapse = ", ")))
@@ -89,67 +93,273 @@ summary_quant <- function(data, group = NULL, trait,
 
     # check if group columns are of type factor
     fctgpcols <- unlist(lapply(data[, group],
-                                  function(x) FALSE %in% is.factor(x)))
+                               function(x) FALSE %in% is.factor(x)))
     if (TRUE %in% fctgpcols) {
       stop(paste('The following group column(s) in "data" are not of type factor:\n',
                  paste(names(fctgpcols[fctgpcols]), collapse = ", ")))
     }
   }
 
+  # Check thresholds
+  thresholds <- c(
+    min.n.skew, min.unique.skew,
+    min.n.kurt, min.unique.kurt
+  )
+
+  if (any(!is.finite(thresholds)) ||
+      any(thresholds < 1) ||
+      any(thresholds != floor(thresholds))) {
+    stop('All test thresholds must be positive integers.')
+  }
+
   # Check output format argument
   out.format = match.arg(out.format)
 
-  if (!is.null(group)) {
-    data = group_by(.data = data, !!!syms(group))
-  }
+  # Convert to long form
+  long_data <-
+    tidyr::pivot_longer(data = data[, c(group, trait)],
+                        cols = dplyr::all_of(trait),
+                        names_to = "Trait",
+                        values_to = ".quant_value")
 
-  out_wide <-
+  group_vars <- c(group, "Trait")
 
-    summarise(.data = data,
-              across(
-                .cols = all_of(trait),
-                .fns = list(
-                  count = ~sum(!is.na(.x)),
-                  miss.count = ~sum(is.na(.x)),
-                  mean = ~mean(.x, na.rm = TRUE),
-                  min = ~min(.x, na.rm = TRUE),
-                  max = ~max(.x, na.rm = TRUE),
-                  sd = ~sd(.x, na.rm = TRUE),
-                  se = ~sd(.x, na.rm = TRUE) /
-                    sqrt(length(.x[!is.na(.x)])),
-                  skew = ~ifelse(n_distinct(.x) < 8, NA,
-                                 moments::agostino.test(.x,
-                                                        alternative = "two.sided")$statistic["skew"]),
-                  skew.pvalue = ~ifelse(n_distinct(.x) < 8, NA,
-                                        moments::agostino.test(.x,
-                                                               alternative = "two.sided")$p.value),
-                  kurt = ~ifelse(n_distinct(.x) < 5, NA,
-                                 moments::anscombe.test(.x,
-                                                        alternative = "two.sided")$statistic["kurt"]),
-                  kurt.pvalue = ~ifelse(n_distinct(.x) < 5, NA,
-                                        moments::anscombe.test(.x,
-                                                               alternative = "two.sided")$p.value)
-                ),
-                .names = "{col}_#_{fn}"
-              )
+  grouped_data <-
+    dplyr::group_by(long_data,
+                    dplyr::across(dplyr::all_of(group_vars)))
+
+  out_long <-
+
+    summarise(.data = grouped_data,,
+              count = sum(is.valid(.quant_value)),
+              invalid.count = sum(!is.valid(.quant_value)),
+              mean = {
+                x <- .quant_value[is.valid(.quant_value)]
+                if (length(x) == 0L) {
+                  NA_real_
+                } else {
+                  mean(x)
+                }
+              },
+              min = {
+                x <- .quant_value[is.valid(.quant_value)]
+                if (length(x) == 0L) {
+                  NA_real_
+                } else {
+                  min(x)
+                }
+              },
+              max = {
+                x <- .quant_value[is.valid(.quant_value)]
+                if (length(x) == 0L) {
+                  NA_real_
+                } else {
+                  max(x)
+                }
+              },
+              sd = {
+                x <- .quant_value[is.valid(.quant_value)]
+                if (length(x) < 2L) {
+                  NA_real_
+                } else {
+                  sd(x)
+                }
+              },
+              se = {
+                x <- .quant_value[is.valid(.quant_value)]
+                if (length(x) < 2L) {
+                  NA_real_
+                } else {
+                  sd(x, na.rm = TRUE) / sqrt(length(x))
+                }
+              },
+              summary.messages = {
+                n <- sum(is.valid(.quant_value))
+                if (n == 0L) {
+                  "Mean, min, max, SD and SE are NA: no valid observations."
+                } else if (n == 1L) {
+                  "SD and SE are NA: fewer than two valid observations."
+                } else {
+                  "OK"
+                }
+              },
+              skew = safe_test(x = .quant_value[is.valid(.quant_value)],
+                               stat_name = "skewness",
+                               min_n = min.n.skew,
+                               min_unique = min.unique.skew,
+                               alternative = "two.sided"),
+              kurt = safe_test(x = .quant_value[is.valid(.quant_value)],
+                               stat_name = "kurtosis",
+                               min_n = min.n.kurt,
+                               min_unique = min.unique.kurt,
+                               alternative = "two.sided"),
+
+              .groups = "drop"
     )
 
-  cols_raw <- colnames(out_wide)
-  if (!is.null(group)) {
-    cols_raw <- setdiff(cols_raw, group)
-  }
+  out_long <- tidyr::unnest_wider(out_long,
+                                  c(skew, kurt),
+                                  names_sep = "_")
+
+  out_long <- dplyr::rename(out_long,
+                            skew = skew_stat,
+                            skew.pvalue = skew_pvalue,
+                            skew.messages = skew_message,
+                            kurt = kurt_stat,
+                            kurt.pvalue = kurt_pvalue,
+                            kurt.messages = kurt_message)
 
   if (out.format == "long") {
-    out_long <-
-      pivot_longer(data = out_wide,
-                   cols = all_of(cols_raw),
-                   names_to = c("Trait", ".value"),
-                   names_sep = "_#_")
-
     return(out_long)
-  } else {
-    return(out_wide)
   }
+
+  value_cols <- setdiff(names(out_long), c(group, "Trait"))
+
+  out_wide <- tidyr::pivot_wider(out_long,
+    id_cols = dplyr::all_of(group),
+    names_from = Trait,
+    values_from = dplyr::all_of(value_cols),
+    names_glue = "{Trait}_#_{.value}")
+
+  out_wide
+
+}
+
+
+is.valid <- function(x, check.na = TRUE,
+                     check.nan = TRUE, check.finite = TRUE) {
+  valid <- rep(TRUE, length(x))
+
+  if (check.finite)
+    valid <- valid & is.finite(x)
+
+  if (check.na)
+    valid <- valid & !is.na(x)
+
+  if (check.nan)
+    valid <- valid & !is.nan(x)
+
+  valid
+}
+
+
+safe_test <- function(x, stat_name = c("skewness", "kurtosis"),
+                      min_n = 8, min_unique = 3,
+                      alternative = c("two.sided", "less", "greater")) {
+
+  stat_name <- match.arg(stat_name)
+  alternative <- match.arg(alternative)
+
+  x <- x[is.valid(x)]
+  n <- sum(is.valid(x))
+  n_unique <- dplyr::n_distinct(x)
+
+  reasons <- character(0)
+
+  if (length(x) == 0L) {
+    reasons <- c(reasons, "Skewness is NA: no valid observations.")
+  }
+
+  if (n < min_n) {
+    reasons <- c(reasons, sprintf(
+      "%d finite observations (minimum required is %d)",
+      n, min_n
+    ))
+  }
+
+  if (n_unique < min_unique) {
+    reasons <- c(reasons, sprintf(
+      "%d distinct finite values (minimum required is %d)",
+      n_unique, min_unique
+    ))
+  }
+
+  if (length(reasons) > 0) {
+    return(tibble::tibble(
+      stat = NA_real_,
+      pvalue = NA_real_,
+      message = paste(reasons, collapse = " ")
+    ))
+  }
+
+ # Compute stats
+  stat <-
+    switch(stat_name,
+           skewness = moments::skewness(x),
+           kurtosis = moments::kurtosis(x))
+
+ # Perform tests
+  warnings <- character()
+  error_message <- NULL
+
+  test_out <- tryCatch(
+    withCallingHandlers(
+      switch(stat_name,
+             skewness = moments::agostino.test(x, alternative = alternative),
+             kurtosis = moments::anscombe.test(x, alternative = alternative)),
+      warning = function(w) {
+        warnings <<- c(warnings, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    ),
+    error = function(e) {
+      error_message <<- conditionMessage(e)
+      NULL
+    }
+  )
+
+  # If the test errors, both outputs are NA.
+  if (!is.null(error_message)) {
+    messages <- c(
+      paste0("Test error: ", error_message),
+      if (length(warnings)) {
+        paste0("Warning: ", unique(warnings))
+      }
+    )
+
+    return(tibble::tibble(
+      stat = stat,
+      pvalue = NA_real_,
+      message = paste(messages, collapse = " ")
+    ))
+  }
+
+  # Fetch warnings
+  messages <- character()
+
+  if (length(warnings)) {
+    messages <- c(
+      messages,
+      paste0("Warning: ", unique(warnings))
+    )
+  }
+
+  # Fetch stats
+  pvalue <- test_out$p.value
+
+  if (length(pvalue) != 1L ||
+      !is.numeric(pvalue) ||
+      !is.finite(pvalue) ||
+      pvalue < 0 ||
+      pvalue > 1) {
+
+    pvalue <- NA_real_
+
+    messages <- c(
+      messages,
+      "P-value is NA: Failed to compute, non-scalar, non-finite, or outside [0, 1]."
+    )
+  } else {
+    pvalue <- unname(pvalue)
+  }
+
+  if (!length(messages)) {
+    messages <- NA
+  }
+
+  tibble::tibble(stat = stat,
+                 pvalue = pvalue,
+                 message = paste(messages, collapse = " "))
 
 }
 

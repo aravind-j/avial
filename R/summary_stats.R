@@ -7,6 +7,10 @@
 #'   trait column should be of type \code{"numeric"} for quantitative traits and
 #'   of type \code{"factor"} for qualitative traits.
 #' @param out.format The output format.
+#' @param min.n.skew Minimum number of valid observations to computed skewness.
+#' @param min.unique.skew Minimum number of unique valid observations to computed skewness.
+#' @param min.n.kurt Minimum number of valid observations to computed kurtosis.
+#' @param min.unique.kurt Minimum number of unique valid observations to computed kurtosis.
 #'
 #' @returns A \code{tibble} data.frame with the summary statistics.
 #'

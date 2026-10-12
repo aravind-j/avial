@@ -5,7 +5,16 @@
 \alias{summary_qual}
 \title{Summary Statistics of Qualitative and Quantitative trait data}
 \usage{
-summary_quant(data, group = NULL, trait, out.format = c("long", "wide"))
+summary_quant(
+  data,
+  group = NULL,
+  trait,
+  out.format = c("long", "wide"),
+  min.n.skew = 8,
+  min.unique.skew = 8,
+  min.n.kurt = 8,
+  min.unique.kurt = 5
+)
 
 summary_qual(data, group = NULL, trait, out.format = c("long", "wide"))
 }
@@ -20,6 +29,14 @@ trait column should be of type \code{"numeric"} for quantitative traits and
 of type \code{"factor"} for qualitative traits.}
 
 \item{out.format}{The output format.}
+
+\item{min.n.skew}{Minimum number of valid observations to computed skewness.}
+
+\item{min.unique.skew}{Minimum number of unique valid observations to computed skewness.}
+
+\item{min.n.kurt}{Minimum number of valid observations to computed kurtosis.}
+
+\item{min.unique.kurt}{Minimum number of unique valid observations to computed kurtosis.}
 }
 \value{
 A \code{tibble} data.frame with the summary statistics.

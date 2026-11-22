@@ -204,7 +204,8 @@ pairwise.augmentedRCBD <- function(aug, cl = NULL,
 
   pairs_aug <- dplyr::bind_rows(pairs_aug)
   if (p.adjust != "tukey") {
-    pairs_aug$p.value <- 2 * pt(q = pairs_aug$t.ratio, df = pairs_aug$df)
+    # pairs_aug$p.value <- 2 * pt(q = pairs_aug$t.ratio, df = pairs_aug$df)
+    pairs_aug$p.value <- 2 * pt(q = -abs(pairs_aug$t.ratio), df = pairs_aug$df)
   }
 
   if (p.adjust == "sidak") {

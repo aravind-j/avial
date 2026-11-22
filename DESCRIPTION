@@ -22,13 +22,13 @@ Imports: augmentedRCBD,
     magrittr,
     mathjaxr,
     moments,
-    parallel,
     patchwork,
     Rdpack,
     readr,
     stringi,
     styler,
     scales,
+    tibble,
     tidyr,
     yaml
 Suggests: agridat,
@@ -44,4 +44,4 @@ Language: en-GB
 Config/Needs/website: rmarkdown
 URL: https://github.com/aravind-j/avial, https://aravind-j.github.io/avial/
 BugReports: https://github.com/aravind-j/avial/issues
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1

@@ -65,12 +65,6 @@ importFrom(moments,
   agostino.test,
   anscombe.test
 )
-importFrom(parallel,
-  clusterExport,
-  makeCluster,
-  parLapply,
-  stopCluster
-)
 importFrom(patchwork,
   plot_spacer,
   wrap_plots
@@ -80,6 +74,7 @@ importFrom(scales,hue_pal)
 importFrom(stats,
   dnorm,
   na.omit,
+  p.adjust,
   pchisq,
   pt,
   ptukey,
@@ -91,12 +86,12 @@ importFrom(styler,
   is_function_call,
   tidyverse_style
 )
+importFrom(tibble,tibble)
 importFrom(tidyr,
   drop_na,
   pivot_longer
 )
 importFrom(utils,
-  combn,
   getFromNamespace,
   modifyList,
   read.delim,

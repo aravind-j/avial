@@ -18,6 +18,7 @@
 #' @importFrom dplyr summarise n_distinct
 #' @importFrom tidyr pivot_longer
 #' @importFrom moments agostino.test anscombe.test
+#' @importFrom tibble tibble
 #' @export
 #'
 #' @examples
@@ -74,23 +75,28 @@ summary_quant <- function(data, group = NULL, trait,
 
   # check if trait columns present in data
   if (FALSE %in% (trait %in% colnames(data))) {
-    stop(paste('The following column(s) specified as trait columns are not present in "data":\n',
+    stop(paste('The following column(s) specified as trait columns",
+               " are not present in "data":\n',
                paste(trait[!(trait %in% colnames(data))], collapse = ", "),
                sep = ""))
   }
 
   # check if trait columns are of type numeric/integer
-  inttrtcols <- unlist(lapply(data[, trait],
-                              function(x) FALSE %in% (is.vector(x, mode = "integer") | is.vector(x, mode = "numeric"))))
+  inttrtcols <-
+    unlist(lapply(data[, trait],
+                  function(x) FALSE %in% (is.vector(x, mode = "integer") |
+                                            is.vector(x, mode = "numeric"))))
   if (TRUE %in% inttrtcols) {
-    stop(paste('The following trait column(s) in "data" are not of type numeric:\n',
+    stop(paste('The following trait column(s) in "data" are",
+               " not of type numeric:\n',
                paste(names(inttrtcols[inttrtcols]), collapse = ", ")))
   }
 
   if (!is.null(group)) {
     # check if group columns present in data
     if (FALSE %in% (group %in% colnames(data))) {
-      stop(paste('The following column(s) specified as group columns are not present in "data":\n',
+      stop(paste('The following column(s) specified as group columns are",
+                 " not present in "data":\n',
                  paste(group[!(group %in% colnames(data))], collapse = ", "),
                  sep = ""))
     }
@@ -99,16 +105,15 @@ summary_quant <- function(data, group = NULL, trait,
     fctgpcols <- unlist(lapply(data[, group],
                                function(x) FALSE %in% is.factor(x)))
     if (TRUE %in% fctgpcols) {
-      stop(paste('The following group column(s) in "data" are not of type factor:\n',
+      stop(paste('The following group column(s) in "data" are",
+                 "not of type factor:\n',
                  paste(names(fctgpcols[fctgpcols]), collapse = ", ")))
     }
   }
 
   # Check thresholds
-  thresholds <- c(
-    min.n.skew, min.unique.skew,
-    min.n.kurt, min.unique.kurt
-  )
+  thresholds <- c(min.n.skew, min.unique.skew,
+                  min.n.kurt, min.unique.kurt)
 
   if (any(!is.finite(thresholds)) ||
       any(thresholds < 1) ||
@@ -133,7 +138,6 @@ summary_quant <- function(data, group = NULL, trait,
                     dplyr::across(dplyr::all_of(group_vars)))
 
   out_long <-
-
     summarise(.data = grouped_data,,
               count = sum(is.valid(.quant_value)),
               invalid.count = sum(!is.valid(.quant_value)),
@@ -220,10 +224,10 @@ summary_quant <- function(data, group = NULL, trait,
   value_cols <- setdiff(names(out_long), c(group, "Trait"))
 
   out_wide <- tidyr::pivot_wider(out_long,
-    id_cols = dplyr::all_of(group),
-    names_from = Trait,
-    values_from = dplyr::all_of(value_cols),
-    names_glue = "{Trait}_#_{.value}")
+                                 id_cols = dplyr::all_of(group),
+                                 names_from = Trait,
+                                 values_from = dplyr::all_of(value_cols),
+                                 names_glue = "{Trait}_#_{.value}")
 
   out_wide
 
@@ -279,20 +283,18 @@ safe_test <- function(x, stat_name = c("skewness", "kurtosis"),
   }
 
   if (length(reasons) > 0) {
-    return(tibble::tibble(
-      stat = NA_real_,
-      pvalue = NA_real_,
-      message = paste(reasons, collapse = " ")
-    ))
+    return(tibble::tibble(stat = NA_real_,
+                          pvalue = NA_real_,
+                          message = paste(reasons, collapse = " ")))
   }
 
- # Compute stats
+  # Compute stats
   stat <-
     switch(stat_name,
            skewness = moments::skewness(x),
            kurtosis = moments::kurtosis(x))
 
- # Perform tests
+  # Perform tests
   warnings <- character()
   error_message <- NULL
 
@@ -321,11 +323,9 @@ safe_test <- function(x, stat_name = c("skewness", "kurtosis"),
       }
     )
 
-    return(tibble::tibble(
-      stat = stat,
-      pvalue = NA_real_,
-      message = paste(messages, collapse = " ")
-    ))
+    return(tibble::tibble(stat = stat,
+                          pvalue = NA_real_,
+                          message = paste(messages, collapse = " ")))
   }
 
   # Fetch warnings
@@ -349,10 +349,10 @@ safe_test <- function(x, stat_name = c("skewness", "kurtosis"),
 
     pvalue <- NA_real_
 
-    messages <- c(
-      messages,
-      "P-value is NA: Failed to compute, non-scalar, non-finite, or outside [0, 1]."
-    )
+    messages <-
+      c(messages,
+        paste("P-value is NA: Failed to compute, non-scalar,",
+              "non-finite, or outside [0, 1].", sep = ""))
   } else {
     pvalue <- unname(pvalue)
   }
@@ -384,32 +384,36 @@ summary_qual <- function(data, group = NULL, trait,
 
   # check if trait columns present in data
   if (FALSE %in% (trait %in% colnames(data))) {
-    stop(paste('The following column(s) specified as trait columns are not present in "data":\n',
+    stop(paste('The following column(s) specified as trait columns are",
+               " not present in "data":\n',
                paste(trait[!(trait %in% colnames(data))], collapse = ", "),
                sep = ""))
   }
 
   # check if trait columns are of type factor
   fcttrtcols <- unlist(lapply(data[, trait],
-                                function(x) FALSE %in% is.factor(x)))
+                              function(x) FALSE %in% is.factor(x)))
   if (TRUE %in% fcttrtcols) {
-    stop(paste('The following trait column(s) in "data" are not of type factor:\n',
+    stop(paste('The following trait column(s) in "data" are",
+               " not of type factor:\n',
                paste(names(fcttrtcols[fcttrtcols]), collapse = ", ")))
   }
 
   if (!is.null(group)) {
     # check if group columns present in data
     if (FALSE %in% (group %in% colnames(data))) {
-      stop(paste('The following column(s) specified as group columns are not present in "data":\n',
+      stop(paste('The following column(s) specified as group columns are",
+                 " not present in "data":\n',
                  paste(group[!(group %in% colnames(data))], collapse = ", "),
                  sep = ""))
     }
 
     # check if group columns are of type factor
     fctgpcols <- unlist(lapply(data[, group],
-                                  function(x) FALSE %in% is.factor(x)))
+                               function(x) FALSE %in% is.factor(x)))
     if (TRUE %in% fctgpcols) {
-      stop(paste('The following group column(s) in "data" are not of type factor:\n',
+      stop(paste('The following group column(s) in "data" are",
+                 " not of type factor:\n',
                  paste(names(fctgpcols[fctgpcols]), collapse = ", ")))
     }
   }
@@ -452,8 +456,6 @@ summary_qual <- function(data, group = NULL, trait,
   }
 
 }
-
-
 
 freq_string <- function(x) {
   freq <- unlist(table(x))

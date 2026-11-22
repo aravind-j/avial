@@ -1,6 +1,6 @@
 template:
   bootstrap: 5
-  light-switch: no
+  light-switch: yes
   math-rendering: mathjax
   bslib:
     bootswatch: minty

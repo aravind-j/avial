@@ -6,21 +6,20 @@
 \usage{
 pairwise.augmentedRCBD(
   aug,
-  cl = NULL,
   alpha = NULL,
-  p.adjust = c("none", "tukey", "sidak")
+  p.adjust = c("none", "tukey", "sidak", "holm", "hochberg", "hommel", "bonferroni",
+    "BH", "BY", "fdr")
 )
 }
 \arguments{
 \item{aug}{An object of class \code{augmentedRCBD}.}
 
-\item{cl}{A cluster object created by \code{\link[parallel]{makeCluster}} for
-parallel evaluations.}
-
 \item{alpha}{Type I error probability (Significance level).}
 
-\item{p.adjust}{The p value adjustment method. Either \code{"none"},
-\code{"tukey"} or \code{"sidak"}.}
+\item{p.adjust}{The p value adjustment method. Must be one of
+\code{"none"}, \code{"tukey"}, \code{"sidak"}, \code{"holm"},
+\code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
+\code{"BH"}, \code{"BY"}, or \code{"fdr"}.}
 }
 \value{
 A data frame of pairwise comparisons of treatments.
@@ -33,8 +32,7 @@ an object of class \code{augmentedRCBD}.
 The default pairwise comparison in \code{\link[augmentedRCBD]{augmentedRCBD}}
 employs \code{\link[emmeans]{pairs.emmGrid}} function from
 \code{\link[emmeans]{emmeans}} which is very slow for large number of
-comparisons. This function attempts to do the same faster with parallel
-computing with the package \code{\link[parallel]{parallel-package}}.
+comparisons.
 }
 \examples{
 library(augmentedRCBD)
@@ -56,56 +54,35 @@ out1 <- augmentedRCBD(data$blk, data$trt, data$y1, method.comp = "lsd",
 out2 <- augmentedRCBD(data$blk, data$trt, data$y1, method.comp = "lsd",
                       alpha = 0.05, group = TRUE, console = TRUE)
 
-# Make cluster ----
-library(parallel)
-# Check if running under R CMD check and adjust cores accordingly
-if (nzchar(Sys.getenv("_R_CHECK_LIMIT_CORES_"))) {
-  ncores <- 2
-} else {
-  ncores <- max(2L, parallel::detectCores() - 4)
-}
-
-cl <- makeCluster(getOption("cl.cores", ncores))
-
 # Pairwise t test without p value adjustment ----
-pout1 <- pairwise.augmentedRCBD(out1, cl = cl,
-                                p.adjust = "none")
+pout1 <- pairwise.augmentedRCBD(out1, p.adjust = "none")
 pout1
-stopCluster(cl)
 
-cl <- makeCluster(getOption("cl.cores", ncores))
-pout2 <- pairwise.augmentedRCBD(out2, cl = cl,
-                                p.adjust = "none")
+pout2 <- pairwise.augmentedRCBD(out2, p.adjust = "none")
 pout2
-stopCluster(cl)
 
 # Pairwise t test with tukey adjustment ----
-cl <- makeCluster(getOption("cl.cores", ncores))
-pout1_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
-                                      p.adjust = "tukey")
+pout1_tukey <- pairwise.augmentedRCBD(out1, p.adjust = "tukey")
 pout1_tukey
-stopCluster(cl)
 
-cl <- makeCluster(getOption("cl.cores", ncores))
-pout2_tukey <- pairwise.augmentedRCBD(out2, cl = cl,
-                                      p.adjust = "tukey")
+pout2_tukey <- pairwise.augmentedRCBD(out2, p.adjust = "tukey")
 pout2_tukey
-stopCluster(cl)
 
-# Pairwise t test with sidak p value adjustment ----
-cl <- makeCluster(getOption("cl.cores", ncores))
-pout1_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
-                                      p.adjust = "sidak")
-pout1_sidak
-stopCluster(cl)
+# Pairwise t test with holm p value adjustment ----
+pout1_holm <- pairwise.augmentedRCBD(out1, p.adjust = "holm")
+pout1_holm
 
-cl <- makeCluster(getOption("cl.cores", ncores))
-pout2_sidak <- pairwise.augmentedRCBD(out2, cl = cl,
-                                      p.adjust = "sidak")
-pout2_sidak
-stopCluster(cl)
+pout2_holm <- pairwise.augmentedRCBD(out2, p.adjust = "holm")
+pout2_holm
+
+# Pairwise t test with bonferroni p value adjustment ----
+pout1_bonferroni <- pairwise.augmentedRCBD(out1, p.adjust = "bonferroni")
+pout1_bonferroni
+
+pout2_bonferroni <- pairwise.augmentedRCBD(out2, p.adjust = "bonferroni")
+pout2_bonferroni
 
 }
 \seealso{
-\code{\link[parallel]{makeCluster}}
+\code{\link[stats]{p.adjust}}
 }

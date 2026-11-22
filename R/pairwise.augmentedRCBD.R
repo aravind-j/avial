@@ -6,24 +6,21 @@
 #' The default pairwise comparison in \code{\link[augmentedRCBD]{augmentedRCBD}}
 #' employs \code{\link[emmeans]{pairs.emmGrid}} function from
 #' \code{\link[emmeans]{emmeans}} which is very slow for large number of
-#' comparisons. This function attempts to do the same faster with parallel
-#' computing with the package \code{\link[parallel]{parallel-package}}.
+#' comparisons.
 #'
 #' @param aug An object of class \code{augmentedRCBD}.
 #' @param alpha Type I error probability (Significance level).
-#' @param cl A cluster object created by \code{\link[parallel]{makeCluster}} for
-#'   parallel evaluations.
-#' @param p.adjust The p value adjustment method. Either \code{"none"},
-#'   \code{"tukey"} or \code{"sidak"}.
+#' @param p.adjust The p value adjustment method. Must be one of
+#'   \code{"none"}, \code{"tukey"}, \code{"sidak"}, \code{"holm"},
+#'   \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"},
+#'   \code{"BH"}, \code{"BY"}, or \code{"fdr"}.
 #'
 #' @returns A data frame of pairwise comparisons of treatments.
 #'
-#' @seealso \code{\link[parallel]{makeCluster}}
+#' @seealso \code{\link[stats]{p.adjust}}
 #'
 #' @importFrom augmentedRCBD augmentedRCBD
-#' @importFrom parallel clusterExport makeCluster parLapply stopCluster
-#' @importFrom stats pt ptukey
-#' @importFrom utils combn
+#' @importFrom stats p.adjust pt ptukey
 #' @export
 #'
 #' @examples
@@ -46,191 +43,193 @@
 #' out2 <- augmentedRCBD(data$blk, data$trt, data$y1, method.comp = "lsd",
 #'                       alpha = 0.05, group = TRUE, console = TRUE)
 #'
-#' # Make cluster ----
-#' library(parallel)
-#' # Check if running under R CMD check and adjust cores accordingly
-#' if (nzchar(Sys.getenv("_R_CHECK_LIMIT_CORES_"))) {
-#'   ncores <- 2
-#' } else {
-#'   ncores <- max(2L, parallel::detectCores() - 4)
-#' }
-#'
-#' cl <- makeCluster(getOption("cl.cores", ncores))
-#'
 #' # Pairwise t test without p value adjustment ----
-#' pout1 <- pairwise.augmentedRCBD(out1, cl = cl,
-#'                                 p.adjust = "none")
+#' pout1 <- pairwise.augmentedRCBD(out1, p.adjust = "none")
 #' pout1
-#' stopCluster(cl)
+
 #'
-#' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout2 <- pairwise.augmentedRCBD(out2, cl = cl,
-#'                                 p.adjust = "none")
+#' pout2 <- pairwise.augmentedRCBD(out2, p.adjust = "none")
 #' pout2
-#' stopCluster(cl)
 #'
 #' # Pairwise t test with tukey adjustment ----
-#' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout1_tukey <- pairwise.augmentedRCBD(out1, cl = cl,
-#'                                       p.adjust = "tukey")
+#' pout1_tukey <- pairwise.augmentedRCBD(out1, p.adjust = "tukey")
 #' pout1_tukey
-#' stopCluster(cl)
 #'
-#' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout2_tukey <- pairwise.augmentedRCBD(out2, cl = cl,
-#'                                       p.adjust = "tukey")
+#' pout2_tukey <- pairwise.augmentedRCBD(out2, p.adjust = "tukey")
 #' pout2_tukey
-#' stopCluster(cl)
 #'
-#' # Pairwise t test with sidak p value adjustment ----
-#' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout1_sidak <- pairwise.augmentedRCBD(out1, cl = cl,
-#'                                       p.adjust = "sidak")
-#' pout1_sidak
-#' stopCluster(cl)
+#' # Pairwise t test with holm p value adjustment ----
+#' pout1_holm <- pairwise.augmentedRCBD(out1, p.adjust = "holm")
+#' pout1_holm
 #'
-#' cl <- makeCluster(getOption("cl.cores", ncores))
-#' pout2_sidak <- pairwise.augmentedRCBD(out2, cl = cl,
-#'                                       p.adjust = "sidak")
-#' pout2_sidak
-#' stopCluster(cl)
+#' pout2_holm <- pairwise.augmentedRCBD(out2, p.adjust = "holm")
+#' pout2_holm
 #'
-pairwise.augmentedRCBD <- function(aug, cl = NULL,
-                                   alpha = NULL,
-                                   p.adjust = c("none", "tukey", "sidak")) {
+#' # Pairwise t test with bonferroni p value adjustment ----
+#' pout1_bonferroni <- pairwise.augmentedRCBD(out1, p.adjust = "bonferroni")
+#' pout1_bonferroni
+#'
+#' pout2_bonferroni <- pairwise.augmentedRCBD(out2, p.adjust = "bonferroni")
+#' pout2_bonferroni
+#'
+pairwise.augmentedRCBD <-
+  function(aug,
+           alpha = NULL,
+           p.adjust = c("none", "tukey", "sidak",
+                        "holm", "hochberg", "hommel",
+                        "bonferroni", "BH", "BY",
+                        "fdr")) {
 
-  p.adjust <- match.arg(p.adjust)
+    p.adjust <- match.arg(p.adjust)
 
-  # alpha
-  if (!is.null(alpha)) {
-    if (!(0 < alpha && alpha < 1)) {
-      stop('"alpha" should be between 0 and 1 (0 < alpha < 1).')
+    # Validate alpha
+    if (!is.null(alpha)) {
+      if (length(alpha) != 1L || is.na(alpha) ||
+          !(0 < alpha && alpha < 1)) {
+        stop('"alpha" should be between 0 and 1.')
+      }
     }
-  }
 
-  ntr <- aug$Details$`Number of treatments`
-  n.pairs <- (ntr * (ntr - 1)) / 2
+    # Extract data
+    Means <- aug$Means
+    ## Remove duplicated treatments from Means df
+    Means <- Means[!duplicated(Means$Treatment), ]
 
-  chks <- aug$Details$`Check treatments`
+    treatment <- Means$Treatment
+    block <- Means$Block
+    adjmeans <- Means$`Adjusted Means`
 
-  # Remove duplicated treatments from Means df
-  Means <- aug$Means
-  Means <- Means[!duplicated(Means$Treatment), ]
-  Means <- unique(Means)
+    ntr <- length(treatment)
+    n.pairs <- as.double(ntr) * (ntr - 1) / 2
 
-  treatment <- Means$Treatment
-  block <- Means$Block
-  adjmeans <- Means$`Adjusted Means`
-  df <- aug$`ANOVA, Block Adjusted`[[1]]["Residuals", "Df"]
+    if (ntr < 2L) {
+      stop("At least two treatments are required.")
+    }
 
-  treatment2 <- ifelse(treatment %in% chks,
-                       treatment,
-                       paste0("(", treatment, ")"))
+    chks <- aug$Details$`Check treatments`
 
-  pairs_list <- combn(x = treatment, m = 2, simplify = FALSE)
+    is.check <- treatment %in% chks
+    is.test <- !is.check
 
-  SE <- aug$`Std. Errors`
+    treatment2 <- ifelse(is.check,
+                         as.character(treatment),
+                         paste0("(", treatment, ")"))
 
-  SEcol <- "Std. Error of Diff."
+    df <- aug$`ANOVA, Block Adjusted`[[1]]["Residuals", "Df"]
 
-  # if (p.adjust == "tukey") {
-  #   if (!is.na(colnames(SE)[3])) {
-  #     SEcol <- colnames(SE)[3]
-  #   } else {
-  #     alpha <- gsub(pattern = "\\D", replacement = "", x = colnames(SE)[2])
-  #     alpha <- as.numeric(alpha) / 100
-  #     q0 <- qtukey(p = 1 - alpha, nmeans = length(treatment),
-  #                  df = df)
-  #     SE$THSD <- c((q0 * SE[1:3,]$`Std. Error of Diff.`)/sqrt(2), 0)
-  #     SEcol <- "THSD"
-  #   }
-  # }
+    SE <- aug$`Std. Errors`
+    SEcol <- "Std. Error of Diff."
 
-  clusterExport(cl, c("pairs_list", "SE",
-                      "treatment", "block", "adjmeans", "df",
-                      "treatment2", "chks"),
-                envir=environment())
+    # Validate test-treatment block information
+    if (any(is.na(block[is.test]))) {
+      stop("Missing block information for a test treatment.")
+    }
 
-  pairs_aug <- parLapply(X = pairs_list, fun = function(x) {
-    ind1 <- which(treatment == x[1])
-    ind2 <- which(treatment == x[2])
-    contrast <- paste(treatment2[ind1], "-", treatment2[ind2])
-    estimate <- adjmeans[ind1] - adjmeans[ind2]
-    df <- df
+    # Extract standard errors
+    se.diff <-
+      c(different = SE["Two Test Treatments (Different Blocks)", SEcol],
+        same = SE["Two Test Treatments (Same Block)", SEcol],
+        test.control = SE["A Test Treatment and a Control Treatment", SEcol],
+        control = SE["Control Treatment Means", SEcol])
 
-    if (all(c(treatment[ind1], treatment[ind2]) %in%
-            setdiff(treatment, chks))) {
+    # Preallocate output
+    estimate <- numeric(n.pairs)
+    SE.out <- numeric(n.pairs)
+    t.ratio <- numeric(n.pairs)
+    contrast <- character(n.pairs)
 
-      if (length(ind1) != 1L || length(ind2) != 1L) {
-        stop("Treatment does not have exactly one corresponding row.")
-      }
+    # Generate comparisons
+    pos <- 0
+    n <- ntr
 
-      if (length(block[ind1]) != 1L || length(block[ind2]) != 1L) {
-        stop("Block information is not unique for a treatment.")
-      }
+    for (i in seq_len(ntr - 1L)) {
 
-      if (is.na(block[ind1]) || is.na(block[ind2])) {
-        stop("Missing block information for a test treatment.")
-      }
+      j <- seq.int(i + 1L, ntr)
+      nj <- length(j)
 
-      if (!identical(as.character(block[ind1]),
-                     as.character(block[ind2]))) {
-        SEdiff <-
-          SE["Two Test Treatments (Different Blocks)",  SEcol]
+      idx <- pos + seq_len(nj)
+
+      # Contrasts
+      estimate[idx] <- adjmeans[i] - adjmeans[j]
+
+      contrast[idx] <- paste0(
+        treatment2[i], " - ", treatment2[j]
+      )
+
+      # Determine standard error
+      if (is.test[i]) {
+
+        if (all(is.test[j])) {
+
+          same.block <-
+            as.character(block[i]) == as.character(block[j])
+
+          SE.out[idx] <-
+            ifelse(same.block, se.diff["same"], se.diff["different"])
+
+        } else {
+
+          SE.out[idx] <- se.diff["test.control"]
+
+        }
 
       } else {
-        SEdiff <-
-          SE["Two Test Treatments (Same Block)",  SEcol]
+
+        SE.out[idx] <-
+          ifelse(is.check[j], se.diff["control"], se.diff["test.control"])
+
       }
 
-    } else {
-      if (!all(c(treatment[ind1], treatment[ind2]) %in% chks)) {
-        SEdiff <-
-          SE["A Test Treatment and a Control Treatment",  SEcol]
-      } else {
-        SEdiff <-
-          SE["Control Treatment Means",  SEcol]
+      pos <- pos + nj
+
+    }
+
+    # Calculate t statistics
+    t.ratio <- estimate / SE.out
+
+    # Calculate p values
+    ## Family-Wise Error Rate (FWER) Adjustments
+    ## "tukey", "sidak", "holm", "hochberg", "hommel", "bonferroni"
+    ## False Discovery Rate (FDR) Adjustments
+    ## "BH"/"fdr", "BY"
+
+    if (p.adjust == "tukey") {
+      q.stat <- sqrt(2) * abs(t.ratio)
+
+      p.value <- ptukey(q = q.stat, nmeans = ntr, df = df, lower.tail = FALSE)
+
+    } else { #p.adjust != "tukey"
+
+      ## p.adjust == "none"
+      p.value <- 2 * pt(q = -abs(t.ratio), df = df)
+
+      if (p.adjust %in% c("holm", "hochberg", "hommel",
+                          "bonferroni", "BH", "BY", "fdr")) {
+
+        p.value <- stats::p.adjust(p = p.value, method = p.adjust)
+
       }
+
+      if (p.adjust == "sidak") {
+
+        p.value <- -expm1(length(p.value) * log1p(-p.value))
+
+      }
+
     }
 
-    t.ratio <- estimate / SEdiff
+    # Significance
+    sig <- ifelse(p.value < 0.001, "***",
+                  ifelse(p.value < 0.01, "**",
+                         ifelse(p.value < 0.05, "*", "")))
 
-    out <- data.frame(contrast, estimate, SE = SEdiff, df, t.ratio)
-
-    return(out)
-  }, cl = cl)
-
-  # stopCluster(cl)
-
-  pairs_aug <- dplyr::bind_rows(pairs_aug)
-  if (p.adjust != "tukey") {
-    # pairs_aug$p.value <- 2 * pt(q = pairs_aug$t.ratio, df = pairs_aug$df)
-    pairs_aug$p.value <- 2 * pt(q = -abs(pairs_aug$t.ratio), df = pairs_aug$df)
+    # Return result
+    data.frame(contrast = contrast,
+               estimate = estimate,
+               SE = SE.out,
+               df = rep(df, length(estimate)),
+               t.ratio = t.ratio,
+               p.value = p.value,
+               sig = sig,
+               stringsAsFactors = FALSE)
   }
-
-  if (p.adjust == "sidak") {
-    pairs_aug$p.value <-
-      1 - (1 - pairs_aug$p.value) ^ length(pairs_aug$p.value)
-  }
-
-  if (p.adjust == "tukey") {
-
-    if (is.null(alpha)) {
-      alpha <- gsub(pattern = "\\D", replacement = "", x = colnames(SE)[2])
-      alpha <- as.numeric(alpha) / 100
-    }
-
-    MSE <- aug$`ANOVA, Block Adjusted`[[1]]["Residuals", "Mean Sq"]
-    q_stat <- abs(pairs_aug$estimate) / sqrt(MSE / df)
-
-    pairs_aug$p.value <- 1 - ptukey(q = pairs_aug$t.ratio,
-                                    nmeans = length(treatment),
-                                    df = pairs_aug$df)
-  }
-  pairs_aug$sig <- ifelse(pairs_aug$p.value < 0.001, "***",
-                          ifelse(pairs_aug$p.value < 0.01, "**",
-                                 ifelse(pairs_aug$p.value < 0.05, "*",
-                                        "")))
-  return(pairs_aug)
-
-}

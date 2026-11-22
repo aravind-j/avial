@@ -119,5 +119,5 @@ prep_powercore_input(data = data, genotype = "Accession",
                      always.selected = sel,
                      file.name = "PowerCore_input",
                      folder.path = tempdir())
-#> PowerCore output file created at /var/folders/df/djsxfhc17x95674wsm_g8s980000gn/T//RtmpcxuWTP/PowerCore_input.csv
+#> PowerCore output file created at /var/folders/q2/p1t6rgxj5fj32g1dc7dmd49r0000gn/T//RtmpY2eUwQ/PowerCore_input.csv
 ```

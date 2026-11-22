@@ -113,9 +113,14 @@ pairwise.augmentedRCBD <- function(aug, cl = NULL,
 
   chks <- aug$Details$`Check treatments`
 
-  treatment <- aug$Means$Treatment
-  block <- aug$Means$Block
-  adjmeans <- aug$Means$`Adjusted Means`
+  # Remove duplicated treatments from Means df
+  Means <- aug$Means
+  Means <- Means[!duplicated(Means$Treatment), ]
+  Means <- unique(Means)
+
+  treatment <- Means$Treatment
+  block <- Means$Block
+  adjmeans <- Means$`Adjusted Means`
   df <- aug$`ANOVA, Block Adjusted`[[1]]["Residuals", "Df"]
 
   treatment2 <- ifelse(treatment %in% chks,
@@ -156,7 +161,20 @@ pairwise.augmentedRCBD <- function(aug, cl = NULL,
     if (all(c(treatment[ind1], treatment[ind2]) %in%
             setdiff(treatment, chks))) {
 
-      if (block[ind1] != block[ind2]) {
+      if (length(ind1) != 1L || length(ind2) != 1L) {
+        stop("Treatment does not have exactly one corresponding row.")
+      }
+
+      if (length(block[ind1]) != 1L || length(block[ind2]) != 1L) {
+        stop("Block information is not unique for a treatment.")
+      }
+
+      if (is.na(block[ind1]) || is.na(block[ind2])) {
+        stop("Missing block information for a test treatment.")
+      }
+
+      if (!identical(as.character(block[ind1]),
+                     as.character(block[ind2]))) {
         SEdiff <-
           SE["Two Test Treatments (Different Blocks)",  SEcol]
 
